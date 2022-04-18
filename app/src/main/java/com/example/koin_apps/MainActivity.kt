@@ -1,5 +1,6 @@
 package com.example.koin_apps
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -34,6 +35,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mainViewModel = ViewModelProvider(this)
             .get(MainViewModel::class.java)
 
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
         mainViewModel.resultKoinValue.observe(
             this,
             Observer {
@@ -41,23 +48,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             })
 
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)
-
+        mainActivityBinding.nextPageBtn.setOnClickListener(this)
     }
 
+    
     override fun onClick(v: View?) {
 
-        koinServiceCall(coinTicker = mainActivityBinding.KoinInput.text.toString())
-    }
+        when(v?.id) {
+            R.id.KoinSearchBtn ->
+                koinServiceCall(coinTicker = mainActivityBinding.KoinInput.text.toString())
 
-    /*
-    override fun onResume() {
-        super.onResume()
-
-        mainActivityBinding.KoinSearchBtn.setOnClickListener {
-            koinServiceCall(coinTicker = mainActivityBinding.KoinInput.text.toString())
+            R.id.nextPageBtn ->
+                startActivity(Intent(this, LiveTime::class.java))
         }
     }
-    */
 
     private fun getKoinTickerUrl(coinTicker: String): String{
         val koinTickerUrl = StringBuilder("https://api.bithumb.com/public/ticker/")
@@ -73,7 +77,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .enqueue(object : Callback<Root> {
                 override fun onResponse(call: Call<Root>, response: Response<Root>) {
                     mKoin = response.body()
-                    //mainActivityBinding.openPrice.text = mKoin?.data?.opening_price.toString()
                     mainViewModel.updateValue(input = mKoin?.data?.opening_price)
                 }
 

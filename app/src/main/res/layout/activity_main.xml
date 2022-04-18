@@ -35,13 +35,25 @@
         android:id="@+id/KoinSearchBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
         android:text="Search!"
+        android:textSize="28sp"
+        android:textStyle="bold"
         android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/open_price"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp" />
+
+    <Button
+        android:id="@+id/nextPageBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="LiveTime"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/white" />
 
 </LinearLayout>

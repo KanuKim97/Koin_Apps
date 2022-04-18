@@ -60,4 +60,7 @@ dependencies {
 
     //Android Jetpack LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-alpha06"
+
+    // Kotlin Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
 }
