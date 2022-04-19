@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
-import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.model.Root
 import com.example.koin_apps.databinding.ActivityMainBinding
@@ -32,18 +30,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(mainActivityBinding.root)
 
         koinService = Common.KoinApiService_public
-        mainViewModel = ViewModelProvider(this)
-            .get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
     }
-
 
     override fun onResume() {
         super.onResume()
 
         mainViewModel.resultKoinValue.observe(
             this,
-            Observer {
+            {
                 mainActivityBinding.openPrice.text = it.toString()
             })
 
@@ -51,7 +47,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mainActivityBinding.nextPageBtn.setOnClickListener(this)
     }
 
-    
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mainActivityBinding.KoinInput.text?.clear()
+    }
+
     override fun onClick(v: View?) {
 
         when(v?.id) {
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         return koinTickerUrl.toString()
     }
+
     private fun koinServiceCall(coinTicker: String) {
 
         koinService.getKoinPrice(getKoinTickerUrl(coinTicker))
