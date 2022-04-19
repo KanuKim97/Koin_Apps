@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Koin_Apps">
         <activity
-            android:name=".LiveTime"
+            android:name=".LiveTimeActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

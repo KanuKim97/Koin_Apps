@@ -54,13 +54,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        val coinTicker = mainActivityBinding.KoinInput.text.toString()
 
         when(v?.id) {
             R.id.KoinSearchBtn ->
-                koinServiceCall(coinTicker = mainActivityBinding.KoinInput.text.toString())
+                koinServiceCall(coinTicker)
 
             R.id.nextPageBtn ->
-                startActivity(Intent(this, LiveTime::class.java))
+                Intent(this, LiveTimeActivity::class.java).also {
+                    it.putExtra("KoinName", coinTicker)
+                    startActivity(it)
+                }
+
         }
     }
 
