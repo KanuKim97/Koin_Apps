@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
-import com.example.koin_apps.data.remote.model.Root
+import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var koinService: IKoinApiService
     private lateinit var mainViewModel: MainViewModel
 
-    var mKoin: Root? = null
+    var mKoin: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,23 +74,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         koinTickerUrl.append(coinTicker)
         koinTickerUrl.append("_")
         koinTickerUrl.append("KRW")
-
         return koinTickerUrl.toString()
     }
 
     private fun koinServiceCall(coinTicker: String) {
 
         koinService.getKoinPrice(getKoinTickerUrl(coinTicker))
-            .enqueue(object : Callback<Root> {
-                override fun onResponse(call: Call<Root>, response: Response<Root>) {
+            .enqueue(object : Callback<TickerRoot> {
+                override fun onResponse(call: Call<TickerRoot>, response: Response<TickerRoot>) {
                     mKoin = response.body()
                     mainViewModel.updateValue(input = mKoin?.data?.opening_price)
                 }
 
-                override fun onFailure(call: Call<Root>, t: Throwable) {
-                    Log.d("Failed","${t.message}")
+                override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
+                    Log.d("Failed", "${t.message}")
                 }
-
             })
     }
 }

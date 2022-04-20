@@ -1,6 +1,6 @@
-package com.example.koin_apps.data.remote.model
+package com.example.koin_apps.data.remote.model.ticker
 
-class Data {
+class TickerData {
     var opening_price = 0
     var closing_price = 0
     var min_price = 0
