@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
@@ -31,7 +32,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         koinService = Common.KoinApiService_public
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-
     }
 
     override fun onResume() {
@@ -83,11 +83,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .enqueue(object : Callback<TickerRoot> {
                 override fun onResponse(call: Call<TickerRoot>, response: Response<TickerRoot>) {
                     mKoin = response.body()
-                    mainViewModel.updateValue(input = mKoin?.data?.opening_price)
+                    Log.d("mKoin body","${mKoin?.status} \n ${mKoin?.data} \n ${mKoin?.message}")
+
+                    if (mKoin?.status == "0000"){
+                        mainViewModel.updateValue(input = mKoin?.data?.opening_price!!)
+                    } else {
+                        Log.d("mKoin Failed Status","${mKoin?.status}")
+
+                        /*
+                        ToDo (
+                         Exception Processing Needed
+                         Example)
+                         KoinName : "AAA"
+                         mKoin.Status : "null" )
+
+                        println(mKoin?.status.toString())
+                        println(Constants.status[mKoin?.status])
+                        */
+                    }
+
                 }
 
                 override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
-                    Log.d("Failed", "${t.message}")
+                    Toast.makeText(applicationContext, "${t.message}", Toast.LENGTH_SHORT)
+                        .show()
                 }
             })
     }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
@@ -37,40 +38,55 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         super.onResume()
 
         val koinName = intent.getStringExtra("KoinName")
-        liveTimeBinding.selectedPrice.text = koinName
+        val countTransaction = 10
 
-        koinTransactionCall(koinName)
+        liveTimeBinding.selectedPrice.text = koinName
         liveTimeBinding.getBackBtn.setOnClickListener(this)
+
+        liveTimeViewModel.currentKoinValue.observe(
+            this, {
+            liveTimeBinding.curPrice.text = it.toString()
+        })
+
+        koinTransactionCall(koinName, countTransaction)
     }
 
     override fun onClick(v: View?) {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    private fun loadKoinTransaction(koinName: String?): String {
-        val koinTickerUrl = StringBuilder("https://api.bithumb.com/public/transaction_history/")
-        koinTickerUrl.append(koinName)
-        koinTickerUrl.append("_")
-        koinTickerUrl.append("KRW")
-        return koinTickerUrl.toString()
+    private fun loadKoinTransaction(koinName: String?, countTransaction: Int): String {
+
+        val koinTransactionUrl = StringBuilder("https://api.bithumb.com/public/transaction_history/")
+
+        koinTransactionUrl.append(koinName)
+        koinTransactionUrl.append("_")
+        koinTransactionUrl.append("KRW")
+        koinTransactionUrl.append("?count=${countTransaction}")
+
+        return koinTransactionUrl.toString()
     }
 
-    private fun koinTransactionCall(koinName: String?){
+    private fun koinTransactionCall(koinName: String?, countTransaction: Int){
 
-        koinService.getKoinTransaction(loadKoinTransaction(koinName))
+        koinService.getKoinTransaction(loadKoinTransaction(koinName, countTransaction))
             .enqueue(object: Callback<TransactionRoot>{
                 override fun onResponse(
                     call: Call<TransactionRoot>,
                     response: Response<TransactionRoot>
                 ) {
-                    println("OK")
+                    // ToDo("data_price 0 until countTransaction")
                     mKoinTransaction = response.body()
-                    println(mKoinTransaction?.data)
-                    liveTimeBinding.curPrice.text = mKoinTransaction?.data?.price.toString()
+                    for (i: Int in 0 until countTransaction-1){
+                        Log.d("data_price",mKoinTransaction?.data?.get(i)?.price.toString())
+                    }
 
                 }
 
-                override fun onFailure(call: Call<TransactionRoot>, t: Throwable) { }
+                override fun onFailure(call: Call<TransactionRoot>, t: Throwable) {
+                    Toast.makeText(applicationContext, "${t.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
 
             })
     }
