@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.model.ticker.TickerList
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
 import retrofit2.Call
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mainActivityBinding: ActivityMainBinding
     private lateinit var koinService: IKoinApiService
     private lateinit var mainViewModel: MainViewModel
+    private val tickerArray = arrayListOf<TickerList>()
 
     var mKoin: TickerRoot? = null
 
@@ -37,11 +39,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
+        /*
         mainViewModel.resultKoinValue.observe(
             this,
             {
                 mainActivityBinding.openPrice.text = it.toString()
             })
+         */
+
 
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)
         mainActivityBinding.nextPageBtn.setOnClickListener(this)
@@ -83,10 +88,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .enqueue(object : Callback<TickerRoot> {
                 override fun onResponse(call: Call<TickerRoot>, response: Response<TickerRoot>) {
                     mKoin = response.body()
-                    Log.d("mKoin body","${mKoin?.status} \n ${mKoin?.data} \n ${mKoin?.message}")
 
                     if (mKoin?.status == "0000"){
-                        mainViewModel.updateValue(input = mKoin?.data?.opening_price!!)
+
+                        // mainViewModel.updateValue(input = mKoin?.data?.opening_price!!)
+                        // Log.d("mKoin body","${mKoin?.status} \n ${mKoin?.data} \n ${mKoin?.message}")
+
+                        //TickerList Add
+                        val tickerKoinList = TickerList(
+                            mKoin?.data?.opening_price!!,
+                            mKoin?.data?.closing_price!!,
+                            mKoin?.data?.min_price!!,
+                            mKoin?.data?.max_price!!,
+                            mKoin?.data?.units_traded!!,
+                            mKoin?.data?.acc_trade_value!!,
+                            mKoin?.data?.prev_closing_price!!,
+                            mKoin?.data?.units_traded_24H!!,
+                            mKoin?.data?.acc_trade_value_24H!!,
+                            mKoin?.data?.fluctate_24H!!,
+                            mKoin?.data?.fluctate_rate_24H!!,
+                            mKoin?.data?.date!! )
+
+                        //Log.d("dataClass","$tickerKoinList")
+                        tickerArray.add(tickerKoinList)
+
+
                     } else {
                         Log.d("mKoin Failed Status","${mKoin?.status}")
 

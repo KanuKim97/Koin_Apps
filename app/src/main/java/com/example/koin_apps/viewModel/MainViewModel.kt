@@ -3,11 +3,30 @@ package com.example.koin_apps.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.koin_apps.data.remote.model.ticker.TickerData
+import com.example.koin_apps.data.remote.model.ticker.TickerList
 
 class MainViewModel: ViewModel() {
     //Code Line
     //ToDo ("Rebuild MainViewModel -> LiveData to ArrayList")
 
+    private val _tickerLiveData = MutableLiveData<List<TickerList>>()
+    private val _koinTickerArray = arrayListOf<TickerList>()
+
+    fun addKoinTicker(
+        input: TickerList
+    ){
+
+    }
+
+    fun updateKoinTicker(
+        input: TickerList
+    ){
+
+    }
+
+
+    /*
     private val _openingKoinValue = MutableLiveData<Int?>()
     private val _closingKoinValue = MutableLiveData<Int?>()
     private val _minPrice = MutableLiveData<Int?>()
@@ -33,6 +52,6 @@ class MainViewModel: ViewModel() {
         input: Int
     ){
         _openingKoinValue.value = input
-
     }
+    */
 }
