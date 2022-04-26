@@ -3,15 +3,23 @@ package com.example.koin_apps.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.koin_apps.data.remote.model.transaction.TransactionList
 
 class LiveTimeViewModel: ViewModel() {
-    private val _currentKoinValue = MutableLiveData<Int?>()
+    private val _transactionLiveData = MutableLiveData<List<TransactionList>?>()
+    private val _koinTransactionArray = arrayListOf<TransactionList>()
 
-    val currentKoinValue: LiveData<Int?>
-        get() = _currentKoinValue
+    val transactionLiveData: LiveData<List<TransactionList>?>
+        get() = _transactionLiveData
 
     init {
-        _currentKoinValue.value = 0
+        _transactionLiveData.value = null
     }
 
+    fun updateKoinTransaction(
+        inputTransaction: TransactionList
+    ){
+        _koinTransactionArray.add(inputTransaction)
+        _transactionLiveData.value = _koinTransactionArray
+    }
 }

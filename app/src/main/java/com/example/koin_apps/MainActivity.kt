@@ -115,8 +115,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                          KoinName : "AAA"
                          mKoin.Status : "null" )
 
-                        println(mKoin?.status.toString())
-                        println(Constants.status[mKoin?.status])
+                        Toast.makeText(
+                            this@MainActivity,
+                            "$coinTicker was not Founded",
+                            Toast.LENGTH_SHORT).show()
                         */
                     }
 

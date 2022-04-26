@@ -7,17 +7,26 @@ import com.example.koin_apps.data.remote.model.ticker.TickerList
 
 class MainViewModel: ViewModel() {
 
-    private val _tickerLiveData = MutableLiveData<List<TickerList>>()
+    private val _tickerLiveData = MutableLiveData<List<TickerList>?>()
     private val _koinTickerArray = arrayListOf<TickerList>()
 
-    val tickerLiveData: LiveData<List<TickerList>>
+    val tickerLiveData: LiveData<List<TickerList>?>
         get() = _tickerLiveData
+
+    init {
+        _tickerLiveData.value = null
+    }
 
     fun updateKoinTicker(
         input: TickerList
     ){
         _koinTickerArray.add(input)
         _tickerLiveData.value = _koinTickerArray
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        
     }
 
 }
