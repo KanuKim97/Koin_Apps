@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
@@ -22,7 +23,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mainActivityBinding: ActivityMainBinding
     private lateinit var koinService: IKoinApiService
     private lateinit var mainViewModel: MainViewModel
-    private val tickerArray = arrayListOf<TickerList>()
 
     var mKoin: TickerRoot? = null
 
@@ -39,14 +39,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
-        /*
-        mainViewModel.resultKoinValue.observe(
+        mainViewModel.tickerLiveData.observe(
             this,
             {
-                mainActivityBinding.openPrice.text = it.toString()
-            })
-         */
-
+                Log.d("Result Value", it.toString())
+            }
+        )
 
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)
         mainActivityBinding.nextPageBtn.setOnClickListener(this)
@@ -91,10 +89,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     if (mKoin?.status == "0000"){
 
-                        // mainViewModel.updateValue(input = mKoin?.data?.opening_price!!)
-                        // Log.d("mKoin body","${mKoin?.status} \n ${mKoin?.data} \n ${mKoin?.message}")
-
-                        //TickerList Add
                         val tickerKoinList = TickerList(
                             mKoin?.data?.opening_price!!,
                             mKoin?.data?.closing_price!!,
@@ -109,9 +103,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             mKoin?.data?.fluctate_rate_24H!!,
                             mKoin?.data?.date!! )
 
-                        //Log.d("dataClass","$tickerKoinList")
-                        tickerArray.add(tickerKoinList)
-
+                        mainViewModel.updateKoinTicker(tickerKoinList)
 
                     } else {
                         Log.d("mKoin Failed Status","${mKoin?.status}")
