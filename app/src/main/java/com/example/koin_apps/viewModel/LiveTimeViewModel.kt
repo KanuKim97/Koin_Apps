@@ -16,6 +16,11 @@ class LiveTimeViewModel: ViewModel() {
         _transactionLiveData.value = null
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        _transactionLiveData.value = null
+    }
+
     fun updateKoinTransaction(
         inputTransaction: TransactionList
     ){

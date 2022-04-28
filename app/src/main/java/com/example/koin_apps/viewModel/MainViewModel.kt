@@ -17,16 +17,15 @@ class MainViewModel: ViewModel() {
         _tickerLiveData.value = null
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        _tickerLiveData.value = null
+    }
+
     fun updateKoinTicker(
         input: TickerList
     ){
         _koinTickerArray.add(input)
         _tickerLiveData.value = _koinTickerArray
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        
-    }
-
 }

@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.LiveTimeViewModel
@@ -43,10 +45,12 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         liveTimeBinding.selectedPrice.text = koinName
         liveTimeBinding.getBackBtn.setOnClickListener(this)
 
-        liveTimeViewModel.currentKoinValue.observe(
-            this, {
-            liveTimeBinding.curPrice.text = it.toString()
-        })
+        liveTimeViewModel.transactionLiveData.observe(
+            this,
+            {
+                Log.d("Result", it.toString())
+            }
+        )
 
         koinTransactionCall(koinName, countTransaction)
     }
@@ -78,7 +82,17 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                     // ToDo("data_price 0 until countTransaction")
                     mKoinTransaction = response.body()
                     for (i: Int in 0 until countTransaction-1){
-                        Log.d("data_price",mKoinTransaction?.data?.get(i)?.price.toString())
+
+                        val transactionKoinList = TransactionList(
+                            mKoinTransaction?.data?.get(i)?.transaction_date!!,
+                            mKoinTransaction?.data?.get(i)?.type!!,
+                            mKoinTransaction?.data?.get(i)?.units_traded!!,
+                            mKoinTransaction?.data?.get(i)?.price!!,
+                            mKoinTransaction?.data?.get(i)?.total!!
+                        )
+
+                        liveTimeViewModel.updateKoinTransaction(transactionKoinList)
+
                     }
 
                 }
