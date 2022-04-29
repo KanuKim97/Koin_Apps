@@ -40,7 +40,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         super.onResume()
 
         val koinName = intent.getStringExtra("KoinName")
-        val countTransaction = 10
+        val countTransaction = liveTimeBinding.countTransaction.text.toString()
 
         liveTimeBinding.selectedPrice.text = koinName
         liveTimeBinding.getBackBtn.setOnClickListener(this)
@@ -52,7 +52,15 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             }
         )
 
-        koinTransactionCall(koinName, countTransaction)
+        if (countTransaction.toInt() < 1){
+
+            Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
+            liveTimeBinding.countTransaction.text?.clear()
+
+        } else {
+            koinTransactionCall(koinName, countTransaction.toInt())
+        }
+
     }
 
     override fun onClick(v: View?) {
@@ -79,7 +87,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                     call: Call<TransactionRoot>,
                     response: Response<TransactionRoot>
                 ) {
-                    // ToDo("data_price 0 until countTransaction")
                     mKoinTransaction = response.body()
                     for (i: Int in 0 until countTransaction-1){
 

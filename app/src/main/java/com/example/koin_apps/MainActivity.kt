@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mainViewModel.tickerLiveData.observe(
             this,
             {
-                Log.d("Result Value", it.toString())
+                Log.d("Result Value", it?.get(0).toString())
+
             }
         )
 
