@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.model.ticker.TickerList
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
@@ -74,10 +75,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getKoinTickerUrl(coinTicker: String): String{
-        val koinTickerUrl = StringBuilder("https://api.bithumb.com/public/ticker/")
+
+        val koinTickerUrl = StringBuilder(Constants.IKoinApiUri)
+
+        koinTickerUrl.append("ticker/")
         koinTickerUrl.append(coinTicker)
         koinTickerUrl.append("_")
         koinTickerUrl.append("KRW")
+
         return koinTickerUrl.toString()
     }
 
@@ -107,20 +112,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         mainViewModel.updateKoinTicker(tickerKoinList)
 
                     } else {
-                        Log.d("mKoin Failed Status","${mKoin?.status}")
-
-                        /*
-                        ToDo (
-                         Exception Processing Needed
-                         Example)
-                         KoinName : "AAA"
-                         mKoin.Status : "null" )
-
-                        Toast.makeText(
-                            this@MainActivity,
-                            "$coinTicker was not Founded",
-                            Toast.LENGTH_SHORT).show()
-                        */
+                        Toast.makeText(applicationContext, "Failed to Import", Toast.LENGTH_SHORT)
+                            .show()
                     }
 
                 }

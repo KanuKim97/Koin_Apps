@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
@@ -52,8 +53,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             }
         )
 
-        if (countTransaction.toInt() < 1){
-
+        if (countTransaction.toInt() <= 1){
             Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
             liveTimeBinding.countTransaction.text?.clear()
 
@@ -63,14 +63,20 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        liveTimeBinding.countTransaction.text?.clear()
+    }
+
     override fun onClick(v: View?) {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun loadKoinTransaction(koinName: String?, countTransaction: Int): String {
 
-        val koinTransactionUrl = StringBuilder("https://api.bithumb.com/public/transaction_history/")
+        val koinTransactionUrl = StringBuilder(Constants.IKoinApiUri)
 
+        koinTransactionUrl.append("transaction_history/")
         koinTransactionUrl.append(koinName)
         koinTransactionUrl.append("_")
         koinTransactionUrl.append("KRW")
