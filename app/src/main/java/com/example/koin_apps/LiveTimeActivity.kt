@@ -50,6 +50,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             this,
             {
                 Log.d("Result", it.toString())
+                liveTimeBinding.TransactionView.text = it.toString()
             }
         )
 
