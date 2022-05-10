@@ -44,8 +44,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             this,
             {
                 Log.d("Result Value", it?.get(0).toString())
-
             }
+
+
         )
 
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)
@@ -67,8 +68,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.nextPageBtn ->
                 Intent(this, LiveTimeActivity::class.java).also {
-                    it.putExtra("KoinName", coinTicker)
-                    startActivity(it)
+                    if(coinTicker.isNullOrEmpty()){
+                        Toast.makeText(applicationContext, "InputKoinPlz", Toast.LENGTH_SHORT)
+                            .show()
+
+                    } else {
+                        it.putExtra("KoinName", coinTicker)
+                        startActivity(it)
+                    }
+
                 }
 
         }

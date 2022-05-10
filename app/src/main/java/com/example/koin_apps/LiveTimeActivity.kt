@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.common.Constants
@@ -40,10 +39,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
-        val koinName = intent.getStringExtra("KoinName")
-        val countTransaction = liveTimeBinding.countTransaction.text.toString()
-
-        liveTimeBinding.selectedPrice.text = koinName
+        liveTimeBinding.getTransactionBtn.setOnClickListener(this)
         liveTimeBinding.getBackBtn.setOnClickListener(this)
 
         liveTimeViewModel.transactionLiveData.observe(
@@ -54,14 +50,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             }
         )
 
-        if (countTransaction.toInt() <= 1){
-            Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
-            liveTimeBinding.countTransaction.text?.clear()
-
-        } else {
-            koinTransactionCall(koinName, countTransaction.toInt())
-        }
-
     }
 
     override fun onDestroy() {
@@ -70,7 +58,24 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        startActivity(Intent(this, MainActivity::class.java))
+
+        val koinName = intent.getStringExtra("KoinName")
+        val countTransaction = liveTimeBinding.countTransaction.text.toString()
+
+        when(v?.id) {
+            R.id.getTransactionBtn ->
+                if (countTransaction.toInt() <= 1){
+                    Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
+                    liveTimeBinding.countTransaction.text?.clear()
+
+                } else {
+                    koinTransactionCall(koinName, countTransaction.toInt())
+                }
+
+            R.id.getBackBtn ->
+                startActivity(Intent(this, MainActivity::class.java))
+        }
+
     }
 
     private fun loadKoinTransaction(koinName: String?, countTransaction: Int): String {
