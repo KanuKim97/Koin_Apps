@@ -14,8 +14,5 @@ interface IKoinApiService {
 
     @GET
     fun getKoinTransaction(@Url url: String): Call<TransactionRoot>
-
-
-    @GET(Constants.IKoinApiUri)
-    suspend fun getIKoin(@Url url: String): Call<TransactionRoot>
+    
 }
