@@ -55,6 +55,10 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"
 
+    // OkHttp3
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+
     //Android Jetpack ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha06"
 
@@ -63,4 +67,5 @@ dependencies {
 
     // Kotlin Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
+
 }

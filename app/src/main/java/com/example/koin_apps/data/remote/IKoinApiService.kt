@@ -1,5 +1,6 @@
 package com.example.koin_apps.data.remote
 
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import retrofit2.Call
@@ -14,4 +15,7 @@ interface IKoinApiService {
     @GET
     fun getKoinTransaction(@Url url: String): Call<TransactionRoot>
 
+
+    @GET(Constants.IKoinApiUri)
+    suspend fun getIKoin(@Url url: String): Call<TransactionRoot>
 }
