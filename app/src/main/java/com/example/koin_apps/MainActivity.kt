@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 Log.d("Result Value", it?.get(0).toString())
             }
 
-
         )
 
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)

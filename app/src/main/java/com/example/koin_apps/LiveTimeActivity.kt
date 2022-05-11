@@ -17,6 +17,7 @@ import com.example.koin_apps.viewModel.LiveTimeViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.NumberFormatException
 import java.lang.StringBuilder
 
 class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
@@ -60,16 +61,26 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
 
         val koinName = intent.getStringExtra("KoinName")
-        val countTransaction = liveTimeBinding.countTransaction.text.toString()
+        val countTransaction: Int =
+            try {
+                liveTimeBinding.countTransaction.text.toString().toInt()
+            } catch (e: NumberFormatException){
+                0
+            }
+
 
         when(v?.id) {
             R.id.getTransactionBtn ->
-                if (countTransaction.toInt() <= 1){
+                if (
+                    liveTimeBinding.countTransaction.text.isNullOrEmpty()
+                    or
+                    (countTransaction <= 1)
+                ){
                     Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
                     liveTimeBinding.countTransaction.text?.clear()
 
                 } else {
-                    koinTransactionCall(koinName, countTransaction.toInt())
+                    koinTransactionCall(koinName, countTransaction)
                 }
 
             R.id.getBackBtn ->
