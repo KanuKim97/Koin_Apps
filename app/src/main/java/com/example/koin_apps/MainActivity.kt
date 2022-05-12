@@ -43,9 +43,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mainViewModel.tickerLiveData.observe(
             this,
             {
-                Log.d("Result Value", it?.get(0).toString())
-            }
+                val TickerClass = it?.get(0)
 
+                if(TickerClass == null){
+                    mainActivityBinding.openPrice.text = "Coin is Not Selected"
+                } else {
+                    mainActivityBinding.openPrice.text =
+                        "개장가 : " + TickerClass.openTickerPrice +
+                                "\n종장가 : " + TickerClass.closeTickerPrice +
+                                "\n최저가 : "+ TickerClass.minTickerPrice +
+                                "\n최대가 : "+ TickerClass.maxTickerPrice +
+                                "\n거래량 : "+ TickerClass.tickerTradedUnits
+
+                }
+            }
         )
 
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)

@@ -26,5 +26,6 @@ class LiveTimeViewModel: ViewModel() {
     ){
         _koinTransactionArray.add(inputTransaction)
         _transactionLiveData.value = _koinTransactionArray
+
     }
 }

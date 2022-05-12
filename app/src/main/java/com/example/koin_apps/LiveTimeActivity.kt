@@ -74,7 +74,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                 if (
                     liveTimeBinding.countTransaction.text.isNullOrEmpty()
                     or
-                    (countTransaction <= 1)
+                    (countTransaction < 1)
                 ){
                     Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
                     liveTimeBinding.countTransaction.text?.clear()

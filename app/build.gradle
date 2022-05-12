@@ -9,7 +9,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.koin_apps"
+        applicationId "com.example.Koin_Apps"
         minSdk 26
         targetSdk 31
         versionCode 1

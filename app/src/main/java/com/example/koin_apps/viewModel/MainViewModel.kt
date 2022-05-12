@@ -20,6 +20,7 @@ class MainViewModel: ViewModel() {
     override fun onCleared() {
         super.onCleared()
         _tickerLiveData.value = null
+
     }
 
     fun updateKoinTicker(
@@ -27,5 +28,7 @@ class MainViewModel: ViewModel() {
     ){
         _koinTickerArray.add(input)
         _tickerLiveData.value = _koinTickerArray
+
+        _koinTickerArray.remove(input)
     }
 }
