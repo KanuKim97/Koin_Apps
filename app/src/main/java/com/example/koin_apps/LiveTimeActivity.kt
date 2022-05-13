@@ -46,8 +46,21 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         liveTimeViewModel.transactionLiveData.observe(
             this,
             {
-                Log.d("Result", it.toString())
-                liveTimeBinding.TransactionView.text = it.toString()
+                val transactionResult = it
+
+                if(transactionResult == null){
+                    liveTimeBinding.TransactionView.text = "Transaction is Not Founded"
+                } else {
+
+                    liveTimeBinding.TransactionView.text =
+                        "Price : " + transactionResult[0].transaction_Price +
+                                "Type : " + transactionResult[0].transactionType +
+                                "Units Traded : " + transactionResult[0].units_Transaction_Traded +
+                                "Date : " + transactionResult[0].transactionDate +
+                                "Total : " + transactionResult[0].transaction_Total
+                }
+
+
             }
         )
 

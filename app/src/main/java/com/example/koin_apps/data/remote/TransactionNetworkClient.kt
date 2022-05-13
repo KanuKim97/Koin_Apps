@@ -6,6 +6,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+ * Need to User Transaction Network Client
+ *
+ */
+
 object TransactionNetworkClient {
 
     private fun createLiveTransaction(): OkHttpClient {
