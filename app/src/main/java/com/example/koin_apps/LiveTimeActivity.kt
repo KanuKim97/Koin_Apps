@@ -1,9 +1,9 @@
 package com.example.koin_apps
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -37,11 +37,13 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         liveTimeViewModel = ViewModelProvider(this)[LiveTimeViewModel::class.java]
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
         liveTimeBinding.getTransactionBtn.setOnClickListener(this)
         liveTimeBinding.getBackBtn.setOnClickListener(this)
+        liveTimeBinding.goTraded.setOnClickListener(this)
 
         liveTimeViewModel.transactionLiveData.observe(
             this,
@@ -54,10 +56,10 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
                     liveTimeBinding.TransactionView.text =
                         "Price : " + transactionResult[0].transaction_Price +
-                                "Type : " + transactionResult[0].transactionType +
-                                "Units Traded : " + transactionResult[0].units_Transaction_Traded +
-                                "Date : " + transactionResult[0].transactionDate +
-                                "Total : " + transactionResult[0].transaction_Total
+                                "\nType : " + transactionResult[0].transactionType +
+                                "\nUnits Traded : " + transactionResult[0].units_Transaction_Traded +
+                                "\nDate : " + transactionResult[0].transactionDate +
+                                "\nTotal : " + transactionResult[0].transaction_Total
                 }
 
 
@@ -98,6 +100,9 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.getBackBtn ->
                 startActivity(Intent(this, MainActivity::class.java))
+
+            R.id.goTraded ->
+                startActivity(Intent(this, TradeActivity::class.java))
         }
 
     }

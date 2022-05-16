@@ -11,11 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Koin_Apps">
-
+        <activity
+            android:name=".TradeActivity"
+            android:exported="false" />
         <activity
             android:name=".LiveTimeActivity"
             android:exported="true" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
