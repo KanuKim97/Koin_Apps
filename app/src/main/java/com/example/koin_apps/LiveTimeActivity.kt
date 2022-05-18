@@ -102,7 +102,11 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
 
             R.id.goTraded ->
-                startActivity(Intent(this, TradeActivity::class.java))
+                Intent(this, TradeActivity::class.java).also {
+                    it.putExtra("count", countTransaction)
+                    it.putExtra("coinName", koinName)
+                    startActivity(it)
+                }
         }
 
     }
@@ -140,7 +144,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                         )
 
                         liveTimeViewModel.updateKoinTransaction(transactionKoinList)
-
                     }
 
                 }
