@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.koin_apps.data.remote.model.ticker.TickerList
 
 class MainViewModel: ViewModel() {
-
     private val _tickerLiveData = MutableLiveData<List<TickerList>?>()
     private val _koinTickerArray = arrayListOf<TickerList>()
 

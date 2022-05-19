@@ -3,10 +3,13 @@ package com.example.koin_apps
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.databinding.ActivityTradeBinding
+import com.example.koin_apps.viewModel.TradeViewModel
 
 class TradeActivity : AppCompatActivity() {
     private lateinit var tradeActivityBinding: ActivityTradeBinding
+    private lateinit var tradeViewModel: TradeViewModel
 
     private var threadNetwork: NetworkingThread? = null
     private var threadSearch: NetworkingThread? = null
@@ -15,12 +18,21 @@ class TradeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         tradeActivityBinding = ActivityTradeBinding.inflate(layoutInflater)
-        setContentView(tradeActivityBinding.root)
+        tradeViewModel = ViewModelProvider(this)[TradeViewModel::class.java]
 
+        setContentView(tradeActivityBinding.root)
     }
 
     override fun onResume() {
         super.onResume()
+        val coinName = intent.getStringExtra("coinName")
+        val coinCount = intent.getStringExtra("count")
+
+
+        if (coinName != null) {
+            setThread(coinName)
+        }
+
     }
 
     override fun onStop() {
@@ -55,37 +67,26 @@ class TradeActivity : AppCompatActivity() {
 
     }
 
-    private fun setThread(){
-
-        if (threadNetwork == null) {
-            threadSearch = NetworkingThread().apply { this.start() }
-        }
-
-        if (threadSearch == null) {
-            threadNetwork = NetworkingThread().apply { this.start() }
-        }
-
+    private fun setThread(search_Coin: String){
+        if(search_Coin.isEmpty())
+            Log.d("Search", "Search is null")
+            interruptThread()
 
     }
 
-    /**
-     *  thread Interrupt
-     *
     private fun interruptThread(){
 
-        threadNetwork = threadNetwork?.run{
+        threadNetwork?.run {
             this.isRunning = false
-            if(!this.isInterrupted)
+            if (!this.isInterrupted)
                 this.interrupt()
         }
 
-        threadSearch = threadSearch?.run{
+        threadSearch?.run{
             this.isRunning = false
             if (!this.isInterrupted)
                 this.interrupt()
         }
 
     }
-    **/
-
 }

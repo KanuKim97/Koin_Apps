@@ -31,10 +31,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(mainActivityBinding.root)
-
         koinService = Common.KoinApiService_public
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
+        setContentView(mainActivityBinding.root)
     }
 
     override fun onResume() {
@@ -67,6 +67,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onDestroy()
 
         mainActivityBinding.KoinInput.text?.clear()
+        mainViewModel.run {
+
+        }
     }
 
     override fun onClick(v: View?) {

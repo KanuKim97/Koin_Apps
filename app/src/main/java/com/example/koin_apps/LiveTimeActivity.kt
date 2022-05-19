@@ -31,10 +31,10 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
-        setContentView(liveTimeBinding.root)
-
         koinService = Common.KoinApiService_public
         liveTimeViewModel = ViewModelProvider(this)[LiveTimeViewModel::class.java]
+
+        setContentView(liveTimeBinding.root)
     }
 
     @SuppressLint("SetTextI18n")
@@ -71,6 +71,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         liveTimeBinding.countTransaction.text?.clear()
+
     }
 
     override fun onClick(v: View?) {
