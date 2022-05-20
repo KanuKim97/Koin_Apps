@@ -31,6 +31,9 @@ class TradeViewModel: ViewModel() {
         _tradeLiveData.value = _koinTradeArray
     }
 
-    fun getApi(search_str: String){ }
+    fun getApi(search_str: String){
+
+
+    }
 
 }

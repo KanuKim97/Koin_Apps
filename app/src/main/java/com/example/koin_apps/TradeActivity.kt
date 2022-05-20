@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.databinding.ActivityTradeBinding
 import com.example.koin_apps.viewModel.TradeViewModel
+import java.lang.StringBuilder
 
 class TradeActivity : AppCompatActivity() {
     private lateinit var tradeActivityBinding: ActivityTradeBinding
@@ -25,26 +27,30 @@ class TradeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val coinName = intent.getStringExtra("coinName")
-        val coinCount = intent.getStringExtra("count")
 
-
-        if (coinName != null) {
-            setThread(coinName)
-        }
-
-    }
-
-    override fun onStop() {
-        super.onStop()
+        setThread()
     }
 
     override fun onRestart() {
         super.onRestart()
+
+        setThread()
+        Log.d("onRestarted", "onRestarted: " + threadNetwork?.isRunning)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        interruptThread()
+        Log.d("Thread interrupted", "All Thread is interrupted")
     }
 
     override fun onDestroy() {
         super.onDestroy()
+
+        interruptThread()
+        Log.d("Thread interrupted", "All Thread is interrupted")
+
     }
 
     inner class NetworkingThread(): Thread() {
@@ -67,10 +73,17 @@ class TradeActivity : AppCompatActivity() {
 
     }
 
-    private fun setThread(search_Coin: String){
-        if(search_Coin.isEmpty())
-            Log.d("Search", "Search is null")
-            interruptThread()
+    private fun setThread() {
+
+        threadNetwork = NetworkingThread().apply {
+            this.start()
+            Log.d("NetWorkThread", "Thread is started")
+        }
+
+        threadSearch = NetworkingThread().apply {
+            this.start()
+            Log.d("SearchThread", "Thread is started")
+        }
 
     }
 
@@ -89,4 +102,21 @@ class TradeActivity : AppCompatActivity() {
         }
 
     }
+
+    /*
+
+    private fun loadKoinTransaction(koinName: String?, countTransaction: Int): String {
+
+        val koinTransactionUrl = StringBuilder(Constants.IKoinApiUri)
+
+        koinTransactionUrl.append("transaction_history/")
+        koinTransactionUrl.append(koinName)
+        koinTransactionUrl.append("_")
+        koinTransactionUrl.append("KRW")
+        koinTransactionUrl.append("?count=${countTransaction}")
+
+        return koinTransactionUrl.toString()
+    }
+
+    */
 }
