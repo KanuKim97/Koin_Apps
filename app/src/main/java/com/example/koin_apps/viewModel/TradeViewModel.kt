@@ -13,8 +13,6 @@ class TradeViewModel: ViewModel() {
     val tradeLiveData: LiveData<List<TransactionList>?>
         get() = _tradeLiveData
 
-    var disposable: DisposableHandle? = null
-
     init {
         _tradeLiveData.value = null
     }
@@ -29,11 +27,6 @@ class TradeViewModel: ViewModel() {
     ){
         _koinTradeArray.add(inputList)
         _tradeLiveData.value = _koinTradeArray
-    }
-
-    fun getApi(search_str: String){
-
-
     }
 
 }

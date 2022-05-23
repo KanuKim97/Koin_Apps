@@ -3,24 +3,36 @@ package com.example.koin_apps
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.example.koin_apps.common.Common
 import com.example.koin_apps.common.Constants
+import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.model.transaction.TransactionList
+import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityTradeBinding
 import com.example.koin_apps.viewModel.TradeViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.StringBuilder
 
 class TradeActivity : AppCompatActivity() {
     private lateinit var tradeActivityBinding: ActivityTradeBinding
     private lateinit var tradeViewModel: TradeViewModel
+    private lateinit var koinService: IKoinApiService
 
     private var threadNetwork: NetworkingThread? = null
     private var threadSearch: NetworkingThread? = null
+
+    var koinTradeInfo: TransactionRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         tradeActivityBinding = ActivityTradeBinding.inflate(layoutInflater)
         tradeViewModel = ViewModelProvider(this)[TradeViewModel::class.java]
+        koinService = Common.KoinApiService_public
 
         setContentView(tradeActivityBinding.root)
     }
@@ -103,7 +115,7 @@ class TradeActivity : AppCompatActivity() {
 
     }
 
-    /*
+
 
     private fun loadKoinTransaction(koinName: String?, countTransaction: Int): String {
 
@@ -118,5 +130,35 @@ class TradeActivity : AppCompatActivity() {
         return koinTransactionUrl.toString()
     }
 
-    */
+    private fun koinTransactionCall(koinName: String?, countTransaction: Int){
+
+        koinService.getKoinTransaction(loadKoinTransaction(koinName, countTransaction))
+            .enqueue(object: Callback<TransactionRoot> {
+                override fun onResponse(
+                    call: Call<TransactionRoot>,
+                    response: Response<TransactionRoot>
+                ) {
+                    koinTradeInfo = response.body()
+                    for (i: Int in 0 until countTransaction-1){
+
+                        val tradeKoinList = TransactionList(
+                            koinTradeInfo?.data?.get(i)?.transaction_date!!,
+                            koinTradeInfo?.data?.get(i)?.type!!,
+                            koinTradeInfo?.data?.get(i)?.units_traded!!,
+                            koinTradeInfo?.data?.get(i)?.price!!,
+                            koinTradeInfo?.data?.get(i)?.total!!
+                        )
+
+                        tradeViewModel.updateKoinTrade(tradeKoinList)
+                    }
+
+                }
+
+                override fun onFailure(call: Call<TransactionRoot>, t: Throwable) {
+                    Toast.makeText(applicationContext, "${t.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+            })
+    }
 }
