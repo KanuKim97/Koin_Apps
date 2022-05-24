@@ -22,10 +22,14 @@ class TradeActivity : AppCompatActivity() {
     private lateinit var tradeViewModel: TradeViewModel
     private lateinit var koinService: IKoinApiService
 
+    private val tradeKoinName = intent.getStringExtra("coinName")
+    private val tradeCount: String? = intent.getStringExtra("count")
+
     private var threadNetwork: NetworkingThread? = null
     private var threadSearch: NetworkingThread? = null
 
-    var koinTradeInfo: TransactionRoot? = null
+    private var koinTradeInfo: TransactionRoot? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +44,23 @@ class TradeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        setThread()
+        if (tradeKoinName != null && tradeCount != null) {
+            setThread(tradeKoinName, tradeCount)
+        }
+
+        tradeViewModel.tradeLiveData.observe(this, {
+            Log.d("Trade Live Data", it.toString())
+        })
     }
 
     override fun onRestart() {
         super.onRestart()
 
-        setThread()
+        if (tradeKoinName != null && tradeCount != null)
+            setThread(tradeKoinName, tradeCount)
+        else
+            Toast.makeText(this, " ", Toast.LENGTH_SHORT).show()
+
         Log.d("onRestarted", "onRestarted: " + threadNetwork?.isRunning)
     }
 
@@ -65,7 +79,11 @@ class TradeActivity : AppCompatActivity() {
 
     }
 
-    inner class NetworkingThread(): Thread() {
+    inner class NetworkingThread(
+        tradeKoinName: String, tradeCount: String
+    ) : Thread() {
+        private val tradeCoin = tradeKoinName
+        private val tradeCnt = tradeCount
         var isRunning = true
 
         override fun run() {
@@ -74,6 +92,8 @@ class TradeActivity : AppCompatActivity() {
 
                 try {
                     Log.d("Network Thread", "is Running!")
+                    koinTransactionCall(tradeCoin, tradeCnt)
+
                     sleep(1000)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
@@ -85,14 +105,14 @@ class TradeActivity : AppCompatActivity() {
 
     }
 
-    private fun setThread() {
+    private fun setThread(tradeKoinName: String, tradeCount: String) {
 
-        threadNetwork = NetworkingThread().apply {
+        threadNetwork = NetworkingThread(tradeKoinName, tradeCount).apply {
             this.start()
             Log.d("NetWorkThread", "Thread is started")
         }
 
-        threadSearch = NetworkingThread().apply {
+        threadSearch = NetworkingThread(tradeKoinName, tradeCount).apply {
             this.start()
             Log.d("SearchThread", "Thread is started")
         }
@@ -117,7 +137,7 @@ class TradeActivity : AppCompatActivity() {
 
 
 
-    private fun loadKoinTransaction(koinName: String?, countTransaction: Int): String {
+    private fun loadKoinTransaction(koinName: String?, countTransaction: String): String {
 
         val koinTransactionUrl = StringBuilder(Constants.IKoinApiUri)
 
@@ -130,7 +150,7 @@ class TradeActivity : AppCompatActivity() {
         return koinTransactionUrl.toString()
     }
 
-    private fun koinTransactionCall(koinName: String?, countTransaction: Int){
+    private fun koinTransactionCall(koinName: String?, countTransaction: String){
 
         koinService.getKoinTransaction(loadKoinTransaction(koinName, countTransaction))
             .enqueue(object: Callback<TransactionRoot> {
@@ -139,18 +159,17 @@ class TradeActivity : AppCompatActivity() {
                     response: Response<TransactionRoot>
                 ) {
                     koinTradeInfo = response.body()
-                    for (i: Int in 0 until countTransaction-1){
 
                         val tradeKoinList = TransactionList(
-                            koinTradeInfo?.data?.get(i)?.transaction_date!!,
-                            koinTradeInfo?.data?.get(i)?.type!!,
-                            koinTradeInfo?.data?.get(i)?.units_traded!!,
-                            koinTradeInfo?.data?.get(i)?.price!!,
-                            koinTradeInfo?.data?.get(i)?.total!!
+                            koinTradeInfo?.data?.get(0)?.transaction_date!!,
+                            koinTradeInfo?.data?.get(0)?.type!!,
+                            koinTradeInfo?.data?.get(0)?.units_traded!!,
+                            koinTradeInfo?.data?.get(0)?.price!!,
+                            koinTradeInfo?.data?.get(0)?.total!!
                         )
 
                         tradeViewModel.updateKoinTrade(tradeKoinList)
-                    }
+
 
                 }
 
