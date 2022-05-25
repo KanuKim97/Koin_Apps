@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityTradeBinding
@@ -22,14 +23,11 @@ class TradeActivity : AppCompatActivity() {
     private lateinit var tradeViewModel: TradeViewModel
     private lateinit var koinService: IKoinApiService
 
-    private val tradeKoinName = intent.getStringExtra("coinName")
-    private val tradeCount: String? = intent.getStringExtra("count")
+    private val tradeKoinName = "BTC"
 
     private var threadNetwork: NetworkingThread? = null
-    private var threadSearch: NetworkingThread? = null
 
-    private var koinTradeInfo: TransactionRoot? = null
-
+    private var koinTradeInfo: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +42,8 @@ class TradeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (tradeKoinName != null && tradeCount != null) {
-            setThread(tradeKoinName, tradeCount)
+        if (tradeKoinName != null) {
+            setThread(tradeKoinName)
         }
 
         tradeViewModel.tradeLiveData.observe(this, {
@@ -56,8 +54,8 @@ class TradeActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
 
-        if (tradeKoinName != null && tradeCount != null)
-            setThread(tradeKoinName, tradeCount)
+        if (tradeKoinName != null)
+            setThread(tradeKoinName)
         else
             Toast.makeText(this, " ", Toast.LENGTH_SHORT).show()
 
@@ -80,10 +78,9 @@ class TradeActivity : AppCompatActivity() {
     }
 
     inner class NetworkingThread(
-        tradeKoinName: String, tradeCount: String
+        tradeKoinName: String
     ) : Thread() {
         private val tradeCoin = tradeKoinName
-        private val tradeCnt = tradeCount
         var isRunning = true
 
         override fun run() {
@@ -92,7 +89,7 @@ class TradeActivity : AppCompatActivity() {
 
                 try {
                     Log.d("Network Thread", "is Running!")
-                    koinTransactionCall(tradeCoin, tradeCnt)
+                    koinTransactionCall(tradeCoin)
 
                     sleep(1000)
                 } catch (e: InterruptedException) {
@@ -105,16 +102,11 @@ class TradeActivity : AppCompatActivity() {
 
     }
 
-    private fun setThread(tradeKoinName: String, tradeCount: String) {
+    private fun setThread(tradeKoinName: String) {
 
-        threadNetwork = NetworkingThread(tradeKoinName, tradeCount).apply {
+        threadNetwork = NetworkingThread(tradeKoinName).apply {
             this.start()
             Log.d("NetWorkThread", "Thread is started")
-        }
-
-        threadSearch = NetworkingThread(tradeKoinName, tradeCount).apply {
-            this.start()
-            Log.d("SearchThread", "Thread is started")
         }
 
     }
@@ -127,56 +119,35 @@ class TradeActivity : AppCompatActivity() {
                 this.interrupt()
         }
 
-        threadSearch?.run{
-            this.isRunning = false
-            if (!this.isInterrupted)
-                this.interrupt()
-        }
-
     }
 
 
 
-    private fun loadKoinTransaction(koinName: String?, countTransaction: String): String {
+    private fun loadKoinTrade (koinName: String?): String {
 
-        val koinTransactionUrl = StringBuilder(Constants.IKoinApiUri)
+        val koinTradeUrl = StringBuilder(Constants.IKoinApiUri)
 
-        koinTransactionUrl.append("transaction_history/")
-        koinTransactionUrl.append(koinName)
-        koinTransactionUrl.append("_")
-        koinTransactionUrl.append("KRW")
-        koinTransactionUrl.append("?count=${countTransaction}")
+        koinTradeUrl.append("ticker/")
+        koinTradeUrl.append(koinName)
+        koinTradeUrl.append("-")
+        koinTradeUrl.append("KRW")
 
-        return koinTransactionUrl.toString()
+        return koinTradeUrl.toString()
+
     }
 
-    private fun koinTransactionCall(koinName: String?, countTransaction: String){
+    private fun koinTransactionCall(koinName: String?){
 
-        koinService.getKoinTransaction(loadKoinTransaction(koinName, countTransaction))
-            .enqueue(object: Callback<TransactionRoot> {
-                override fun onResponse(
-                    call: Call<TransactionRoot>,
-                    response: Response<TransactionRoot>
-                ) {
-                    koinTradeInfo = response.body()
-
-                        val tradeKoinList = TransactionList(
-                            koinTradeInfo?.data?.get(0)?.transaction_date!!,
-                            koinTradeInfo?.data?.get(0)?.type!!,
-                            koinTradeInfo?.data?.get(0)?.units_traded!!,
-                            koinTradeInfo?.data?.get(0)?.price!!,
-                            koinTradeInfo?.data?.get(0)?.total!!
-                        )
-
-                        tradeViewModel.updateKoinTrade(tradeKoinList)
-
-
+        koinService.getKoinPrice(loadKoinTrade(koinName))
+            .enqueue(object: Callback<TickerRoot> {
+                override fun onResponse(call: Call<TickerRoot>, response: Response<TickerRoot>) {
+                    
                 }
 
-                override fun onFailure(call: Call<TransactionRoot>, t: Throwable) {
-                    Toast.makeText(applicationContext, "${t.message}", Toast.LENGTH_SHORT)
-                        .show()
+                override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
+                    TODO("Not yet implemented")
                 }
+
 
             })
     }
