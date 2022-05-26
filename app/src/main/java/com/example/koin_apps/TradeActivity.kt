@@ -9,8 +9,6 @@ import com.example.koin_apps.common.Common
 import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
-import com.example.koin_apps.data.remote.model.transaction.TransactionList
-import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityTradeBinding
 import com.example.koin_apps.viewModel.TradeViewModel
 import retrofit2.Call
@@ -26,7 +24,6 @@ class TradeActivity : AppCompatActivity() {
     private val tradeKoinName = "BTC"
 
     private var threadNetwork: NetworkingThread? = null
-
     private var koinTradeInfo: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,13 +138,43 @@ class TradeActivity : AppCompatActivity() {
         koinService.getKoinPrice(loadKoinTrade(koinName))
             .enqueue(object: Callback<TickerRoot> {
                 override fun onResponse(call: Call<TickerRoot>, response: Response<TickerRoot>) {
-                    
+                    koinTradeInfo = response.body()
+
+                    Log.d("body()", "${response.body()}")
+
+                    if(koinTradeInfo == null) {
+
+                        Toast.makeText(
+                            applicationContext,
+                            "koin Information is Empty",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        interruptThread()
+
+                    } else {
+
+                        val mKoinTradeInfo = mutableListOf<String>()
+
+                        mKoinTradeInfo.add(koinTradeInfo?.data?.acc_trade_value_24H.toString())
+                        mKoinTradeInfo.add(koinTradeInfo?.data?.prev_closing_price.toString())
+                        mKoinTradeInfo.add(koinTradeInfo?.data?.fluctate_rate_24H.toString())
+
+                        Log.d("Trade Info : Status: ", "${koinTradeInfo?.status}")
+                        Log.d("Trade Info : Data", "$mKoinTradeInfo")
+
+
+                        tradeViewModel.updateKoinTrade(mKoinTradeInfo)
+
+                    }
+
                 }
 
                 override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
 
+                    Toast.makeText(applicationContext, "${t.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
 
             })
     }

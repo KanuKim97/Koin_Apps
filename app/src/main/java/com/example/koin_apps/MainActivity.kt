@@ -3,10 +3,8 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
@@ -22,8 +20,8 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mainActivityBinding: ActivityMainBinding
-    private lateinit var koinService: IKoinApiService
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var koinService: IKoinApiService
 
     var mKoin: TickerRoot? = null
 
@@ -31,8 +29,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
-        koinService = Common.KoinApiService_public
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        koinService = Common.KoinApiService_public
 
         setContentView(mainActivityBinding.root)
     }
