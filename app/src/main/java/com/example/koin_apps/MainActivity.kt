@@ -109,7 +109,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         koinService.getKoinPrice(getKoinTickerUrl(coinTicker))
             .enqueue(object : Callback<TickerRoot> {
-                override fun onResponse(call: Call<TickerRoot>, response: Response<TickerRoot>) {
+                override fun onResponse(
+                    call: Call<TickerRoot>,
+                    response: Response<TickerRoot>
+                ) {
+
                     mKoin = response.body()
 
                     if (mKoin?.status == "0000"){

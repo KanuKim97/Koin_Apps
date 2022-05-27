@@ -1,5 +1,6 @@
 package com.example.koin_apps
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +25,8 @@ class TradeActivity : AppCompatActivity() {
     private val tradeKoinName = "BTC"
 
     private var threadNetwork: NetworkingThread? = null
-    private var koinTradeInfo: TickerRoot? = null
+
+    var koinTradeInfo: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,7 @@ class TradeActivity : AppCompatActivity() {
         setContentView(tradeActivityBinding.root)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
@@ -45,6 +48,17 @@ class TradeActivity : AppCompatActivity() {
 
         tradeViewModel.tradeLiveData.observe(this, {
             Log.d("Trade Live Data", it.toString())
+
+            Log.d("Prev_Closing_Price", it?.get("Prev_Closing_Price").toString())
+            Log.d("Trade Value", it?.get("TradeValue").toString())
+            Log.d("Fluctate_24H",  it?.get("Fluctate_24H").toString())
+
+            tradeActivityBinding.showTradedUnits.text =
+                "코인 이름 : " + tradeKoinName +
+                        "\n종전가 : "+ it?.get("Prev_Closing_Price").toString() +
+                        "\n현재가 : " + it?.get("TradeValue").toString() +
+                        "\n24시 변동률 : " + it?.get("Fluctate_24H").toString()
+
         })
     }
 
@@ -126,18 +140,22 @@ class TradeActivity : AppCompatActivity() {
 
         koinTradeUrl.append("ticker/")
         koinTradeUrl.append(koinName)
-        koinTradeUrl.append("-")
+        koinTradeUrl.append("_")
         koinTradeUrl.append("KRW")
 
         return koinTradeUrl.toString()
-
     }
 
     private fun koinTransactionCall(koinName: String?){
 
+        Log.d("API_ADDRESS: ", loadKoinTrade(koinName))
+
         koinService.getKoinPrice(loadKoinTrade(koinName))
             .enqueue(object: Callback<TickerRoot> {
-                override fun onResponse(call: Call<TickerRoot>, response: Response<TickerRoot>) {
+                override fun onResponse(
+                    call: Call<TickerRoot>,
+                    response: Response<TickerRoot>
+                ) {
                     koinTradeInfo = response.body()
 
                     Log.d("body()", "${response.body()}")
@@ -154,11 +172,11 @@ class TradeActivity : AppCompatActivity() {
 
                     } else {
 
-                        val mKoinTradeInfo = mutableListOf<String>()
+                        val mKoinTradeInfo = mutableMapOf<String, Any?>()
 
-                        mKoinTradeInfo.add(koinTradeInfo?.data?.acc_trade_value_24H.toString())
-                        mKoinTradeInfo.add(koinTradeInfo?.data?.prev_closing_price.toString())
-                        mKoinTradeInfo.add(koinTradeInfo?.data?.fluctate_rate_24H.toString())
+                        mKoinTradeInfo["TradeValue"] = koinTradeInfo?.data?.acc_trade_value_24H
+                        mKoinTradeInfo["Prev_Closing_Price"] = koinTradeInfo?.data?.prev_closing_price
+                        mKoinTradeInfo["Fluctate_24H"] = koinTradeInfo?.data?.fluctate_rate_24H
 
                         Log.d("Trade Info : Status: ", "${koinTradeInfo?.status}")
                         Log.d("Trade Info : Data", "$mKoinTradeInfo")

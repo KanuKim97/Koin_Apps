@@ -7,9 +7,9 @@ import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import kotlinx.coroutines.DisposableHandle
 
 class TradeViewModel: ViewModel() {
-    private val _tradeLiveData = MutableLiveData<List<String>?>()
+    private val _tradeLiveData = MutableLiveData<Map<String, Any?>?>()
 
-    val tradeLiveData: LiveData<List<String>?>
+    val tradeLiveData: LiveData<Map<String, Any?>?>
         get() = _tradeLiveData
 
     init {
@@ -22,9 +22,10 @@ class TradeViewModel: ViewModel() {
     }
 
     fun updateKoinTrade(
-        inputList: MutableList<String>
+        inputList: MutableMap<String, Any?>
     ) {
         _tradeLiveData.value = inputList
+
     }
 
 }

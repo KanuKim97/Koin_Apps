@@ -9,9 +9,13 @@ import retrofit2.http.Url
 interface IKoinApiService {
 
     @GET
-    fun getKoinPrice(@Url url: String): Call<TickerRoot>
+    fun getKoinPrice(
+        @Url url: String
+    ): Call<TickerRoot>
 
     @GET
-    fun getKoinTransaction(@Url url: String): Call<TransactionRoot>
+    fun getKoinTransaction(
+        @Url url: String
+    ): Call<TransactionRoot>
 
 }
