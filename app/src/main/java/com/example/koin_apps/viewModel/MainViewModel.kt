@@ -19,7 +19,6 @@ class MainViewModel: ViewModel() {
     override fun onCleared() {
         super.onCleared()
         _tickerLiveData.value = null
-
     }
 
     fun updateKoinTicker(

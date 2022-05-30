@@ -10,6 +10,7 @@
     <!--Main Activity.xml String Value-->
     <string name="koin_Input">Koin Name</string>
     <string name="btn_liveTimeActivity">LiveTime</string>
+    <string name="btn_TradeActivity">TradeLiveTime</string>
     <string name="btn_Search">Search!</string>
 
 

@@ -28,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/koin_Input"
-                android:maxLines="1" />
+                android:maxLines="1"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,6 +59,7 @@
         android:id="@+id/bottom_Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -67,10 +69,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/radius_button"
-            android:layout_marginTop="50dp"
             android:text="@string/btn_liveTimeActivity"
             android:textSize="28sp"
             android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/tradePageBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius_button"
+            android:text="@string/btn_TradeActivity"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
             android:textColor="@color/black" />
 
     </LinearLayout>

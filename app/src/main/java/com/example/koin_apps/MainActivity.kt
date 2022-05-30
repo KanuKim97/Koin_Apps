@@ -41,33 +41,38 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mainViewModel.tickerLiveData.observe(
             this,
             {
-                val TickerClass = it?.get(0)
+                if (it?.size != 0){
 
-                if(TickerClass == null){
-                    mainActivityBinding.openPrice.text = "Coin is Not Selected"
-                } else {
-                    mainActivityBinding.openPrice.text =
-                        "개장가 : " + TickerClass.openTickerPrice +
-                                "\n종장가 : " + TickerClass.closeTickerPrice +
-                                "\n최저가 : "+ TickerClass.minTickerPrice +
-                                "\n최대가 : "+ TickerClass.maxTickerPrice +
-                                "\n거래량 : "+ TickerClass.tickerTradedUnits
+                    val TickerClass = it?.get(0)
+
+                    if(TickerClass == null){
+
+                        mainActivityBinding.openPrice.text = "Coin is Not Selected"
+                    } else {
+
+                        mainActivityBinding.openPrice.text =
+                            "개장가 : " + TickerClass.openTickerPrice +
+                                    "\n종장가 : " + TickerClass.closeTickerPrice +
+                                    "\n최저가 : "+ TickerClass.minTickerPrice +
+                                    "\n최대가 : "+ TickerClass.maxTickerPrice +
+                                    "\n거래량 : "+ TickerClass.tickerTradedUnits
+
+                    }
 
                 }
-            }
-        )
+
+            })
 
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)
         mainActivityBinding.nextPageBtn.setOnClickListener(this)
+        mainActivityBinding.tradePageBtn.setOnClickListener(this)
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
         mainActivityBinding.KoinInput.text?.clear()
-        mainViewModel.run {
 
-        }
     }
 
     override fun onClick(v: View?) {
@@ -79,11 +84,36 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.nextPageBtn ->
                 Intent(this, LiveTimeActivity::class.java).also {
+
                     if(coinTicker.isNullOrEmpty()){
-                        Toast.makeText(applicationContext, "InputKoinPlz", Toast.LENGTH_SHORT)
-                            .show()
+
+                        Toast.makeText(
+                            applicationContext,
+                            "InputKoinPlz",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                     } else {
+
+                        it.putExtra("KoinName", coinTicker)
+                        startActivity(it)
+                    }
+
+                }
+
+            R.id.tradePageBtn ->
+                Intent(this, TradeActivity::class.java).also {
+
+                    if(coinTicker.isNullOrEmpty()){
+
+                        Toast.makeText(
+                            applicationContext,
+                            "InputKoinPlz",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    } else {
+
                         it.putExtra("KoinName", coinTicker)
                         startActivity(it)
                     }

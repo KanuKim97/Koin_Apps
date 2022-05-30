@@ -3,7 +3,6 @@ package com.example.koin_apps
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
@@ -21,8 +20,6 @@ class TradeActivity : AppCompatActivity() {
     private lateinit var tradeActivityBinding: ActivityTradeBinding
     private lateinit var tradeViewModel: TradeViewModel
     private lateinit var koinService: IKoinApiService
-
-    private val tradeKoinName = "BTC"
 
     private var threadNetwork: NetworkingThread? = null
 
@@ -42,50 +39,37 @@ class TradeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        val tradeKoinName = intent.getStringExtra("KoinName")
         if (tradeKoinName != null) {
             setThread(tradeKoinName)
         }
 
         tradeViewModel.tradeLiveData.observe(this, {
-            Log.d("Trade Live Data", it.toString())
-
-            Log.d("Prev_Closing_Price", it?.get("Prev_Closing_Price").toString())
-            Log.d("Trade Value", it?.get("TradeValue").toString())
-            Log.d("Fluctate_24H",  it?.get("Fluctate_24H").toString())
 
             tradeActivityBinding.showTradedUnits.text =
                 "코인 이름 : " + tradeKoinName +
-                        "\n종전가 : "+ it?.get("Prev_Closing_Price").toString() +
-                        "\n현재가 : " + it?.get("TradeValue").toString() +
-                        "\n24시 변동률 : " + it?.get("Fluctate_24H").toString()
+                        "\nPrev_Closing_Price : "+ it?.get("Prev_Closing_Price").toString() +
+                        "\nTrade_Value_24H : " + it?.get("TradeValue").toString() +
+                        "\nFluctate_Rate_24H : " + it?.get("Fluctate_24H").toString()
 
         })
     }
 
-    override fun onRestart() {
-        super.onRestart()
-
-        if (tradeKoinName != null)
-            setThread(tradeKoinName)
-        else
-            Toast.makeText(this, " ", Toast.LENGTH_SHORT).show()
-
-        Log.d("onRestarted", "onRestarted: " + threadNetwork?.isRunning)
-    }
+//    override fun onRestart() {
+//        super.onRestart()
+//
+//    }
 
     override fun onStop() {
         super.onStop()
 
         interruptThread()
-        Log.d("Thread interrupted", "All Thread is interrupted")
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         interruptThread()
-        Log.d("Thread interrupted", "All Thread is interrupted")
-
     }
 
     inner class NetworkingThread(
@@ -99,26 +83,20 @@ class TradeActivity : AppCompatActivity() {
             while (isRunning){
 
                 try {
-                    Log.d("Network Thread", "is Running!")
-                    koinTransactionCall(tradeCoin)
 
+                    koinTransactionCall(tradeCoin)
                     sleep(1000)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
+
+                } catch (e: InterruptedException) { e.printStackTrace() }
 
             }
-
         }
 
     }
 
     private fun setThread(tradeKoinName: String) {
 
-        threadNetwork = NetworkingThread(tradeKoinName).apply {
-            this.start()
-            Log.d("NetWorkThread", "Thread is started")
-        }
+        threadNetwork = NetworkingThread(tradeKoinName).apply { this.start() }
 
     }
 
@@ -126,6 +104,7 @@ class TradeActivity : AppCompatActivity() {
 
         threadNetwork?.run {
             this.isRunning = false
+
             if (!this.isInterrupted)
                 this.interrupt()
         }
@@ -148,17 +127,14 @@ class TradeActivity : AppCompatActivity() {
 
     private fun koinTransactionCall(koinName: String?){
 
-        Log.d("API_ADDRESS: ", loadKoinTrade(koinName))
-
         koinService.getKoinPrice(loadKoinTrade(koinName))
             .enqueue(object: Callback<TickerRoot> {
                 override fun onResponse(
                     call: Call<TickerRoot>,
                     response: Response<TickerRoot>
                 ) {
-                    koinTradeInfo = response.body()
 
-                    Log.d("body()", "${response.body()}")
+                    koinTradeInfo = response.body()
 
                     if(koinTradeInfo == null) {
 
@@ -178,10 +154,6 @@ class TradeActivity : AppCompatActivity() {
                         mKoinTradeInfo["Prev_Closing_Price"] = koinTradeInfo?.data?.prev_closing_price
                         mKoinTradeInfo["Fluctate_24H"] = koinTradeInfo?.data?.fluctate_rate_24H
 
-                        Log.d("Trade Info : Status: ", "${koinTradeInfo?.status}")
-                        Log.d("Trade Info : Data", "$mKoinTradeInfo")
-
-
                         tradeViewModel.updateKoinTrade(mKoinTradeInfo)
 
                     }
@@ -190,8 +162,12 @@ class TradeActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
 
-                    Toast.makeText(applicationContext, "${t.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        applicationContext,
+                        "${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
                 }
 
             })

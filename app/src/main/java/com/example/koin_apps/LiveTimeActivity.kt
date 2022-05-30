@@ -86,6 +86,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
 
         when(v?.id) {
+
             R.id.getTransactionBtn ->
                 if (
                     liveTimeBinding.countTransaction.text.isNullOrEmpty()
@@ -102,12 +103,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             R.id.getBackBtn ->
                 startActivity(Intent(this, MainActivity::class.java))
 
-            R.id.goTraded ->
-                Intent(this, TradeActivity::class.java).also {
-                    it.putExtra("count", countTransaction)
-                    it.putExtra("coinName", koinName)
-                    startActivity(it)
-                }
         }
 
     }
