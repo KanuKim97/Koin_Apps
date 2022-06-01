@@ -3,6 +3,7 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.model.ticker.TickerList
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
+import kotlinx.coroutines.channels.ticker
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,24 +43,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mainViewModel.tickerLiveData.observe(
             this,
             {
-                if (it?.size != 0){
+                val tickerMap = it
 
-                    val TickerClass = it?.get(0)
+                if(tickerMap?.size != 0) {
 
-                    if(TickerClass == null){
+                    mainActivityBinding.openPrice.text =
+                        "OpenningPrice : " + tickerMap?.get("OpeningPrice") +
+                                "\nClosingPrice : " + tickerMap?.get("ClosingPrice") +
+                                "\nminTickerPrice : " + tickerMap?.get("minTickerPrice") +
+                                "\nmaxTickerPrice : " + tickerMap?.get("maxTickerPrice") +
+                                "\nTradeTickerUnits : " + tickerMap?.get("TradeTickerUnits")
 
-                        mainActivityBinding.openPrice.text = "Coin is Not Selected"
-                    } else {
-
-                        mainActivityBinding.openPrice.text =
-                            "개장가 : " + TickerClass.openTickerPrice +
-                                    "\n종장가 : " + TickerClass.closeTickerPrice +
-                                    "\n최저가 : "+ TickerClass.minTickerPrice +
-                                    "\n최대가 : "+ TickerClass.maxTickerPrice +
-                                    "\n거래량 : "+ TickerClass.tickerTradedUnits
-
-                    }
-
+                } else {
+                    Toast.makeText(applicationContext, "TickerDate is Empty", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
             })
@@ -69,10 +67,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        mainActivityBinding.KoinInput.text?.clear()
 
+        mainActivityBinding.KoinInput.text?.clear()
     }
 
     override fun onClick(v: View?) {
@@ -148,19 +157,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     if (mKoin?.status == "0000"){
 
-                        val tickerKoinList = TickerList(
-                            mKoin?.data?.opening_price!!,
-                            mKoin?.data?.closing_price!!,
-                            mKoin?.data?.min_price!!,
-                            mKoin?.data?.max_price!!,
-                            mKoin?.data?.units_traded!!,
-                            mKoin?.data?.acc_trade_value!!,
-                            mKoin?.data?.prev_closing_price!!,
-                            mKoin?.data?.units_traded_24H!!,
-                            mKoin?.data?.acc_trade_value_24H!!,
-                            mKoin?.data?.fluctate_24H!!,
-                            mKoin?.data?.fluctate_rate_24H!!,
-                            mKoin?.data?.date!! )
+                        val tickerKoinList = mutableMapOf<String, Any?>()
+
+                        tickerKoinList["OpeningPrice"] = mKoin?.data?.opening_price
+                        tickerKoinList["ClosingPrice"] = mKoin?.data?.closing_price
+                        tickerKoinList["minTickerPrice"] = mKoin?.data?.min_price
+                        tickerKoinList["maxTickerPrice"] = mKoin?.data?.max_price
+                        tickerKoinList["TradeTickerUnits"] = mKoin?.data?.units_traded
 
                         mainViewModel.updateKoinTicker(tickerKoinList)
 

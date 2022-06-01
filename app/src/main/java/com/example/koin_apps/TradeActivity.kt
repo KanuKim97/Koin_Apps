@@ -44,7 +44,9 @@ class TradeActivity : AppCompatActivity() {
             setThread(tradeKoinName)
         }
 
-        tradeViewModel.tradeLiveData.observe(this, {
+        tradeViewModel.tradeLiveData.observe(
+            this,
+            {
 
             tradeActivityBinding.showTradedUnits.text =
                 "코인 이름 : " + tradeKoinName +

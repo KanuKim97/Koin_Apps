@@ -6,10 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.koin_apps.data.remote.model.ticker.TickerList
 
 class MainViewModel: ViewModel() {
-    private val _tickerLiveData = MutableLiveData<List<TickerList>?>()
-    private val _koinTickerArray = arrayListOf<TickerList>()
+    private val _tickerLiveData = MutableLiveData<Map<String, Any?>?>()
 
-    val tickerLiveData: LiveData<List<TickerList>?>
+    val tickerLiveData: LiveData<Map<String, Any?>?>
         get() = _tickerLiveData
 
     init {
@@ -22,11 +21,9 @@ class MainViewModel: ViewModel() {
     }
 
     fun updateKoinTicker(
-        input: TickerList
+        input: MutableMap<String, Any?>
     ){
-        _koinTickerArray.add(input)
-        _tickerLiveData.value = _koinTickerArray
+        _tickerLiveData.value = input
 
-        _koinTickerArray.remove(input)
     }
 }
