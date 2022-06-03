@@ -40,27 +40,27 @@ class TradeActivity : AppCompatActivity() {
         super.onResume()
 
         val tradeKoinName = intent.getStringExtra("KoinName")
-        if (tradeKoinName != null) {
-            setThread(tradeKoinName)
-        }
+        if (tradeKoinName != null) { setThread(tradeKoinName) }
 
         tradeViewModel.tradeLiveData.observe(
             this,
             {
+                val tradeMap = it
 
-            tradeActivityBinding.showTradedUnits.text =
-                "코인 이름 : " + tradeKoinName +
-                        "\nPrev_Closing_Price : "+ it?.get("Prev_Closing_Price").toString() +
-                        "\nTrade_Value_24H : " + it?.get("TradeValue").toString() +
-                        "\nFluctate_Rate_24H : " + it?.get("Fluctate_24H").toString()
+                tradeActivityBinding.showTradedUnits.text =
+                    "Coin Name : " + tradeKoinName +
+                            "\nPrev_Closing_Price : "+ tradeMap?.get("Prev_Closing_Price").toString() +
+                            "\nTrade_Value_24H : " + tradeMap?.get("TradeValue").toString() +
+                            "\nFluctate_Rate_24H : " + tradeMap?.get("Fluctate_24H").toString()
 
         })
     }
 
-//    override fun onRestart() {
-//        super.onRestart()
-//
-//    }
+    override fun onRestart() {
+        super.onRestart()
+
+
+    }
 
     override fun onStop() {
         super.onStop()
@@ -78,7 +78,7 @@ class TradeActivity : AppCompatActivity() {
         tradeKoinName: String
     ) : Thread() {
         private val tradeCoin = tradeKoinName
-        var isRunning = true
+        var isRunning: Boolean = true
 
         override fun run() {
 

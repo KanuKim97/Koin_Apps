@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var liveTimeViewModel: LiveTimeViewModel
     private lateinit var koinService: IKoinApiService
 
+    private var transactionThread: TransactionThread? = null
     var mKoinTransaction: TransactionRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,9 +43,12 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
-        liveTimeBinding.getTransactionBtn.setOnClickListener(this)
-        liveTimeBinding.getBackBtn.setOnClickListener(this)
-        liveTimeBinding.goTraded.setOnClickListener(this)
+        val koinName = intent.getStringExtra("KoinName")
+        val countTransaction: Int =
+            try { liveTimeBinding.countTransaction.text.toString().toInt() }
+            catch (e: NumberFormatException){ 0 }
+
+        setTransactionThread(koinName, countTransaction)
 
         liveTimeViewModel.transactionLiveData.observe(
             this,
@@ -52,59 +57,98 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
                 if(transactionResult == null){
                     liveTimeBinding.TransactionView.text = "Transaction is Not Founded"
-                } else {
-
-                    liveTimeBinding.TransactionView.text =
-                        "Price : " + transactionResult[0].transaction_Price +
-                                "\nType : " + transactionResult[0].transactionType +
-                                "\nUnits Traded : " + transactionResult[0].units_Transaction_Traded +
-                                "\nDate : " + transactionResult[0].transactionDate +
-                                "\nTotal : " + transactionResult[0].transaction_Total
                 }
 
+            })
 
-            }
-        )
+        liveTimeBinding.getTransactionBtn.setOnClickListener(this)
+        liveTimeBinding.getBackBtn.setOnClickListener(this)
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        interruptThread()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         liveTimeBinding.countTransaction.text?.clear()
-
+        interruptThread()
     }
 
     override fun onClick(v: View?) {
-
+        /*
         val koinName = intent.getStringExtra("KoinName")
         val countTransaction: Int =
-            try {
-                liveTimeBinding.countTransaction.text.toString().toInt()
-            } catch (e: NumberFormatException){
-                0
-            }
-
+            try { liveTimeBinding.countTransaction.text.toString().toInt() }
+            catch (e: NumberFormatException){ 0 }
+        */
 
         when(v?.id) {
-
+            /*
             R.id.getTransactionBtn ->
-                if (
-                    liveTimeBinding.countTransaction.text.isNullOrEmpty()
-                    or
-                    (countTransaction < 1)
-                ){
-                    Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
-                    liveTimeBinding.countTransaction.text?.clear()
+                when {
+                    liveTimeBinding.countTransaction.text.isNullOrEmpty() -> {
+                        Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
+                        liveTimeBinding.countTransaction.text?.clear()
+                    }
 
-                } else {
-                    koinTransactionCall(koinName, countTransaction)
+                    countTransaction < 1 -> {
+                        Toast.makeText(this, "input transaction Number over 1", Toast.LENGTH_SHORT).show()
+                        liveTimeBinding.countTransaction.text?.clear()
+                    }
+
+                    else -> {
+                        koinTransactionCall(koinName, countTransaction)
+                    }
                 }
-
+            */
             R.id.getBackBtn ->
                 startActivity(Intent(this, MainActivity::class.java))
 
         }
 
+    }
+
+    inner class TransactionThread(
+        koinName: String?,
+        countTransaction: Int
+    ):Thread() {
+        private val coinName = koinName
+        private val transactionNumber = countTransaction
+        var isRunning: Boolean = true
+
+
+        override fun run() {
+
+            while (isRunning){
+
+                try{
+
+                    Log.d("Thread", "TransactionThread() is Running")
+                    koinTransactionCall(coinName, transactionNumber)
+                    sleep(1000)
+
+                } catch (e: InterruptedException) { e.printStackTrace() }
+
+            }
+
+        }
+    }
+
+    private fun setTransactionThread(koinName: String?, countTransaction: Int) {
+        transactionThread = TransactionThread(koinName, countTransaction).apply { this.start() }
+    }
+
+    private fun interruptThread() {
+
+        transactionThread?.run {
+            this.isRunning = false
+
+            if(!this.isInterrupted)
+                this.interrupt()
+        }
     }
 
     private fun loadKoinTransaction(koinName: String?, countTransaction: Int): String {

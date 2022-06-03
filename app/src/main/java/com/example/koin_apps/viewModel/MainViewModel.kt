@@ -3,7 +3,6 @@ package com.example.koin_apps.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.koin_apps.data.remote.model.ticker.TickerList
 
 class MainViewModel: ViewModel() {
     private val _tickerLiveData = MutableLiveData<Map<String, Any?>?>()
