@@ -35,7 +35,7 @@ class TradeActivity : AppCompatActivity() {
         setContentView(tradeActivityBinding.root)
     }
 
-    @SuppressLint("SetTextI18n")
+
     override fun onResume() {
         super.onResume()
 
@@ -48,10 +48,13 @@ class TradeActivity : AppCompatActivity() {
                 val tradeMap = it
 
                 tradeActivityBinding.showTradedUnits.text =
-                    "Coin Name : " + tradeKoinName +
-                            "\nPrev_Closing_Price : "+ tradeMap?.get("Prev_Closing_Price").toString() +
-                            "\nTrade_Value_24H : " + tradeMap?.get("TradeValue").toString() +
-                            "\nFluctate_Rate_24H : " + tradeMap?.get("Fluctate_24H").toString()
+                    getString(
+                        R.string.Trade_Format,
+                        tradeKoinName,
+                        tradeMap?.get("Prev_Closing_Price").toString(),
+                        tradeMap?.get("TradeValue").toString(),
+                        tradeMap?.get("Fluctate_24H").toString()
+                    )
 
         })
     }

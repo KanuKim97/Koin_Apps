@@ -48,11 +48,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 if(tickerMap?.size != 0) {
 
                     mainActivityBinding.openPrice.text =
-                        "OpenningPrice : " + tickerMap?.get("OpeningPrice") +
-                                "\nClosingPrice : " + tickerMap?.get("ClosingPrice") +
-                                "\nminTickerPrice : " + tickerMap?.get("minTickerPrice") +
-                                "\nmaxTickerPrice : " + tickerMap?.get("maxTickerPrice") +
-                                "\nTradeTickerUnits : " + tickerMap?.get("TradeTickerUnits")
+                        getString(
+                            R.string.Ticker_Format,
+                            tickerMap?.get("OpeningPrice"),
+                            tickerMap?.get("ClosingPrice"),
+                            tickerMap?.get("minTickerPrice"),
+                            tickerMap?.get("maxTickerPrice"),
+                            tickerMap?.get("TradeTickerUnits")
+                        )
 
                 } else {
                     Toast.makeText(applicationContext, "TickerDate is Empty", Toast.LENGTH_SHORT)

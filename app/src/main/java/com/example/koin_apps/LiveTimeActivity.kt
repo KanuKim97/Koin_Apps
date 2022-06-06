@@ -1,6 +1,5 @@
 package com.example.koin_apps
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -39,7 +38,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(liveTimeBinding.root)
     }
 
-    @SuppressLint("SetTextI18n")
+
     override fun onResume() {
         super.onResume()
 
@@ -56,12 +55,29 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                 val transactionResult = it
 
                 if(transactionResult == null){
-                    liveTimeBinding.TransactionView.text = "Transaction is Not Founded"
+                    liveTimeBinding.TransactionView.text =
+                        getString(R.string.transaction_Not_Founded)
+
+                } else {
+
+                    val transactionSize = (it.size)-1
+
+                    for(i in 0 until transactionSize) {
+                        liveTimeBinding.TransactionView.text =
+                            getString(
+                                R.string.transaction_Format,
+                                it[i].transactionType,
+                                it[i].transactionDate,
+                                it[i].transaction_Price,
+                                it[i].units_Transaction_Traded,
+                                it[i].transaction_Total
+                            )
+
+                    }
                 }
 
             })
 
-        liveTimeBinding.getTransactionBtn.setOnClickListener(this)
         liveTimeBinding.getBackBtn.setOnClickListener(this)
 
     }
@@ -78,32 +94,8 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        /*
-        val koinName = intent.getStringExtra("KoinName")
-        val countTransaction: Int =
-            try { liveTimeBinding.countTransaction.text.toString().toInt() }
-            catch (e: NumberFormatException){ 0 }
-        */
 
         when(v?.id) {
-            /*
-            R.id.getTransactionBtn ->
-                when {
-                    liveTimeBinding.countTransaction.text.isNullOrEmpty() -> {
-                        Toast.makeText(this, "Input count Plz", Toast.LENGTH_SHORT).show()
-                        liveTimeBinding.countTransaction.text?.clear()
-                    }
-
-                    countTransaction < 1 -> {
-                        Toast.makeText(this, "input transaction Number over 1", Toast.LENGTH_SHORT).show()
-                        liveTimeBinding.countTransaction.text?.clear()
-                    }
-
-                    else -> {
-                        koinTransactionCall(koinName, countTransaction)
-                    }
-                }
-            */
             R.id.getBackBtn ->
                 startActivity(Intent(this, MainActivity::class.java))
 
@@ -172,6 +164,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                     call: Call<TransactionRoot>,
                     response: Response<TransactionRoot>
                 ) {
+
                     mKoinTransaction = response.body()
                     for (i: Int in 0 until countTransaction-1){
 

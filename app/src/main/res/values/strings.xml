@@ -1,17 +1,44 @@
 <resources>
     <string name="app_name">Koin_Apps</string>
 
-    <!--Live Time Activity.xml String Value -->
+    <!--Live Time Activity String Value -->
     <string name="cnt_TransactionInput">Transaction Number</string>
     <string name="btn_Transaction">Transaction</string>
     <string name="btn_GoHome">Go Back</string>
     <string name="btn_GoTraded">Go Trade</string>
+    <string name="transaction_Not_Founded">Transaction is Not Founded</string>
 
-    <!--Main Activity.xml String Value-->
+    <string name="transaction_Format">
+        Transaction Type: %s \n
+        Transaction Date: %s \n
+        Transaction Price: %s \n
+        Transaction Units: %s \n
+        Transaction Total: %s \n
+    </string>
+
+
+    <!--Main Activity String Value-->
     <string name="koin_Input">Koin Name</string>
     <string name="btn_liveTimeActivity">LiveTime</string>
     <string name="btn_TradeActivity">TradeLiveTime</string>
     <string name="btn_Search">Search!</string>
 
+    <string name="Ticker_Format">
+        Opening Price: %s \n
+        Closing Price: %s \n
+        minTicker Price: %s \n
+        maxTicker Price: %s \n
+        TradeTicker Units: %s \n
+    </string>
+
+
+    <!--Trade Activity String Value-->
+
+    <string name="Trade_Format">
+        CoinName: %s \n
+        PrevClosingPrice: %s \n
+        TradeValue_24H: %s \n
+        FluctateRate_24H: %s \n
+    </string>
 
 </resources>

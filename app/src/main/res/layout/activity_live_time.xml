@@ -54,14 +54,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:padding="5dp">
 
-        <Button
-            android:id="@+id/getTransactionBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/radius_button"
-            android:text="@string/btn_Transaction"
-            android:textColor="@color/black"
-            android:textSize="28sp" />
 
         <Button
             android:id="@+id/getBackBtn"
