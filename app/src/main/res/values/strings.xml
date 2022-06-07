@@ -33,7 +33,6 @@
 
 
     <!--Trade Activity String Value-->
-
     <string name="Trade_Format">
         CoinName: %s \n
         PrevClosingPrice: %s \n

@@ -1,13 +1,15 @@
 package com.example.koin_apps
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityTradeBinding
 import com.example.koin_apps.viewModel.TradeViewModel
@@ -41,6 +43,13 @@ class TradeActivity : AppCompatActivity() {
 
         val tradeKoinName = intent.getStringExtra("KoinName")
         if (tradeKoinName != null) { setThread(tradeKoinName) }
+        else {
+            Toast.makeText(applicationContext,"Koin Name is Empty", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        val ticker = RetrofitRepo.getTickerSingleton(tradeKoinName.toString())
+        Log.d("ticker", "${ticker}")
 
         tradeViewModel.tradeLiveData.observe(
             this,
@@ -59,21 +68,14 @@ class TradeActivity : AppCompatActivity() {
         })
     }
 
-    override fun onRestart() {
-        super.onRestart()
-
-
-    }
 
     override fun onStop() {
         super.onStop()
-
         interruptThread()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
         interruptThread()
     }
 
@@ -100,9 +102,7 @@ class TradeActivity : AppCompatActivity() {
     }
 
     private fun setThread(tradeKoinName: String) {
-
         threadNetwork = NetworkingThread(tradeKoinName).apply { this.start() }
-
     }
 
     private fun interruptThread(){
