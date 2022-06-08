@@ -40,4 +40,9 @@
         FluctateRate_24H: %s \n
     </string>
 
+    <!--Common String Value-->
+    <string name="API_DATA_Not_Founded">
+        Coin Data is Empty Plz reload Activity
+    </string>
+
 </resources>

@@ -3,11 +3,9 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
-import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
@@ -16,7 +14,6 @@ import com.example.koin_apps.viewModel.TradeViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.StringBuilder
 
 class TradeActivity : AppCompatActivity() {
     private lateinit var tradeActivityBinding: ActivityTradeBinding
@@ -25,7 +22,7 @@ class TradeActivity : AppCompatActivity() {
 
     private var threadNetwork: NetworkingThread? = null
 
-    var koinTradeInfo: TickerRoot? = null
+    var mTradeCoinData: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +45,6 @@ class TradeActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-        val ticker = RetrofitRepo.getTickerSingleton(tradeKoinName.toString())
-        Log.d("ticker", "${ticker}")
-
         tradeViewModel.tradeLiveData.observe(
             this,
             {
@@ -62,7 +56,7 @@ class TradeActivity : AppCompatActivity() {
                         tradeKoinName,
                         tradeMap?.get("Prev_Closing_Price").toString(),
                         tradeMap?.get("TradeValue").toString(),
-                        tradeMap?.get("Fluctate_24H").toString()
+                        tradeMap?.get("Fluctated_24H").toString()
                     )
 
         })
@@ -82,7 +76,7 @@ class TradeActivity : AppCompatActivity() {
     inner class NetworkingThread(
         tradeKoinName: String
     ) : Thread() {
-        private val tradeCoin = tradeKoinName
+        private val tradeCoinName = tradeKoinName
         var isRunning: Boolean = true
 
         override fun run() {
@@ -91,7 +85,7 @@ class TradeActivity : AppCompatActivity() {
 
                 try {
 
-                    koinTransactionCall(tradeCoin)
+                    tradeCoinResponse(tradeCoinName)
                     sleep(1000)
 
                 } catch (e: InterruptedException) { e.printStackTrace() }
@@ -117,64 +111,48 @@ class TradeActivity : AppCompatActivity() {
     }
 
 
+    private fun tradeCoinResponse(CoinName: String){
+        val mTradeTicker = RetrofitRepo.getTickerSingleton(CoinName)
 
-    private fun loadKoinTrade (koinName: String?): String {
+        mTradeTicker.enqueue(object: Callback<TickerRoot>{
+            override fun onResponse(
+                call: Call<TickerRoot>,
+                response: Response<TickerRoot>
+            ) {
+                mTradeCoinData = response.body()
 
-        val koinTradeUrl = StringBuilder(Constants.IKoinApiUri)
-
-        koinTradeUrl.append("ticker/")
-        koinTradeUrl.append(koinName)
-        koinTradeUrl.append("_")
-        koinTradeUrl.append("KRW")
-
-        return koinTradeUrl.toString()
-    }
-
-    private fun koinTransactionCall(koinName: String?){
-
-        koinService.getKoinPrice(loadKoinTrade(koinName))
-            .enqueue(object: Callback<TickerRoot> {
-                override fun onResponse(
-                    call: Call<TickerRoot>,
-                    response: Response<TickerRoot>
-                ) {
-
-                    koinTradeInfo = response.body()
-
-                    if(koinTradeInfo == null) {
-
-                        Toast.makeText(
-                            applicationContext,
-                            "koin Information is Empty",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        interruptThread()
-
-                    } else {
-
-                        val mKoinTradeInfo = mutableMapOf<String, Any?>()
-
-                        mKoinTradeInfo["TradeValue"] = koinTradeInfo?.data?.acc_trade_value_24H
-                        mKoinTradeInfo["Prev_Closing_Price"] = koinTradeInfo?.data?.prev_closing_price
-                        mKoinTradeInfo["Fluctate_24H"] = koinTradeInfo?.data?.fluctate_rate_24H
-
-                        tradeViewModel.updateKoinTrade(mKoinTradeInfo)
-
-                    }
-
-                }
-
-                override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
+                if (mTradeCoinData == null || (mTradeCoinData?.status != "0000")) {
 
                     Toast.makeText(
                         applicationContext,
-                        "${t.message}",
+                        R.string.API_DATA_Not_Founded,
                         Toast.LENGTH_SHORT
                     ).show()
 
+                    interruptThread()
+
+                } else {
+                    val mTradeData = mutableMapOf<String, Any?>()
+
+                    mTradeData["TradeValue"] = mTradeCoinData?.data?.acc_trade_value_24H
+                    mTradeData["Prev_Closing_Price"] = mTradeCoinData?.data?.prev_closing_price
+                    mTradeData["Fluctated_24H"] = mTradeCoinData?.data?.fluctate_rate_24H
+
+                    tradeViewModel.updateKoinTrade(mTradeData)
                 }
 
-            })
+            }
+
+            override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
+
+                Toast.makeText(
+                    applicationContext,
+                    "${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+
+        })
     }
 }

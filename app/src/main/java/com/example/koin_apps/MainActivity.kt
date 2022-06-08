@@ -11,6 +11,7 @@ import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerList
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var koinService: IKoinApiService
 
-    var mKoin: TickerRoot? = null
+    var mTickerData: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         when(v?.id) {
             R.id.KoinSearchBtn ->
-                koinServiceCall(coinTicker)
+                tickerSearchCall(coinTicker)
 
             R.id.nextPageBtn ->
                 Intent(this, LiveTimeActivity::class.java).also {
@@ -135,52 +136,53 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun getKoinTickerUrl(coinTicker: String): String{
+    private fun tickerSearchCall(coinName: String){
+        val mSearchTicker = RetrofitRepo.getTickerSingleton(coinName)
 
-        val koinTickerUrl = StringBuilder(Constants.IKoinApiUri)
+        mSearchTicker.enqueue(object: Callback<TickerRoot>{
+            override fun onResponse(
+                call: Call<TickerRoot>,
+                response: Response<TickerRoot>
+            ) {
 
-        koinTickerUrl.append("ticker/")
-        koinTickerUrl.append(coinTicker)
-        koinTickerUrl.append("_")
-        koinTickerUrl.append("KRW")
+                mTickerData = response.body()
 
-        return koinTickerUrl.toString()
-    }
+                if(mTickerData == null || (mTickerData?.status != "0000")) {
 
-    private fun koinServiceCall(coinTicker: String) {
+                    Toast.makeText(
+                        applicationContext,
+                        R.string.API_DATA_Not_Founded,
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-        koinService.getKoinPrice(getKoinTickerUrl(coinTicker))
-            .enqueue(object : Callback<TickerRoot> {
-                override fun onResponse(
-                    call: Call<TickerRoot>,
-                    response: Response<TickerRoot>
-                ) {
+                } else {
 
-                    mKoin = response.body()
+                    val tickerKoinMap = mutableMapOf<String, Any?>()
 
-                    if (mKoin?.status == "0000"){
+                    tickerKoinMap["OpeningPrice"] = mTickerData?.data?.opening_price
+                    tickerKoinMap["ClosingPrice"] = mTickerData?.data?.closing_price
+                    tickerKoinMap["minTickerPrice"] = mTickerData?.data?.min_price
+                    tickerKoinMap["maxTickerPrice"] = mTickerData?.data?.max_price
+                    tickerKoinMap["TradeTickerUnits"] = mTickerData?.data?.units_traded
 
-                        val tickerKoinList = mutableMapOf<String, Any?>()
+                    Log.d("Value", "$tickerKoinMap")
 
-                        tickerKoinList["OpeningPrice"] = mKoin?.data?.opening_price
-                        tickerKoinList["ClosingPrice"] = mKoin?.data?.closing_price
-                        tickerKoinList["minTickerPrice"] = mKoin?.data?.min_price
-                        tickerKoinList["maxTickerPrice"] = mKoin?.data?.max_price
-                        tickerKoinList["TradeTickerUnits"] = mKoin?.data?.units_traded
-
-                        mainViewModel.updateKoinTicker(tickerKoinList)
-
-                    } else {
-                        Toast.makeText(applicationContext, "Failed to Import", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    mainViewModel.updateKoinTicker(tickerKoinMap)
 
                 }
 
-                override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
-                    Toast.makeText(applicationContext, "${t.message}", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            })
+            }
+
+            override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
+
+                Toast.makeText(
+                    applicationContext,
+                    "${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+        })
     }
+
 }

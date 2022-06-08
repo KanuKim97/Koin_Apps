@@ -8,8 +8,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
-import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
@@ -18,7 +18,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.NumberFormatException
-import java.lang.StringBuilder
 
 class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var liveTimeBinding: ActivityLiveTimeBinding
@@ -26,7 +25,8 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var koinService: IKoinApiService
 
     private var transactionThread: TransactionThread? = null
-    var mKoinTransaction: TransactionRoot? = null
+
+    var mTransactionCoinData: TransactionRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,7 +119,11 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                 try{
 
                     Log.d("Thread", "TransactionThread() is Running")
-                    koinTransactionCall(coinName, transactionNumber)
+
+                    if (coinName != null) {
+                        transactionCoinResponse(coinName, transactionNumber)
+                    }
+
                     sleep(1000)
 
                 } catch (e: InterruptedException) { e.printStackTrace() }
@@ -143,50 +147,43 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun loadKoinTransaction(koinName: String?, countTransaction: Int): String {
+    private fun transactionCoinResponse(coinName: String, transactionCount: Int) {
+        val mTransactionCoin = RetrofitRepo.getTransactionSingleton(coinName, transactionCount)
 
-        val koinTransactionUrl = StringBuilder(Constants.IKoinApiUri)
+        mTransactionCoin.enqueue(object: Callback<TransactionRoot>{
+            override fun onResponse(
+                call: Call<TransactionRoot>,
+                response: Response<TransactionRoot>
+            ) {
 
-        koinTransactionUrl.append("transaction_history/")
-        koinTransactionUrl.append(koinName)
-        koinTransactionUrl.append("_")
-        koinTransactionUrl.append("KRW")
-        koinTransactionUrl.append("?count=${countTransaction}")
+                mTransactionCoinData = response.body()
 
-        return koinTransactionUrl.toString()
-    }
+                for (i: Int in 0 until transactionCount-1) {
 
-    private fun koinTransactionCall(koinName: String?, countTransaction: Int){
+                    val transactionCoinList = TransactionList(
+                        mTransactionCoinData?.data?.get(i)?.transaction_date!!,
+                        mTransactionCoinData?.data?.get(i)?.type!!,
+                        mTransactionCoinData?.data?.get(i)?.units_traded!!,
+                        mTransactionCoinData?.data?.get(i)?.price!!,
+                        mTransactionCoinData?.data?.get(i)?.total!!
+                    )
 
-        koinService.getKoinTransaction(loadKoinTransaction(koinName, countTransaction))
-            .enqueue(object: Callback<TransactionRoot>{
-                override fun onResponse(
-                    call: Call<TransactionRoot>,
-                    response: Response<TransactionRoot>
-                ) {
-
-                    mKoinTransaction = response.body()
-                    for (i: Int in 0 until countTransaction-1){
-
-                        val transactionKoinList = TransactionList(
-                            mKoinTransaction?.data?.get(i)?.transaction_date!!,
-                            mKoinTransaction?.data?.get(i)?.type!!,
-                            mKoinTransaction?.data?.get(i)?.units_traded!!,
-                            mKoinTransaction?.data?.get(i)?.price!!,
-                            mKoinTransaction?.data?.get(i)?.total!!
-                        )
-
-                        liveTimeViewModel.updateKoinTransaction(transactionKoinList)
-                    }
-
+                    liveTimeViewModel.updateKoinTransaction(transactionCoinList)
                 }
 
-                override fun onFailure(call: Call<TransactionRoot>, t: Throwable) {
-                    Toast.makeText(applicationContext, "${t.message}", Toast.LENGTH_SHORT)
-                        .show()
-                }
+            }
 
-            })
+            override fun onFailure(call: Call<TransactionRoot>, t: Throwable) {
+
+                Toast.makeText(
+                    applicationContext,
+                    "${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+        })
+
     }
 
 }
