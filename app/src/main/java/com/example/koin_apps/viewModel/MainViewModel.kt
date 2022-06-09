@@ -10,9 +10,7 @@ class MainViewModel: ViewModel() {
     val tickerLiveData: LiveData<Map<String, Any?>?>
         get() = _tickerLiveData
 
-    init {
-        _tickerLiveData.value = null
-    }
+    init { _tickerLiveData.value = null }
 
     override fun onCleared() {
         super.onCleared()

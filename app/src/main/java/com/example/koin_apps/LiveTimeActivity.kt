@@ -3,7 +3,6 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +31,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
+
         koinService = Common.KoinApiService_public
         liveTimeViewModel = ViewModelProvider(this)[LiveTimeViewModel::class.java]
 
@@ -47,7 +47,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             try { liveTimeBinding.countTransaction.text.toString().toInt() }
             catch (e: NumberFormatException){ 0 }
 
-        setTransactionThread(koinName, countTransaction)
+        // setTransactionThread(koinName, countTransaction)
 
         liveTimeViewModel.transactionLiveData.observe(
             this,
@@ -78,8 +78,14 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
             })
 
+        liveTimeBinding.BtnTransaction.isChecked = false
         liveTimeBinding.getBackBtn.setOnClickListener(this)
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        interruptThread()
     }
 
     override fun onStop() {
@@ -89,8 +95,9 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        liveTimeBinding.countTransaction.text?.clear()
+
         interruptThread()
+        liveTimeBinding.countTransaction.text?.clear()
     }
 
     override fun onClick(v: View?) {
@@ -98,6 +105,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         when(v?.id) {
             R.id.getBackBtn ->
                 startActivity(Intent(this, MainActivity::class.java))
+
 
         }
 
@@ -107,23 +115,20 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         koinName: String?,
         countTransaction: Int
     ):Thread() {
-        private val coinName = koinName
-        private val transactionNumber = countTransaction
-        var isRunning: Boolean = true
+        private val coinName: String =
+            if (koinName.isNullOrEmpty()) {
+                null.toString()
+            } else { koinName }
 
+        private val transactionNumber: Int = countTransaction
+        var isRunning: Boolean = false
 
         override fun run() {
+            while (isRunning) {
 
-            while (isRunning){
+                try {
 
-                try{
-
-                    Log.d("Thread", "TransactionThread() is Running")
-
-                    if (coinName != null) {
-                        transactionCoinResponse(coinName, transactionNumber)
-                    }
-
+                    transactionCoinResponse(coinName, transactionNumber)
                     sleep(1000)
 
                 } catch (e: InterruptedException) { e.printStackTrace() }
@@ -131,10 +136,21 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         }
+
     }
 
     private fun setTransactionThread(koinName: String?, countTransaction: Int) {
-        transactionThread = TransactionThread(koinName, countTransaction).apply { this.start() }
+        if (!TransactionThread(koinName, countTransaction).isRunning){
+
+            interruptThread()
+        } else {
+
+            transactionThread =
+                TransactionThread(koinName, countTransaction)
+                    .apply { this.start() }
+
+        }
+
     }
 
     private fun interruptThread() {
@@ -144,7 +160,9 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
             if(!this.isInterrupted)
                 this.interrupt()
+
         }
+
     }
 
     private fun transactionCoinResponse(coinName: String, transactionCount: Int) {

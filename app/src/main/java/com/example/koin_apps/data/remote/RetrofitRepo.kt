@@ -10,7 +10,7 @@ object RetrofitRepo {
     fun getTickerSingleton(path: String): Call<TickerRoot> {
 
         return RetrofitClient
-            .getClient(Constants.IKoinApiUri)
+            .getClient(Constants.IKoinPublicApiUri)
             .create(IKoinApiService::class.java)
             .getTicker(path)
 
@@ -22,7 +22,7 @@ object RetrofitRepo {
     ): Call<TransactionRoot> {
 
         return RetrofitClient
-            .getClient(Constants.IKoinApiUri)
+            .getClient(Constants.IKoinPublicApiUri)
             .create(IKoinApiService::class.java)
             .getTransactionHistory(path, count)
 

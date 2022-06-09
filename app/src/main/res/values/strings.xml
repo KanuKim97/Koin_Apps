@@ -3,9 +3,8 @@
 
     <!--Live Time Activity String Value -->
     <string name="cnt_TransactionInput">Transaction Number</string>
-    <string name="btn_Transaction">Transaction</string>
+    <string name="btn_Transaction">Get Transaction</string>
     <string name="btn_GoHome">Go Back</string>
-    <string name="btn_GoTraded">Go Trade</string>
     <string name="transaction_Not_Founded">Transaction is Not Founded</string>
 
     <string name="transaction_Format">

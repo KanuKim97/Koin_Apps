@@ -9,17 +9,13 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
-import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitRepo
-import com.example.koin_apps.data.remote.model.ticker.TickerList
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
-import kotlinx.coroutines.channels.ticker
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mainActivityBinding: ActivityMainBinding

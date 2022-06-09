@@ -12,9 +12,7 @@ class LiveTimeViewModel: ViewModel() {
     val transactionLiveData: LiveData<List<TransactionList>?>
         get() = _transactionLiveData
 
-    init {
-        _transactionLiveData.value = null
-    }
+    init { _transactionLiveData.value = null }
 
     override fun onCleared() {
         super.onCleared()
@@ -24,6 +22,7 @@ class LiveTimeViewModel: ViewModel() {
     fun updateKoinTransaction(
         inputTransaction: TransactionList
     ){
+
         _koinTransactionArray.add(inputTransaction)
         _transactionLiveData.value = _koinTransactionArray
 
