@@ -8,7 +8,8 @@
   
 ## APIs
  ### Bithumb API (Public)
-
+  - ticker API
+  - Transacton API 
  ### Bithumb API (Private)
  
 ## Sdk Build Version 
@@ -44,4 +45,8 @@
   
   Android Dev Document - lifecycle
   https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ko
+  
+  Bithumb API Docs 
+  https://apidocs.bithumb.com/
+  
 ```
