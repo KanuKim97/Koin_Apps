@@ -42,13 +42,14 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
+        /*
         val koinName = intent.getStringExtra("KoinName")
         val countTransaction: Int =
             try { liveTimeBinding.countTransaction.text.toString().toInt() }
             catch (e: NumberFormatException){ 0 }
 
-        // setTransactionThread(koinName, countTransaction)
-
+        setTransactionThread(koinName, countTransaction)
+*/
         liveTimeViewModel.transactionLiveData.observe(
             this,
             {
@@ -95,17 +96,23 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-
         interruptThread()
         liveTimeBinding.countTransaction.text?.clear()
     }
 
     override fun onClick(v: View?) {
+        val toggleValue: Boolean = liveTimeBinding.BtnTransaction.isChecked
+        val koinName = intent.getStringExtra("KoinName")
+        val countTransaction: Int =
+            try { liveTimeBinding.countTransaction.text.toString().toInt() }
+            catch (e: NumberFormatException){ 0 }
 
         when(v?.id) {
             R.id.getBackBtn ->
                 startActivity(Intent(this, MainActivity::class.java))
-
+            R.id.Btn_Transaction ->
+                if(toggleValue) { setTransactionThread(koinName, countTransaction) }
+                else { interruptThread() }
 
         }
 
@@ -116,9 +123,8 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         countTransaction: Int
     ):Thread() {
         private val coinName: String =
-            if (koinName.isNullOrEmpty()) {
-                null.toString()
-            } else { koinName }
+            if (koinName.isNullOrEmpty()) { null.toString() }
+            else { koinName }
 
         private val transactionNumber: Int = countTransaction
         var isRunning: Boolean = false
@@ -140,14 +146,13 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setTransactionThread(koinName: String?, countTransaction: Int) {
-        if (!TransactionThread(koinName, countTransaction).isRunning){
+        if (!TransactionThread(koinName, countTransaction).isRunning) {
 
             interruptThread()
         } else {
 
             transactionThread =
-                TransactionThread(koinName, countTransaction)
-                    .apply { this.start() }
+                TransactionThread(koinName, countTransaction).apply { this.start() }
 
         }
 
