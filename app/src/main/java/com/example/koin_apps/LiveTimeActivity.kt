@@ -109,6 +109,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         Log.d("cntTransaction",cntTransaction.toString())
 
         when(v?.id) {
+
             R.id.getBackBtn ->
                 startActivity(Intent(this, MainActivity::class.java))
             R.id.Btn_Transaction ->

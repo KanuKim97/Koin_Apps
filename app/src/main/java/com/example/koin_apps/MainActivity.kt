@@ -67,20 +67,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    override fun onRestart() {
-        super.onRestart()
-
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-
-    }
 
     override fun onDestroy() {
         super.onDestroy()
-
         mainActivityBinding.KoinInput.text?.clear()
     }
 
@@ -160,8 +149,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     tickerKoinMap["minTickerPrice"] = mTickerData?.data?.min_price
                     tickerKoinMap["maxTickerPrice"] = mTickerData?.data?.max_price
                     tickerKoinMap["TradeTickerUnits"] = mTickerData?.data?.units_traded
-
-                    Log.d("Value", "$tickerKoinMap")
 
                     mainViewModel.updateKoinTicker(tickerKoinMap)
 
