@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Koin_Apps">
         <activity
+            android:name=".OrderBookActivity"
+            android:exported="false" />
+        <activity
             android:name=".TradeActivity"
             android:exported="false" />
         <activity
