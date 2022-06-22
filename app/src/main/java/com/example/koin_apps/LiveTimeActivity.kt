@@ -52,25 +52,24 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
         liveTimeViewModel.transactionLiveData.observe(
             this,
-            {
-                val transactionResult = it
+            { transactionResult ->
 
                 if(transactionResult == null){
                     liveTimeBinding.TransactionView.text =
                         getString(R.string.transaction_Not_Founded)
                 } else {
 
-                    val transactionSize = (it.size)-1
+                    val transactionSize = (transactionResult.size)-1
 
                     for(i in 0 until transactionSize) {
                         liveTimeBinding.TransactionView.text =
                             getString(
                                 R.string.transaction_Format,
-                                it[i].transactionType,
-                                it[i].transactionDate,
-                                it[i].transaction_Price,
-                                it[i].units_Transaction_Traded,
-                                it[i].transaction_Total
+                                transactionResult[i].transactionType,
+                                transactionResult[i].transactionDate,
+                                transactionResult[i].transaction_Price,
+                                transactionResult[i].units_Transaction_Traded,
+                                transactionResult[i].transaction_Total
                             )
 
                     }

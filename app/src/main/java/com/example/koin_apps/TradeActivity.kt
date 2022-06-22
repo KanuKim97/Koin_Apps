@@ -47,8 +47,7 @@ class TradeActivity : AppCompatActivity() {
 
         tradeViewModel.tradeLiveData.observe(
             this,
-            {
-                val tradeMap = it
+            { tradeMap ->
 
                 tradeActivityBinding.showTradedUnits.text =
                     getString(

@@ -39,8 +39,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         mainViewModel.tickerLiveData.observe(
             this,
-            {
-                val tickerMap = it
+            { tickerMap ->
 
                 if(tickerMap?.size != 0) {
 

@@ -2,6 +2,7 @@ package com.example.koin_apps
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
@@ -34,7 +35,26 @@ class OrderBookActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        orderBookResponse("BTC", 3)
+
+        orderBookViewModel.orderBookLiveData?.observe(
+            this,
+            { orderBookData ->
+
+                if(orderBookData?.data == null) {
+
+                    Toast.makeText(
+                        applicationContext,
+                        "OrderBook Data is Empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else { Log.d("order Book Data", "${orderBookData.data}") }
+
+            })
+
     }
+
 
     private fun orderBookResponse(
         coinName: String,
