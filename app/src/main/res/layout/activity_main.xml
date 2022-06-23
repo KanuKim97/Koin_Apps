@@ -65,6 +65,16 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
+            android:id="@+id/OrderBookBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius_button"
+            android:text="@string/btn_OrderBook"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <Button
             android:id="@+id/nextPageBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

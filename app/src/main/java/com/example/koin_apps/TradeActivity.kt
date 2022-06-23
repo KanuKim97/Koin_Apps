@@ -41,8 +41,15 @@ class TradeActivity : AppCompatActivity() {
         val tradeKoinName = intent.getStringExtra("KoinName")
         if (tradeKoinName != null) { setThread(tradeKoinName) }
         else {
-            Toast.makeText(applicationContext,"Koin Name is Empty", Toast.LENGTH_SHORT).show()
+
+            Toast.makeText(
+                applicationContext,
+                R.string.Empty_Coin_TxtBox,
+                Toast.LENGTH_SHORT
+            ).show()
+
             startActivity(Intent(this, MainActivity::class.java))
+
         }
 
         tradeViewModel.tradeLiveData.observe(

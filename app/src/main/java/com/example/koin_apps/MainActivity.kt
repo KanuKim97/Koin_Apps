@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)
         mainActivityBinding.nextPageBtn.setOnClickListener(this)
         mainActivityBinding.tradePageBtn.setOnClickListener(this)
+        mainActivityBinding.OrderBookBtn.setOnClickListener(this)
 
     }
 
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                         Toast.makeText(
                             applicationContext,
-                            "InputKoinPlz",
+                            R.string.Empty_Coin_TxtBox,
                             Toast.LENGTH_SHORT
                         ).show()
 
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                         Toast.makeText(
                             applicationContext,
-                            "InputKoinPlz",
+                            R.string.Empty_Coin_TxtBox,
                             Toast.LENGTH_SHORT
                         ).show()
 
@@ -116,6 +117,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                 }
+
+            R.id.OrderBookBtn ->
+                startActivity(Intent(this, OrderBookActivity::class.java))
 
         }
     }

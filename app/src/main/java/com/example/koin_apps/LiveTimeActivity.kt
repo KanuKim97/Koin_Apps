@@ -3,9 +3,10 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
@@ -104,8 +105,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             try { liveTimeBinding.countTransaction.text.toString().toInt() }
             catch (e:NumberFormatException) { 0 }
 
-        Log.d("CoinName", koinName)
-        Log.d("cntTransaction",cntTransaction.toString())
 
         when(v?.id) {
 
@@ -187,17 +186,21 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
                 mTransactionCoinData = response.body()
 
-                for (i: Int in 0 until transactionCount-1) {
+                if(mTransactionCoinData?.status == "0000") {
 
-                    val transactionCoinList = TransactionList(
-                        mTransactionCoinData?.data?.get(i)?.transaction_date!!,
-                        mTransactionCoinData?.data?.get(i)?.type!!,
-                        mTransactionCoinData?.data?.get(i)?.units_traded!!,
-                        mTransactionCoinData?.data?.get(i)?.price!!,
-                        mTransactionCoinData?.data?.get(i)?.total!!
-                    )
+                    for (i: Int in 0 until transactionCount-1) {
 
-                    liveTimeViewModel.updateKoinTransaction(transactionCoinList)
+                        val transactionCoinList = TransactionList(
+                            mTransactionCoinData?.data?.get(i)?.transaction_date!!,
+                            mTransactionCoinData?.data?.get(i)?.type!!,
+                            mTransactionCoinData?.data?.get(i)?.units_traded!!,
+                            mTransactionCoinData?.data?.get(i)?.price!!,
+                            mTransactionCoinData?.data?.get(i)?.total!!
+                        )
+
+                        liveTimeViewModel.updateKoinTransaction(transactionCoinList)
+                    }
+
                 }
 
             }

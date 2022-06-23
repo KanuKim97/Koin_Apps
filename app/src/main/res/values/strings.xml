@@ -20,6 +20,7 @@
     <string name="koin_Input">Koin Name</string>
     <string name="btn_liveTimeActivity">LiveTime</string>
     <string name="btn_TradeActivity">TradeLiveTime</string>
+    <string name="btn_OrderBook">Order Book</string>
     <string name="btn_Search">Search!</string>
 
     <string name="Ticker_Format">
@@ -40,8 +41,14 @@
     </string>
 
     <!--Common String Value-->
+
     <string name="API_DATA_Not_Founded">
         Coin Data is Empty Plz reload Activity
+    </string>
+
+    <string name="Empty_Coin_TxtBox">
+        Coin Title is Empty \n
+        Plz Enter Coin Title
     </string>
 
 </resources>

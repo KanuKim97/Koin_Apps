@@ -20,7 +20,7 @@ class OrderBookActivity : AppCompatActivity() {
     private lateinit var orderBookViewModel: OrderBookViewModel
     private lateinit var koinService: IKoinApiService
 
-    lateinit var mOrderBookData: OrderRoot
+    var mOrderBookData: OrderRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +34,12 @@ class OrderBookActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("onResume", "Activity lifeCycle onResume is Called")
 
-        orderBookResponse("BTC", 3)
+        val coinName: String = "BTC"
+        val count: Int = 5
+
+        orderBookResponse(coinName, count)
 
         orderBookViewModel.orderBookLiveData?.observe(
             this,
@@ -63,40 +67,23 @@ class OrderBookActivity : AppCompatActivity() {
 
         val mOrderBook = RetrofitRepo.getOrderBookSingleton(coinName, count)
 
-        mOrderBook.enqueue(object: Callback<OrderRoot>{
+        Log.d("function Called", "orderBook Response is Called")
 
+        mOrderBook.enqueue(object: Callback<OrderRoot>{
             override fun onResponse(
                 call: Call<OrderRoot>,
                 response: Response<OrderRoot>
             ) {
 
-                mOrderBookData = response.body()!!
-
-                if(mOrderBookData.status != "0000") {
-
-                    Toast.makeText(
-                        applicationContext,
-                        R.string.API_DATA_Not_Founded,
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                } else { orderBookViewModel.updateOrderBook(mOrderBookData) }
+                if(response.isSuccessful) {
+                    Log.d("response", "response is Successful")
+                } else {
+                    Log.d("response", "response is Failed")
+                }
 
             }
 
-            override fun onFailure(
-                call: Call<OrderRoot>,
-                t: Throwable
-            ) {
-
-                Toast.makeText(
-                    applicationContext,
-                    "${t.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            }
-
+            override fun onFailure(call: Call<OrderRoot>, t: Throwable) { }
         })
 
     }
