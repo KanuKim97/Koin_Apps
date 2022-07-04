@@ -22,6 +22,7 @@
     <string name="btn_TradeActivity">TradeLiveTime</string>
     <string name="btn_OrderBook">Order Book</string>
     <string name="btn_Search">Search!</string>
+    <string name="txt_EmptyTickerData">TickerData is Empty</string>
 
     <string name="Ticker_Format">
         Opening Price: %s \n

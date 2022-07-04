@@ -138,6 +138,7 @@ class TradeActivity : AppCompatActivity() {
                     interruptThread()
 
                 } else {
+
                     val mTradeData = mutableMapOf<String, Any?>()
 
                     mTradeData["TradeValue"] = mTradeCoinData?.data?.acc_trade_value_24H
@@ -145,6 +146,7 @@ class TradeActivity : AppCompatActivity() {
                     mTradeData["Fluctated_24H"] = mTradeCoinData?.data?.fluctate_rate_24H
 
                     tradeViewModel.updateKoinTrade(mTradeData)
+
                 }
 
             }

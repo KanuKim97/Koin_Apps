@@ -3,6 +3,7 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -182,24 +183,41 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                 response: Response<TransactionRoot>
             ) {
 
-                mTransactionCoinData = response.body()
+                if(response.isSuccessful) {
 
-                if(mTransactionCoinData?.status == "0000") {
+                    mTransactionCoinData = response.body()
 
-                    for (i: Int in 0 until transactionCount-1) {
+                    if(mTransactionCoinData?.status == "0000") {
 
-                        val transactionCoinList = TransactionList(
-                            mTransactionCoinData?.data?.get(i)?.transaction_date!!,
-                            mTransactionCoinData?.data?.get(i)?.type!!,
-                            mTransactionCoinData?.data?.get(i)?.units_traded!!,
-                            mTransactionCoinData?.data?.get(i)?.price!!,
-                            mTransactionCoinData?.data?.get(i)?.total!!
-                        )
+                        for (i: Int in 0 until transactionCount-1) {
 
-                        liveTimeViewModel.updateKoinTransaction(transactionCoinList)
+                            val transactionCoinList = TransactionList(
+                                mTransactionCoinData?.data?.get(i)?.transaction_date!!,
+                                mTransactionCoinData?.data?.get(i)?.type!!,
+                                mTransactionCoinData?.data?.get(i)?.units_traded!!,
+                                mTransactionCoinData?.data?.get(i)?.price!!,
+                                mTransactionCoinData?.data?.get(i)?.total!!
+                            )
+
+                            liveTimeViewModel.updateKoinTransaction(transactionCoinList)
+                        }
+
+                    } else {
+                        //TODO Response Status Exception Handling
+                        Log.d("status: ", mTransactionCoinData?.status.toString())
+                        Log.d("message: ", mTransactionCoinData?.message.toString())
+
                     }
 
                 }
+
+            /*
+                mTransactionCoinData = response.body()
+
+
+
+
+            */
 
             }
 

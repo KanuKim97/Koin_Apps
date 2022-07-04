@@ -12,7 +12,6 @@ import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
-import com.example.koin_apps.data.remote.model.errBody.ErrorBody
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
 import org.json.JSONException
@@ -27,7 +26,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var koinService: IKoinApiService
 
     var mTickerData: TickerRoot? = null
-    var mTickerError: ErrorBody? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +57,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         )
 
                 } else {
-                    Toast.makeText(applicationContext, "TickerDate is Empty", Toast.LENGTH_SHORT)
-                        .show()
+
+                    Toast.makeText(
+                        applicationContext,
+                        R.string.txt_EmptyTickerData,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
                 }
 
             })
@@ -142,30 +145,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     mTickerData = response.body()
 
+                    //TODO response Error Handling
                     if (mTickerData?.status != "0000") {
 
-                        Log.d("Failed", "status Failed")
-                        Toast.makeText(applicationContext, "err", Toast.LENGTH_SHORT).show()
-
-                        val tickerJsonObject: JSONObject
-
-                        try {
-
-                            tickerJsonObject = JSONObject(response.errorBody().toString())
-
-                            val errCode = tickerJsonObject.getString("status")
-                            val errMessage = tickerJsonObject.getString("message")
-
-                            mTickerError = ErrorBody(errCode, errMessage)
-
-                            Log.d("mTickerErr: ", "${mTickerError}")
-
-
-                        } catch (e: JSONException) {
-
-                            Log.d("mTickerErr: ", e.printStackTrace().toString())
-
-                        }
+                        Log.d("Status: ", mTickerData?.status.toString())
+                        Log.d("Message: ", mTickerData?.message.toString())
 
                     } else {
 
@@ -194,7 +178,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 ).show()
 
             }
+
         })
+
     }
 
 }
