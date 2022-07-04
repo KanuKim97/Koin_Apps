@@ -12,8 +12,11 @@ import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
+import com.example.koin_apps.data.remote.model.errBody.ErrorBody
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var koinService: IKoinApiService
 
     var mTickerData: TickerRoot? = null
+    var mTickerError: ErrorBody? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,11 +144,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     if (mTickerData?.status != "0000") {
 
-                        Toast.makeText(
-                            applicationContext,
-                            R.string.API_DATA_Not_Founded,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Log.d("Failed", "status Failed")
+                        Toast.makeText(applicationContext, "err", Toast.LENGTH_SHORT).show()
+
+                        val tickerJsonObject: JSONObject
+
+                        try {
+
+                            tickerJsonObject = JSONObject(response.errorBody().toString())
+
+                            val errCode = tickerJsonObject.getString("status")
+                            val errMessage = tickerJsonObject.getString("message")
+
+                            mTickerError = ErrorBody(errCode, errMessage)
+
+                            Log.d("mTickerErr: ", "${mTickerError}")
+
+
+                        } catch (e: JSONException) {
+
+                            Log.d("mTickerErr: ", e.printStackTrace().toString())
+
+                        }
 
                     } else {
 
