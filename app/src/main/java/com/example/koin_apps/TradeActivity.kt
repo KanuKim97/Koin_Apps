@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.example.koin_apps.common.Common
+import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
@@ -29,7 +29,7 @@ class TradeActivity : AppCompatActivity() {
 
         tradeActivityBinding = ActivityTradeBinding.inflate(layoutInflater)
         tradeViewModel = ViewModelProvider(this)[TradeViewModel::class.java]
-        koinService = Common.KoinApiService_public
+        koinService = RetrofitClient.koinApiService_Public
 
         setContentView(tradeActivityBinding.root)
     }

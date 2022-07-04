@@ -3,10 +3,11 @@ package com.example.koin_apps
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
 import com.example.koin_apps.databinding.ActivityOrderBookBinding
@@ -15,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OrderBookActivity : AppCompatActivity() {
+class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var orderBookBinding: ActivityOrderBookBinding
     private lateinit var orderBookViewModel: OrderBookViewModel
     private lateinit var koinService: IKoinApiService
@@ -27,7 +28,7 @@ class OrderBookActivity : AppCompatActivity() {
 
         orderBookBinding = ActivityOrderBookBinding.inflate(layoutInflater)
         orderBookViewModel = ViewModelProvider(this)[OrderBookViewModel::class.java]
-        koinService = Common.KoinApiService_public
+        koinService = RetrofitClient.koinApiService_Public
 
         setContentView(orderBookBinding.root)
     }
@@ -36,10 +37,7 @@ class OrderBookActivity : AppCompatActivity() {
         super.onResume()
         Log.d("onResume", "Activity lifeCycle onResume is Called")
 
-        val coinName: String = "BTC"
-        val count: Int = 5
-
-        orderBookResponse(coinName, count)
+        orderBookBinding.activeBtn.setOnClickListener(this)
 
         orderBookViewModel.orderBookLiveData?.observe(
             this,
@@ -59,15 +57,20 @@ class OrderBookActivity : AppCompatActivity() {
 
     }
 
+    override fun onClick(v: View?) {
 
-    private fun orderBookResponse(
-        coinName: String,
-        count: Int
-    ){
+        when(v?.id) {
 
-        val mOrderBook = RetrofitRepo.getOrderBookSingleton(coinName, count)
+            R.id.activeBtn ->
+                orderBookResponse()
 
-        Log.d("function Called", "orderBook Response is Called")
+        }
+
+    }
+
+    private fun orderBookResponse() {
+
+        val mOrderBook = RetrofitRepo.getOrderBookSingleton("BTC", 5)
 
         mOrderBook.enqueue(object: Callback<OrderRoot>{
             override fun onResponse(
@@ -76,16 +79,23 @@ class OrderBookActivity : AppCompatActivity() {
             ) {
 
                 if(response.isSuccessful) {
+                    mOrderBookData = response.body()
+
                     Log.d("response", "response is Successful")
+                    Log.d("responseData: ", mOrderBookData.toString())
+
                 } else {
                     Log.d("response", "response is Failed")
                 }
 
             }
 
-            override fun onFailure(call: Call<OrderRoot>, t: Throwable) { }
+            override fun onFailure(call: Call<OrderRoot>, t: Throwable) {
+                Log.d("Error", t.message.toString())
+            }
         })
 
     }
+
 
 }

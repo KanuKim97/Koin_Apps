@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.lifecycle.ViewModelProvider
-import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
@@ -39,7 +37,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
 
-        koinService = Common.KoinApiService_public
+        koinService = RetrofitClient.koinApiService_Public
         liveTimeViewModel = ViewModelProvider(this)[LiveTimeViewModel::class.java]
 
         koinName = intent.getStringExtra("KoinName").toString()

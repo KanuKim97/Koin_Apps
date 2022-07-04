@@ -4,8 +4,14 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import com.example.koin_apps.common.Constants.IKoinPublicApiUri
 
 object RetrofitClient {
+
+    val koinApiService_Public: IKoinApiService
+        get() = getClient(IKoinPublicApiUri)
+            .create(IKoinApiService::class.java)
+
     private var retrofit: Retrofit? = null
 
     fun getClient(baseUrl: String) : Retrofit {
@@ -26,4 +32,5 @@ object RetrofitClient {
         return retrofit!!
 
     }
+
 }

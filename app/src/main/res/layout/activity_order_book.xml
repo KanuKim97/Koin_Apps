@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".OrderBookActivity">
 
+    <Button
+        android:id="@+id/activeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/showOrderBook"
         android:layout_width="match_parent"

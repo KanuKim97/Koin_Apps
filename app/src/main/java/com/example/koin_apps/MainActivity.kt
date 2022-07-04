@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
+import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        koinService = Common.KoinApiService_public
+        koinService = RetrofitClient.koinApiService_Public
 
         setContentView(mainActivityBinding.root)
     }
@@ -133,27 +134,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 response: Response<TickerRoot>
             ) {
 
-                mTickerData = response.body()
+                if(response.isSuccessful){
 
-                if(mTickerData == null || (mTickerData?.status != "0000")) {
+                    mTickerData = response.body()
 
-                    Toast.makeText(
-                        applicationContext,
-                        R.string.API_DATA_Not_Founded,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if (mTickerData?.status != "0000") {
 
-                } else {
+                        Toast.makeText(
+                            applicationContext,
+                            R.string.API_DATA_Not_Founded,
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                    val tickerKoinMap = mutableMapOf<String, Any?>()
+                    } else {
 
-                    tickerKoinMap["OpeningPrice"] = mTickerData?.data?.opening_price
-                    tickerKoinMap["ClosingPrice"] = mTickerData?.data?.closing_price
-                    tickerKoinMap["minTickerPrice"] = mTickerData?.data?.min_price
-                    tickerKoinMap["maxTickerPrice"] = mTickerData?.data?.max_price
-                    tickerKoinMap["TradeTickerUnits"] = mTickerData?.data?.units_traded
+                        val tickerKoinMap = mutableMapOf<String, Any?>()
 
-                    mainViewModel.updateKoinTicker(tickerKoinMap)
+                        tickerKoinMap["OpeningPrice"] = mTickerData?.data?.opening_price
+                        tickerKoinMap["ClosingPrice"] = mTickerData?.data?.closing_price
+                        tickerKoinMap["minTickerPrice"] = mTickerData?.data?.min_price
+                        tickerKoinMap["maxTickerPrice"] = mTickerData?.data?.max_price
+                        tickerKoinMap["TradeTickerUnits"] = mTickerData?.data?.units_traded
+
+                        mainViewModel.updateKoinTicker(tickerKoinMap)
+
+                    }
 
                 }
 
