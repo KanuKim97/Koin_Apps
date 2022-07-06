@@ -3,6 +3,7 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.remote.RetrofitClient
@@ -125,27 +126,29 @@ class TradeActivity : AppCompatActivity() {
                 call: Call<TickerRoot>,
                 response: Response<TickerRoot>
             ) {
-                mTradeCoinData = response.body()
 
-                if (mTradeCoinData == null || (mTradeCoinData?.status != "0000")) {
+                if(response.isSuccessful) {
 
-                    Toast.makeText(
-                        applicationContext,
-                        R.string.API_DATA_Not_Founded,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    mTradeCoinData = response.body()
 
-                    interruptThread()
+                    if (mTradeCoinData?.status != "0000") {
 
-                } else {
+                        Log.d("Status: ", mTradeCoinData?.status.toString())
+                        Log.d("Message: ", mTradeCoinData?.message.toString())
 
-                    val mTradeData = mutableMapOf<String, Any?>()
+                        interruptThread()
 
-                    mTradeData["TradeValue"] = mTradeCoinData?.data?.acc_trade_value_24H
-                    mTradeData["Prev_Closing_Price"] = mTradeCoinData?.data?.prev_closing_price
-                    mTradeData["Fluctated_24H"] = mTradeCoinData?.data?.fluctate_rate_24H
+                    } else {
 
-                    tradeViewModel.updateKoinTrade(mTradeData)
+                        val mTradeData = mutableMapOf<String, Any?>()
+
+                        mTradeData["TradeValue"] = mTradeCoinData?.data?.acc_trade_value_24H
+                        mTradeData["Prev_Closing_Price"] = mTradeCoinData?.data?.prev_closing_price
+                        mTradeData["Fluctated_24H"] = mTradeCoinData?.data?.fluctate_rate_24H
+
+                        tradeViewModel.updateKoinTrade(mTradeData)
+
+                    }
 
                 }
 
