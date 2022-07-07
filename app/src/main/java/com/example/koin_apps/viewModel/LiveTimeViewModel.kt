@@ -22,9 +22,9 @@ class LiveTimeViewModel: ViewModel() {
     fun updateKoinTransaction(
         inputTransaction: TransactionList
     ){
-
         _koinTransactionArray.add(inputTransaction)
         _transactionLiveData.value = _koinTransactionArray
-
     }
+
+
 }

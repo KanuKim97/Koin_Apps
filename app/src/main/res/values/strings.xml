@@ -52,4 +52,12 @@
         Plz Enter Coin Title
     </string>
 
+    <string name="Error_400">
+        %s Error plz reload Application
+    </string>
+
+    <string name="Error_Body">
+
+    </string>
+
 </resources>

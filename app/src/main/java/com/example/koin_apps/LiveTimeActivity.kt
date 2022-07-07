@@ -3,17 +3,19 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
+import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
 import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.LiveTimeViewModel
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,9 +40,8 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
 
-        koinService = RetrofitClient.koinApiService_Public
         liveTimeViewModel = ViewModelProvider(this)[LiveTimeViewModel::class.java]
-
+        koinService = RetrofitClient.koinApiService_Public
         koinName = intent.getStringExtra("KoinName").toString()
 
         setContentView(liveTimeBinding.root)
@@ -130,6 +131,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         koinName: String?,
         countTransaction: Int
     ):Thread() {
+
         private val coinName: String =
             if (koinName.isNullOrEmpty()) { null.toString() }
             else { koinName }
@@ -175,6 +177,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun transactionCoinResponse(coinName: String, transactionCount: Int) {
+
         val mTransactionCoin = RetrofitRepo.getTransactionSingleton(coinName, transactionCount)
 
         mTransactionCoin.enqueue(object: Callback<TransactionRoot>{
@@ -183,13 +186,13 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                 response: Response<TransactionRoot>
             ) {
 
-                if(response.isSuccessful) {
+                when(response.code()) {
 
-                    mTransactionCoinData = response.body()
+                    200 -> {
 
-                    if(mTransactionCoinData?.status == "0000") {
+                        mTransactionCoinData = response.body()
 
-                        for (i: Int in 0 until transactionCount-1) {
+                        for(i: Int in  0 until transactionCount-1) {
 
                             val transactionCoinList = TransactionList(
                                 mTransactionCoinData?.data?.get(i)?.transaction_date!!,
@@ -202,22 +205,32 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                             liveTimeViewModel.updateKoinTransaction(transactionCoinList)
                         }
 
-                    } else {
-                        //TODO Response Status Exception Handling
-                        Log.d("status: ", mTransactionCoinData?.status.toString())
-                        Log.d("message: ", mTransactionCoinData?.message.toString())
+                    }
+
+                    400 -> {
+                        //TODO need to Error Handling
+                        val jsonObject: JSONObject
+                        val requestErrorBody: RequestErrorRoot
+
+                        try {
+
+                            jsonObject = JSONObject(response.errorBody()!!.string())
+                            val responseCode = jsonObject.getString("status")
+                            val responseMsg = jsonObject.getString("message")
+
+                            requestErrorBody = RequestErrorRoot(responseCode, responseMsg)
+
+                            println(requestErrorBody)
+
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                        }
 
                     }
 
                 }
 
-            /*
-                mTransactionCoinData = response.body()
 
-
-
-
-            */
 
             }
 

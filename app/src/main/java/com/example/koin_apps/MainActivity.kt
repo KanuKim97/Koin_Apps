@@ -12,6 +12,7 @@ import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
+import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
 import org.json.JSONException
@@ -44,25 +45,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             this,
             { tickerMap ->
 
-                if(tickerMap?.size != 0) {
+                if(tickerMap?.get("Status") == "0000") {
 
                     mainActivityBinding.openPrice.text =
                         getString(
                             R.string.Ticker_Format,
-                            tickerMap?.get("OpeningPrice"),
-                            tickerMap?.get("ClosingPrice"),
-                            tickerMap?.get("minTickerPrice"),
-                            tickerMap?.get("maxTickerPrice"),
-                            tickerMap?.get("TradeTickerUnits")
+                            tickerMap.get("OpeningPrice"),
+                            tickerMap.get("ClosingPrice"),
+                            tickerMap.get("minTickerPrice"),
+                            tickerMap.get("maxTickerPrice"),
+                            tickerMap.get("TradeTickerUnits")
                         )
 
                 } else {
 
-                    Toast.makeText(
-                        applicationContext,
-                        R.string.txt_EmptyTickerData,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    mainActivityBinding.openPrice.text =
+                        tickerMap?.get("Message").toString()
 
                 }
 
@@ -103,6 +101,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                         it.putExtra("KoinName", coinTicker)
                         startActivity(it)
+
                     }
 
                 }
@@ -122,6 +121,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                         it.putExtra("KoinName", coinTicker)
                         startActivity(it)
+
                     }
 
                 }
@@ -133,6 +133,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun tickerSearchCall(coinName: String){
+
         val mSearchTicker = RetrofitRepo.getTickerSingleton(coinName)
 
         mSearchTicker.enqueue(object: Callback<TickerRoot>{
@@ -141,20 +142,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 response: Response<TickerRoot>
             ) {
 
-                if(response.isSuccessful){
+                when(response.code()) {
 
-                    mTickerData = response.body()
-
-                    //TODO response Error Handling
-                    if (mTickerData?.status != "0000") {
-
-                        Log.d("Status: ", mTickerData?.status.toString())
-                        Log.d("Message: ", mTickerData?.message.toString())
-
-                    } else {
+                    200 -> {
 
                         val tickerKoinMap = mutableMapOf<String, Any?>()
 
+                        mTickerData = response.body()
+
+                        tickerKoinMap["Status"] = mTickerData?.status
                         tickerKoinMap["OpeningPrice"] = mTickerData?.data?.opening_price
                         tickerKoinMap["ClosingPrice"] = mTickerData?.data?.closing_price
                         tickerKoinMap["minTickerPrice"] = mTickerData?.data?.min_price
@@ -162,6 +158,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         tickerKoinMap["TradeTickerUnits"] = mTickerData?.data?.units_traded
 
                         mainViewModel.updateKoinTicker(tickerKoinMap)
+
+                    }
+
+                    400 -> {
+
+                        val jsonObject: JSONObject
+                        val errorTickerBody = mutableMapOf<String, Any?>()
+
+                        try {
+
+                            jsonObject = JSONObject(response.errorBody()!!.string())
+                            val responseCode = jsonObject.getString("status")
+                            val responseMsg = jsonObject.getString("message")
+
+                            errorTickerBody["Status"] = responseCode
+                            errorTickerBody["Message"] = responseMsg
+
+                            mainViewModel.updateKoinTicker(errorTickerBody)
+
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                        }
 
                     }
 

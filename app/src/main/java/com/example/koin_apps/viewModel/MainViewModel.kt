@@ -21,6 +21,6 @@ class MainViewModel: ViewModel() {
         input: MutableMap<String, Any?>
     ){
         _tickerLiveData.value = input
-
     }
+
 }
