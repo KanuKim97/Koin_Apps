@@ -169,6 +169,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         try {
 
                             jsonObject = JSONObject(response.errorBody()!!.string())
+
                             val responseCode = jsonObject.getString("status")
                             val responseMsg = jsonObject.getString("message")
 

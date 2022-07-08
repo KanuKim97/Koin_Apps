@@ -10,8 +10,11 @@ import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
+import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
 import com.example.koin_apps.databinding.ActivityOrderBookBinding
 import com.example.koin_apps.viewModel.OrderBookViewModel
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -76,24 +79,39 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
                 response: Response<OrderRoot>
             ) {
 
-                if(response.isSuccessful) {
-                    mOrderBookData = response.body()
+                when(response.code()) {
 
-                    //Log Test
-                    //TODO Response Data Exception Handling
-                    Log.d("response", "response is Successful")
-                    Log.d("responseCode", response.code().toString())
-                    Log.d("responseStatus: ", mOrderBookData?.status.toString())
-                    Log.d("responseData: ", mOrderBookData?.data.toString())
-                    Log.d("responseMessage: ", mOrderBookData?.message.toString())
+                    200 -> {
 
-                    if(mOrderBookData!!.status != "0000") {
+                        mOrderBookData = response.body()
 
-                        Toast.makeText(
-                            applicationContext,
-                            mOrderBookData?.message.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        //Log Test
+                        Log.d("response", "response is Successful")
+                        Log.d("responseCode", response.code().toString())
+                        Log.d("responseStatus: ", mOrderBookData?.status.toString())
+                        Log.d("responseData: ", mOrderBookData?.data.toString())
+                        Log.d("responseMessage: ", mOrderBookData?.message.toString())
+
+                    }
+
+                    400 -> {
+
+                        val jsonObject: JSONObject
+
+                        try {
+
+                            jsonObject = JSONObject(response.errorBody()!!.string())
+
+                            val responseCode = jsonObject.getString("status")
+                            val responseMsg = jsonObject.getString("message")
+                            val orderBookErr = RequestErrorRoot(responseCode, responseMsg)
+
+                            //TODO OrderBook Error Handling
+                            println(orderBookErr)
+
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                        }
 
                     }
 
@@ -104,6 +122,7 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
             override fun onFailure(call: Call<OrderRoot>, t: Throwable) {
                 Log.d("Error", t.message.toString())
             }
+
         })
 
     }

@@ -3,7 +3,6 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.remote.RetrofitClient
@@ -12,6 +11,8 @@ import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityTradeBinding
 import com.example.koin_apps.viewModel.TradeViewModel
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -126,7 +127,7 @@ class TradeActivity : AppCompatActivity() {
                 call: Call<TickerRoot>,
                 response: Response<TickerRoot>
             ) {
-
+            /*
                 if(response.isSuccessful) {
 
                     mTradeCoinData = response.body()
@@ -138,15 +139,48 @@ class TradeActivity : AppCompatActivity() {
 
                         interruptThread()
 
-                    } else {
+                    }
+
+                }
+            */
+
+                when(response.code()) {
+
+                    200 -> {
+
+                        mTradeCoinData = response.body()
 
                         val mTradeData = mutableMapOf<String, Any?>()
 
+                        mTradeData["Status"] = mTradeCoinData?.status
                         mTradeData["TradeValue"] = mTradeCoinData?.data?.acc_trade_value_24H
                         mTradeData["Prev_Closing_Price"] = mTradeCoinData?.data?.prev_closing_price
                         mTradeData["Fluctated_24H"] = mTradeCoinData?.data?.fluctate_rate_24H
 
                         tradeViewModel.updateKoinTrade(mTradeData)
+
+                    }
+
+                    400 -> {
+
+                        val jsonObject: JSONObject
+                        val mTradeErrorBody = mutableMapOf<String, Any?>()
+
+                        try {
+
+                            jsonObject = JSONObject(response.errorBody()!!.string())
+
+                            val responseCode = jsonObject.getString("status")
+                            val responseMsg = jsonObject.getString("message")
+
+                            mTradeErrorBody["Status"] = responseCode
+                            mTradeErrorBody["Message"] = responseMsg
+
+                            tradeViewModel.updateKoinTrade(mTradeErrorBody)
+
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                        }
 
                     }
 
