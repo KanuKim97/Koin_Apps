@@ -10,6 +10,7 @@
  ### Bithumb API (Public)
   - ticker API
   - Transacton API 
+  - Orderbook API
  ### Bithumb API (Private)
  
 ## Sdk Build Version 
