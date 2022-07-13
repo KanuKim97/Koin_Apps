@@ -73,7 +73,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         mainActivityBinding.KoinInput.text?.clear()

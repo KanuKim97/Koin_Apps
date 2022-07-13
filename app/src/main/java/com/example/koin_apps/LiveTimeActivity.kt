@@ -47,7 +47,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(liveTimeBinding.root)
     }
 
-
     override fun onResume() {
         super.onResume()
 
@@ -82,7 +81,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         liveTimeBinding.BtnTransaction.setOnClickListener(this)
     }
 
-
     override fun onPause() {
         super.onPause()
         interruptThread()
@@ -105,12 +103,13 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             try { liveTimeBinding.countTransaction.text.toString().toInt() }
             catch (e:NumberFormatException) { 0 }
 
-
         when(v?.id) {
 
             R.id.getBackBtn ->
                 startActivity(Intent(this, MainActivity::class.java))
-            R.id.Btn_Transaction ->
+
+            R.id.Btn_Transaction -> {
+
                 if(toggleValue) {
 
                     toggleValue = false
@@ -123,6 +122,8 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
                 }
 
+            }
+
         }
 
     }
@@ -130,7 +131,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     inner class TransactionThread(
         koinName: String?,
         countTransaction: Int
-    ):Thread() {
+    ): Thread() {
 
         private val coinName: String =
             if (koinName.isNullOrEmpty()) { null.toString() }
@@ -140,13 +141,12 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         var isRunning: Boolean = true
 
         override fun run() {
+
             while (isRunning) {
 
                 try {
-
                     transactionCoinResponse(coinName, transactionNumber)
                     sleep(1000)
-
                 } catch (e: InterruptedException) { e.printStackTrace() }
 
             }
@@ -156,6 +156,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setTransactionThread(koinName: String?, countTransaction: Int) {
+
         if (!TransactionThread(koinName, countTransaction).isRunning) {
             interruptThread()
         } else {
@@ -222,7 +223,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                             requestErrorBody = RequestErrorRoot(responseCode, responseMsg)
 
                             println(requestErrorBody)
-
                         } catch (e: JSONException) {
                             e.printStackTrace()
                         }

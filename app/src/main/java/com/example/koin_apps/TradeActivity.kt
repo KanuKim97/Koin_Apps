@@ -127,22 +127,6 @@ class TradeActivity : AppCompatActivity() {
                 call: Call<TickerRoot>,
                 response: Response<TickerRoot>
             ) {
-            /*
-                if(response.isSuccessful) {
-
-                    mTradeCoinData = response.body()
-
-                    if (mTradeCoinData?.status != "0000") {
-
-                        Log.d("Status: ", mTradeCoinData?.status.toString())
-                        Log.d("Message: ", mTradeCoinData?.message.toString())
-
-                        interruptThread()
-
-                    }
-
-                }
-            */
 
                 when(response.code()) {
 

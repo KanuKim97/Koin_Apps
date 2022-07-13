@@ -85,12 +85,8 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
 
                         mOrderBookData = response.body()
 
-                        //Log Test
-                        Log.d("response", "response is Successful")
-                        Log.d("responseCode", response.code().toString())
-                        Log.d("responseStatus: ", mOrderBookData?.status.toString())
-                        Log.d("responseData: ", mOrderBookData?.data.toString())
-                        Log.d("responseMessage: ", mOrderBookData?.message.toString())
+                        orderBookBinding.showOrderBook.text =
+                            mOrderBookData?.data?.timestamp
 
                     }
 
