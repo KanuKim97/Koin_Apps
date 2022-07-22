@@ -11,7 +11,7 @@ class LiveTimeViewModel: ViewModel() {
 
     val transactionLiveData: LiveData<List<TransactionList>?>
         get() = _transactionLiveData
-    
+
     init { _transactionLiveData.value = null }
 
     override fun onCleared() {
