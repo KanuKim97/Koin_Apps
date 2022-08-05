@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Koin_Apps</string>
+    <string name="app_name">Koin!</string>
 
     <!--Live Time Activity String Value -->
     <string name="cnt_TransactionInput">Transaction Number</string>
@@ -56,8 +56,8 @@
         %s Error plz reload Application
     </string>
 
-    <string name="Error_Body">
-
-    </string>
+    <string name="logo">Logo</string>
+    <string name="welcome">Welcome!</string>
+    <string name="select_your_coin">Select Your Coin!</string>
 
 </resources>
