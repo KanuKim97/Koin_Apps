@@ -149,14 +149,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                         mTickerData = response.body()
 
+                        Log.d("TickerData", "${mTickerData?.data}")
+
                         tickerKoinMap["Status"] = mTickerData?.status
+                    /*
                         tickerKoinMap["OpeningPrice"] = mTickerData?.data?.opening_price
                         tickerKoinMap["ClosingPrice"] = mTickerData?.data?.closing_price
                         tickerKoinMap["minTickerPrice"] = mTickerData?.data?.min_price
                         tickerKoinMap["maxTickerPrice"] = mTickerData?.data?.max_price
                         tickerKoinMap["TradeTickerUnits"] = mTickerData?.data?.units_traded
 
+
                         mainViewModel.updateKoinTicker(tickerKoinMap)
+                    */
 
                     }
 

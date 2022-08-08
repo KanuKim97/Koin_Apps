@@ -1,8 +1,10 @@
 package com.example.koin_apps
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
@@ -13,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SelectKoinActivity : AppCompatActivity() {
+class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
 
     var mSelectKoin: TickerRoot? = null
@@ -28,6 +30,7 @@ class SelectKoinActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         selectKoinResponse()
+        selectKoinBinding.compSelectBtn.setOnClickListener(this)
     }
 
     override fun onPause() {
@@ -56,7 +59,15 @@ class SelectKoinActivity : AppCompatActivity() {
                     200 -> {
                         mSelectKoin = response.body()
 
-                        println(mSelectKoin?.data)
+                        //response Result
+                        Log.d("response Status: ", "${mSelectKoin?.status}")
+                        Log.d("response Message: ", "${mSelectKoin?.message}")
+                        Log.d("response Data Keys: ", "${mSelectKoin?.data?.keys}")
+                        Log.d("response Data: ", "${mSelectKoin?.data}")
+                        //---------------
+
+
+
                     }
 
                     400 -> {
@@ -85,6 +96,17 @@ class SelectKoinActivity : AppCompatActivity() {
                 Log.d("Error", t.message.toString())
             }
         })
+    }
+
+    //ToDo select Page to go Main Page
+    override fun onClick(v: View?) {
+        when(v?.id) {
+
+            R.id.compSelectBtn -> {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+
+        }
     }
 
 }

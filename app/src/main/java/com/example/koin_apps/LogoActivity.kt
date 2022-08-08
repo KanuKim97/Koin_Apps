@@ -21,7 +21,7 @@ class LogoActivity : AppCompatActivity() {
         super.onResume()
 
         Handler(Looper.getMainLooper()).postDelayed(
-            { startActivity(Intent(this, MainActivity::class.java)) },
+            { startActivity(Intent(this, SelectKoinActivity::class.java)) },
             5000)
 
     }

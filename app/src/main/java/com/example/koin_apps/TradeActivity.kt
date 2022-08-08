@@ -135,11 +135,12 @@ class TradeActivity : AppCompatActivity() {
                         mTradeCoinData = response.body()
 
                         val mTradeData = mutableMapOf<String, Any?>()
-
+/*
                         mTradeData["Status"] = mTradeCoinData?.status
                         mTradeData["TradeValue"] = mTradeCoinData?.data?.acc_trade_value_24H
                         mTradeData["Prev_Closing_Price"] = mTradeCoinData?.data?.prev_closing_price
                         mTradeData["Fluctated_24H"] = mTradeCoinData?.data?.fluctate_rate_24H
+*/
 
                         tradeViewModel.updateKoinTrade(mTradeData)
 

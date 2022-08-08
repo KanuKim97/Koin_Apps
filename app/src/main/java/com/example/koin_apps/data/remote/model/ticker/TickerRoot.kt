@@ -1,7 +1,7 @@
 package com.example.koin_apps.data.remote.model.ticker
 
-class TickerRoot {
-    lateinit var status: String
-    lateinit var data: TickerData
-    var message: String? = null
-}
+data class TickerRoot(
+    var status: String,
+    var data: Map<String?, TickerData?>,
+    var message: String
+)
