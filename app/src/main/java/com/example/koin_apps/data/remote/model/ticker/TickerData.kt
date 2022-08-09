@@ -1,7 +1,6 @@
 package com.example.koin_apps.data.remote.model.ticker
 
 class TickerData {
-
     lateinit var opening_price: String
     lateinit var closing_price: String
     lateinit var min_price: String
