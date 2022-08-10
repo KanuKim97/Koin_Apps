@@ -9,13 +9,14 @@ import retrofit2.Call
 
 object RetrofitRepo {
 
-    fun getTickerSingleton(path: String): Call<TickerRoot> {
+    fun getTickerSingleton(
+        path: String
+    ): Call<TickerRoot> {
 
         return RetrofitClient
             .getClient(Constants.IKoinPublicApiUri)
             .create(IKoinApiService::class.java)
             .getTicker(path)
-
     }
 
     fun getTransactionSingleton(
@@ -27,7 +28,6 @@ object RetrofitRepo {
             .getClient(Constants.IKoinPublicApiUri)
             .create(IKoinApiService::class.java)
             .getTransactionHistory(path, count)
-
     }
 
     fun getOrderBookSingleton(
@@ -39,9 +39,9 @@ object RetrofitRepo {
             .getClient(Constants.IKoinPublicApiUri)
             .create(IKoinApiService::class.java)
             .getOrderBook(path, count)
-
     }
 
+/*
     fun getAssetsStatusSingleton(
         path: String
     ): Call<AssetsRoot> {
@@ -50,7 +50,7 @@ object RetrofitRepo {
             .getClient(Constants.IKoinPublicApiUri)
             .create(IKoinApiService::class.java)
             .getAssetStatus(path)
-
     }
+    */
 
 }

@@ -131,7 +131,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    //Todo: Error Java.lang.illegalStateException -> might be TickerRoot.kt Error
     private fun tickerSearchCall(coinName: String){
 
         val mSearchTicker = RetrofitRepo.getTickerSingleton(coinName)
@@ -142,31 +141,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 response: Response<TickerRoot>
             ) {
 
-                //Response Code
-                Log.d("response_Code: ", "${response.code()}")
-
                 when(response.code()) {
 
                     200 -> {
-
                         val tickerKoinMap = mutableMapOf<String, Any?>()
 
                         mTickerData = response.body()
 
+                       /*
                         Log.d("TickerData", "${mTickerData?.data}")
 
                         tickerKoinMap["Status"] = mTickerData?.status
-                    /*
+
                         tickerKoinMap["OpeningPrice"] = mTickerData?.data?.opening_price
                         tickerKoinMap["ClosingPrice"] = mTickerData?.data?.closing_price
                         tickerKoinMap["minTickerPrice"] = mTickerData?.data?.min_price
                         tickerKoinMap["maxTickerPrice"] = mTickerData?.data?.max_price
                         tickerKoinMap["TradeTickerUnits"] = mTickerData?.data?.units_traded
+                        */
 
-                    */
                         mainViewModel.updateKoinTicker(tickerKoinMap)
-
-
                     }
 
                     400 -> {

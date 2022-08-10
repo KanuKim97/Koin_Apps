@@ -1,9 +1,16 @@
 package com.example.koin_apps.data.remote.model.ticker
 
-//Todo: Error Java.lang.illegalStateException -> might be TickerRoot.kt Error
-
 data class TickerRoot(
-    var status: String?,
-    var data: Map<String?, Any?>,
-    var message: String?
+    val status: String?,
+    val data: Map<String?, Any?>,
+    val message: String?
 )
+
+/*
+class TickerRoot{
+    var status: String? = null
+    lateinit var data: Map<String?, TickerData?>
+    //var data: TickerData?,
+    var message: String? = null
+}
+*/

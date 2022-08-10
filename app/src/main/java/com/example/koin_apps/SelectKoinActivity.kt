@@ -62,8 +62,7 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
                         //Todo: Error Java.lang.illegalStateException -> might be TickerRoot.kt Error
                         //response Result
                         Log.d("response Status: ", "${mSelectKoin?.status}")
-                        Log.d("response Message: ", "${mSelectKoin?.message}")
-                        Log.d("response Data Keys: ", "${mSelectKoin?.data?.keys}")
+                        //Log.d("response Message: ", "${mSelectKoin?.message}")
                         Log.d("response Data: ", "${mSelectKoin?.data}")
                         //---------------
 
