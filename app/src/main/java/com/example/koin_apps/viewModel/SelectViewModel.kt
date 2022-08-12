@@ -5,20 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class SelectViewModel: ViewModel() {
-    private val _selectKoinList = MutableLiveData<Array<String>>()
+    private val _selectKoinList = MutableLiveData<Array<String>?>()
 
-    val selectKoinList: LiveData<Array<String>>
+    val selectKoinList: LiveData<Array<String>?>
         get() = _selectKoinList
 
-    init {
-
-    }
+    init { _selectKoinList.value = null}
 
     override fun onCleared() {
         super.onCleared()
     }
 
-    fun updateSelectValue() {
+    fun updateSelectValue(
+        inputList: MutableMap<String, Any>
+    ) {
 
     }
 

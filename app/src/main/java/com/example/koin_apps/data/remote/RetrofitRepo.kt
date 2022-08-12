@@ -1,7 +1,6 @@
 package com.example.koin_apps.data.remote
 
 import com.example.koin_apps.common.Constants
-import com.example.koin_apps.data.remote.model.assetsStatus.AssetsRoot
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
@@ -41,7 +40,7 @@ object RetrofitRepo {
             .getOrderBook(path, count)
     }
 
-/*
+    /*
     fun getAssetsStatusSingleton(
         path: String
     ): Call<AssetsRoot> {

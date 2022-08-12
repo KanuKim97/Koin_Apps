@@ -1,6 +1,5 @@
 package com.example.koin_apps.data.remote
 
-import com.example.koin_apps.data.remote.model.assetsStatus.AssetsRoot
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot

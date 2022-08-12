@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivitySelectKoinBinding
+import com.example.koin_apps.viewModel.SelectViewModel
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -17,11 +19,14 @@ import retrofit2.Response
 
 class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
+    private lateinit var selectViewModel: SelectViewModel
 
     var mSelectKoin: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        selectViewModel = ViewModelProvider(this)[SelectViewModel::class.java]
 
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
         setContentView(selectKoinBinding.root)
@@ -30,6 +35,12 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         selectKoinResponse()
+
+        selectViewModel.selectKoinList.observe(
+            this, { koinNameList ->
+
+            })
+
         selectKoinBinding.compSelectBtn.setOnClickListener(this)
     }
 
@@ -59,14 +70,12 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
                     200 -> {
                         mSelectKoin = response.body()
 
-                        //Todo: Error Java.lang.illegalStateException -> might be TickerRoot.kt Error
-                        //response Result
+                    //response Result
                         Log.d("response Status: ", "${mSelectKoin?.status}")
-                        //Log.d("response Message: ", "${mSelectKoin?.message}")
+                        Log.d("response Message: ", "${mSelectKoin?.message}")
                         Log.d("response Data: ", "${mSelectKoin?.data}")
-                        //---------------
-
-
+                        Log.d("response Data(Key): ", "${mSelectKoin?.data?.keys}")
+                    //---------------
 
                     }
 

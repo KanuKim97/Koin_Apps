@@ -8,11 +8,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.viewModel.MainViewModel
-import com.example.koin_apps.common.Common
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
-import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
 import org.json.JSONException
@@ -25,8 +23,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mainActivityBinding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var koinService: IKoinApiService
-
-    var mTickerData: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,26 +39,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         mainViewModel.tickerLiveData.observe(
             this,
-            { tickerMap ->
-
-                if(tickerMap?.get("Status") == "0000") {
+            {
+                if(it?.status == "0000") {
 
                     mainActivityBinding.openPrice.text =
                         getString(
                             R.string.Ticker_Format,
-                            tickerMap.get("OpeningPrice"),
-                            tickerMap.get("ClosingPrice"),
-                            tickerMap.get("minTickerPrice"),
-                            tickerMap.get("maxTickerPrice"),
-                            tickerMap.get("TradeTickerUnits")
+                            it.opening_price,
+                            it.closing_price,
+                            it.min_price,
+                            it.max_price,
+                            it.units_traded
                         )
 
-                } else {
-
-                    mainActivityBinding.openPrice.text =
-                        tickerMap?.get("Message").toString()
-
-                }
+                } else { mainActivityBinding.openPrice.text = it?.errorMsg }
 
             })
 
@@ -142,47 +132,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ) {
 
                 when(response.code()) {
-
-                    200 -> {
-                        val tickerKoinMap = mutableMapOf<String, Any?>()
-
-                        mTickerData = response.body()
-
-                       /*
-                        Log.d("TickerData", "${mTickerData?.data}")
-
-                        tickerKoinMap["Status"] = mTickerData?.status
-
-                        tickerKoinMap["OpeningPrice"] = mTickerData?.data?.opening_price
-                        tickerKoinMap["ClosingPrice"] = mTickerData?.data?.closing_price
-                        tickerKoinMap["minTickerPrice"] = mTickerData?.data?.min_price
-                        tickerKoinMap["maxTickerPrice"] = mTickerData?.data?.max_price
-                        tickerKoinMap["TradeTickerUnits"] = mTickerData?.data?.units_traded
-                        */
-
-                        mainViewModel.updateKoinTicker(tickerKoinMap)
-                    }
+                    200 -> mainViewModel.updateKoinTicker(response.body())
 
                     400 -> {
-
                         val jsonObject: JSONObject
-                        val errorTickerBody = mutableMapOf<String, Any?>()
 
                         try {
-
                             jsonObject = JSONObject(response.errorBody()!!.string())
 
-                            val responseCode = jsonObject.getString("status")
-                            val responseMsg = jsonObject.getString("message")
+                            val responseErrorCode = jsonObject.getString("status")
+                            val responseErrorMsg = jsonObject.getString("message")
 
-                            errorTickerBody["Status"] = responseCode
-                            errorTickerBody["Message"] = responseMsg
-
-                            mainViewModel.updateKoinTicker(errorTickerBody)
-
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
+                            mainViewModel.updateErrorTicker(responseErrorCode, responseErrorMsg)
+                        } catch (e: JSONException) { e.printStackTrace() }
 
                     }
 
