@@ -69,14 +69,7 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
 
                     200 -> {
                         mSelectKoin = response.body()
-
-                    //response Result
-                        Log.d("response Status: ", "${mSelectKoin?.status}")
-                        Log.d("response Message: ", "${mSelectKoin?.message}")
-                        Log.d("response Data: ", "${mSelectKoin?.data}")
-                        Log.d("response Data(Key): ", "${mSelectKoin?.data?.keys}")
-                    //---------------
-
+                        selectViewModel.updateSelectValue(mSelectKoin?.data?.keys)
                     }
 
                     400 -> {
@@ -86,12 +79,10 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
 
                             jsonObject = JSONObject(response.errorBody()!!.string())
 
-                            val responseCode = jsonObject.getString("status")
-                            val responseMsg = jsonObject.getString("message")
-                            val selectError = RequestErrorRoot(responseCode, responseMsg)
+                            val responseErrorCode = jsonObject.getString("status")
+                            val responseErrorMsg = jsonObject.getString("message")
 
-                            println(selectError)
-
+                            selectViewModel.updateResponseError(responseErrorCode, responseErrorMsg)
                         } catch (e: JSONException) { e.printStackTrace() }
 
 

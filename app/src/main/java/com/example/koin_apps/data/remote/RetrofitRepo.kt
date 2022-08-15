@@ -40,16 +40,4 @@ object RetrofitRepo {
             .getOrderBook(path, count)
     }
 
-    /*
-    fun getAssetsStatusSingleton(
-        path: String
-    ): Call<AssetsRoot> {
-
-        return RetrofitClient
-            .getClient(Constants.IKoinPublicApiUri)
-            .create(IKoinApiService::class.java)
-            .getAssetStatus(path)
-    }
-    */
-
 }

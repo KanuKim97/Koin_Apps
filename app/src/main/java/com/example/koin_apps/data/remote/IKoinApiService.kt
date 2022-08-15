@@ -32,12 +32,4 @@ interface IKoinApiService {
         count: Int
     ): Call<OrderRoot>
 
-/*
-    @GET("assetsstatus/{path}")
-    fun getAssetStatus(
-        @Path("path")
-        path: String
-    ): Call<AssetsRoot>
-*/
-
 }
