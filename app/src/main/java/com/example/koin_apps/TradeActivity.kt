@@ -24,8 +24,6 @@ class TradeActivity : AppCompatActivity() {
 
     private var threadNetwork: NetworkingThread? = null
 
-    var mTradeCoinData: TickerRoot? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,20 +52,19 @@ class TradeActivity : AppCompatActivity() {
 
         }
 
-        tradeViewModel.tradeLiveData.observe(
-            this,
-            { tradeMap ->
-
+        tradeViewModel.tradeLiveData.observe(this, {
+            if(it?.status == "0000") {
                 tradeActivityBinding.showTradedUnits.text =
                     getString(
                         R.string.Trade_Format,
                         tradeKoinName,
-                        tradeMap?.get("Prev_Closing_Price").toString(),
-                        tradeMap?.get("TradeValue").toString(),
-                        tradeMap?.get("Fluctated_24H").toString()
+                        it.prev_closing_price,
+                        it.acc_trade_value_24H,
+                        it.fluctate_rate_24H
                     )
-
+            } else { tradeActivityBinding.showTradedUnits.text = it?.errorMsg }
         })
+
     }
 
 
@@ -88,16 +85,11 @@ class TradeActivity : AppCompatActivity() {
         var isRunning: Boolean = true
 
         override fun run() {
-
             while (isRunning){
-
                 try {
-
                     tradeCoinResponse(tradeCoinName)
                     sleep(1000)
-
                 } catch (e: InterruptedException) { e.printStackTrace() }
-
             }
         }
 
@@ -130,43 +122,21 @@ class TradeActivity : AppCompatActivity() {
 
                 when(response.code()) {
 
-                    200 -> {
-
-                        mTradeCoinData = response.body()
-
-                        val mTradeData = mutableMapOf<String, Any?>()
-/*
-                        mTradeData["Status"] = mTradeCoinData?.status
-                        mTradeData["TradeValue"] = mTradeCoinData?.data?.acc_trade_value_24H
-                        mTradeData["Prev_Closing_Price"] = mTradeCoinData?.data?.prev_closing_price
-                        mTradeData["Fluctated_24H"] = mTradeCoinData?.data?.fluctate_rate_24H
-*/
-
-                        tradeViewModel.updateKoinTrade(mTradeData)
-
-                    }
+                    200 -> tradeViewModel.updateKoinTrade(response.body())
 
                     400 -> {
-
                         val jsonObject: JSONObject
-                        val mTradeErrorBody = mutableMapOf<String, Any?>()
 
                         try {
-
                             jsonObject = JSONObject(response.errorBody()!!.string())
 
                             val responseCode = jsonObject.getString("status")
                             val responseMsg = jsonObject.getString("message")
 
-                            mTradeErrorBody["Status"] = responseCode
-                            mTradeErrorBody["Message"] = responseMsg
-
-                            tradeViewModel.updateKoinTrade(mTradeErrorBody)
-
+                            tradeViewModel.updateErrorTicker(responseCode, responseMsg)
                         } catch (e: JSONException) {
                             e.printStackTrace()
                         }
-
                     }
 
                 }
