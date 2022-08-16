@@ -71,7 +71,7 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun orderBookResponse() {
 
-        val mOrderBook = RetrofitRepo.getOrderBookSingleton("aaa", 5)
+        val mOrderBook = RetrofitRepo.getOrderBookSingleton("BTC", 5)
 
         mOrderBook.enqueue(object: Callback<OrderRoot>{
             override fun onResponse(

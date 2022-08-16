@@ -41,7 +41,6 @@ class TradeActivity : AppCompatActivity() {
         val tradeKoinName = intent.getStringExtra("KoinName")
         if (tradeKoinName != null) { setThread(tradeKoinName) }
         else {
-
             Toast.makeText(
                 applicationContext,
                 R.string.Empty_Coin_TxtBox,
@@ -49,7 +48,6 @@ class TradeActivity : AppCompatActivity() {
             ).show()
 
             startActivity(Intent(this, MainActivity::class.java))
-
         }
 
         tradeViewModel.tradeLiveData.observe(this, {
@@ -100,14 +98,12 @@ class TradeActivity : AppCompatActivity() {
     }
 
     private fun interruptThread(){
-
         threadNetwork?.run {
             this.isRunning = false
 
             if (!this.isInterrupted)
                 this.interrupt()
         }
-
     }
 
 

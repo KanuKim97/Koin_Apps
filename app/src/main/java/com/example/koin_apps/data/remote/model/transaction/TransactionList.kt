@@ -2,20 +2,25 @@ package com.example.koin_apps.data.remote.model.transaction
 
 import com.google.gson.annotations.SerializedName
 
-data class TransactionList (
+data class TransactionList(
+    @SerializedName("Status")
+    val status: String?,
 
-    @SerializedName("transactionDate")
-    var transactionDate: String,
+    @SerializedName("Error_Message")
+    val errorMsg: String,
 
-    @SerializedName("transactionType")
-    var transactionType: String,
+    @SerializedName("transaction_Date")
+    val transactionDate: String?,
+
+    @SerializedName("transaction_Type")
+    val transactionType: String?,
 
     @SerializedName("Units_Transaction_Traded")
-    var units_Transaction_Traded: String,
+    val units_Transaction_Traded: String?,
 
     @SerializedName("Transaction_Price")
-    var transaction_Price: String,
+    val transaction_Price: String?,
 
     @SerializedName("Transaction_Total")
-    var transaction_Total: String
+    val transaction_Total: String?
     )

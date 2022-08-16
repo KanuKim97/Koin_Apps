@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
-import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
-import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.LiveTimeViewModel
@@ -32,9 +30,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private var transactionThread: TransactionThread? = null
     private var toggleValue: Boolean = false
 
-    var mTransactionCoinData: TransactionRoot? = null
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,25 +48,21 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         liveTimeViewModel.transactionLiveData.observe(
             this,
             { transactionResult ->
-
                 if(transactionResult == null){
-                    liveTimeBinding.TransactionView.text =
-                        getString(R.string.transaction_Not_Founded)
+                    liveTimeBinding.TransactionView.text = getString(R.string.API_DATA_Not_Founded)
                 } else {
-
-                    val transactionSize = (transactionResult.size)-1
-
-                    for(i in 0 until transactionSize) {
-                        liveTimeBinding.TransactionView.text =
-                            getString(
-                                R.string.transaction_Format,
-                                transactionResult[i].transactionType,
-                                transactionResult[i].transactionDate,
-                                transactionResult[i].transaction_Price,
-                                transactionResult[i].units_Transaction_Traded,
-                                transactionResult[i].transaction_Total
-                            )
-
+                    for(i in 0 until (transactionResult.size).minus(1)) {
+                        if (transactionResult[i].status == "0000") {
+                            liveTimeBinding.TransactionView.text =
+                                getString(
+                                    R.string.transaction_Format,
+                                    transactionResult[i].transactionType,
+                                    transactionResult[i].transactionDate,
+                                    transactionResult[i].transaction_Price,
+                                    transactionResult[i].units_Transaction_Traded,
+                                    transactionResult[i].transaction_Total
+                                )
+                        } else { liveTimeBinding.TransactionView.text = transactionResult[i].errorMsg }
                     }
                 }
 
@@ -109,19 +100,13 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
 
             R.id.Btn_Transaction -> {
-
                 if(toggleValue) {
-
                     toggleValue = false
                     interruptThread()
-
                 } else {
-
                     toggleValue = true
                     setTransactionThread(koinName, cntTransaction)
-
                 }
-
             }
 
         }
@@ -141,25 +126,20 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         var isRunning: Boolean = true
 
         override fun run() {
-
             while (isRunning) {
-
                 try {
                     transactionCoinResponse(coinName, transactionNumber)
                     sleep(1000)
                 } catch (e: InterruptedException) { e.printStackTrace() }
-
             }
-
         }
 
     }
 
     private fun setTransactionThread(koinName: String?, countTransaction: Int) {
 
-        if (!TransactionThread(koinName, countTransaction).isRunning) {
-            interruptThread()
-        } else {
+        if (!TransactionThread(koinName, countTransaction).isRunning) { interruptThread() }
+        else {
             transactionThread =
                 TransactionThread(koinName, countTransaction).apply { this.start() }
         }
@@ -188,30 +168,11 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             ) {
 
                 when(response.code()) {
-
-                    200 -> {
-
-                        mTransactionCoinData = response.body()
-
-                        for(i: Int in  0 until transactionCount-1) {
-
-                            val transactionCoinList = TransactionList(
-                                mTransactionCoinData?.data?.get(i)?.transaction_date!!,
-                                mTransactionCoinData?.data?.get(i)?.type!!,
-                                mTransactionCoinData?.data?.get(i)?.units_traded!!,
-                                mTransactionCoinData?.data?.get(i)?.price!!,
-                                mTransactionCoinData?.data?.get(i)?.total!!
-                            )
-
-                            liveTimeViewModel.updateKoinTransaction(transactionCoinList)
-                        }
-
-                    }
+                    200 ->
+                        liveTimeViewModel.updateKoinTransaction(response.body(), transactionCount)
 
                     400 -> {
-                        //TODO need to Error Handling
                         val jsonObject: JSONObject
-                        val requestErrorBody: RequestErrorRoot
 
                         try {
 
@@ -220,12 +181,8 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
                             val responseCode = jsonObject.getString("status")
                             val responseMsg = jsonObject.getString("message")
 
-                            requestErrorBody = RequestErrorRoot(responseCode, responseMsg)
-
-                            println(requestErrorBody)
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
+                            liveTimeViewModel.updateErrorTransaction(responseCode, responseMsg)
+                        } catch (e: JSONException) { e.printStackTrace() }
 
                     }
 
