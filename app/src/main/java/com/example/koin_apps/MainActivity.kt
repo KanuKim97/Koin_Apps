@@ -97,26 +97,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.tradePageBtn ->
                 Intent(this, TradeActivity::class.java).also {
-
                     if(coinTicker.isNullOrEmpty()){
-
                         Toast.makeText(
                             applicationContext,
                             R.string.Empty_Coin_TxtBox,
                             Toast.LENGTH_SHORT
                         ).show()
-
                     } else {
-
                         it.putExtra("KoinName", coinTicker)
                         startActivity(it)
-
                     }
-
                 }
 
             R.id.OrderBookBtn ->
-                startActivity(Intent(this, OrderBookActivity::class.java))
+                Intent(this, OrderBookActivity::class.java).also {
+                    if(coinTicker.isNullOrEmpty()){
+                        Toast.makeText(
+                            applicationContext,
+                            R.string.Empty_Coin_TxtBox,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        it.putExtra("KoinName", coinTicker)
+                        startActivity(it)
+                    }
+                }
 
         }
     }

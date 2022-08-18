@@ -23,6 +23,7 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var orderBookBinding: ActivityOrderBookBinding
     private lateinit var orderBookViewModel: OrderBookViewModel
     private lateinit var koinService: IKoinApiService
+    private lateinit var koinName: String
 
     var mOrderBookData: OrderRoot? = null
 
@@ -30,8 +31,10 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
         orderBookBinding = ActivityOrderBookBinding.inflate(layoutInflater)
+
         orderBookViewModel = ViewModelProvider(this)[OrderBookViewModel::class.java]
         koinService = RetrofitClient.koinApiService_Public
+        koinName = intent.getStringExtra("koinName").toString()
 
         setContentView(orderBookBinding.root)
     }
@@ -61,10 +64,8 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
 
         when(v?.id) {
-
             R.id.activeBtn ->
                 orderBookResponse()
-
         }
 
     }
@@ -78,46 +79,34 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
                 call: Call<OrderRoot>,
                 response: Response<OrderRoot>
             ) {
-
                 when(response.code()) {
 
                     200 -> {
-
                         mOrderBookData = response.body()
 
                         orderBookBinding.showOrderBook.text =
                             mOrderBookData?.data?.timestamp
-
                     }
 
                     400 -> {
-
                         val jsonObject: JSONObject
 
                         try {
-
                             jsonObject = JSONObject(response.errorBody()!!.string())
 
                             val responseCode = jsonObject.getString("status")
                             val responseMsg = jsonObject.getString("message")
-                            val orderBookErr = RequestErrorRoot(responseCode, responseMsg)
 
-                            //TODO OrderBook Error Handling
-                            println(orderBookErr)
-
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-
+                            orderBookViewModel.updateErrorOrder(responseCode, responseMsg)
+                        } catch (e: JSONException) { e.printStackTrace() }
                     }
-
                 }
-
             }
 
-            override fun onFailure(call: Call<OrderRoot>, t: Throwable) {
-                Log.d("Error", t.message.toString())
-            }
+            override fun onFailure(
+                call: Call<OrderRoot>,
+                t: Throwable
+            ) { orderBookViewModel.updateErrorOrder(t.cause.toString(), t.message.toString()) }
 
         })
 

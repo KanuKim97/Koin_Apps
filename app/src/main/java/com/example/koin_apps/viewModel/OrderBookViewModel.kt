@@ -23,4 +23,10 @@ class OrderBookViewModel: ViewModel() {
         _orderBookLiveData?.value = inputOrderData
     }
 
+    fun updateErrorOrder(
+        inputErrorCode: String,
+        inputErrorMsg: String
+    ){
+
+    }
 }
