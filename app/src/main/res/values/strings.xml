@@ -41,6 +41,16 @@
         FluctateRate_24H: %s \n
     </string>
 
+    <!-- OrderBookActivity.kt String Value -->
+    <string name="orderBook_Format">
+        <!--CoinName: %s \n -->
+        Coin Price: %s \n
+        Quantity: %s \n
+        TimeStamp: %s \n
+        Order Currency: %s \n
+        Payment Currency: %s \n
+    </string>
+
     <!--Common String Value-->
 
     <string name="API_DATA_Not_Founded">

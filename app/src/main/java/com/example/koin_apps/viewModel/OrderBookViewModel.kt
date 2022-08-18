@@ -3,30 +3,48 @@ package com.example.koin_apps.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
 
 class OrderBookViewModel: ViewModel() {
-    private val _orderBookLiveData: MutableLiveData<OrderRoot>?
+    private val _orderBookLiveData: MutableLiveData<OrderData>?
 
-    val orderBookLiveData: LiveData<OrderRoot>?
+    val orderBookLiveData: LiveData<OrderData>?
         get() = _orderBookLiveData
 
     init { _orderBookLiveData = null }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
     fun updateOrderBook(
-        inputOrderData: OrderRoot
+        inputOrderData: OrderRoot?
     ){
-        _orderBookLiveData?.value = inputOrderData
+        if(inputOrderData != null){
+            _orderBookLiveData?.value =
+                OrderData(
+                    inputOrderData.status,
+                    inputOrderData.message,
+                    inputOrderData.data?.timestamp,
+                    inputOrderData.data?.order_currency,
+                    inputOrderData.data?.payment_currency,
+                    inputOrderData.data?.quantity,
+                    inputOrderData.data?.price
+                )
+        }
+
     }
 
     fun updateErrorOrder(
         inputErrorCode: String,
         inputErrorMsg: String
     ){
-
+        _orderBookLiveData?.value =
+            OrderData(
+                inputErrorCode,
+                inputErrorMsg,
+                null,
+                null,
+                null,
+                null,
+                null
+            )
     }
 }

@@ -2,15 +2,12 @@ package com.example.koin_apps
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.RetrofitClient
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
-import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
 import com.example.koin_apps.databinding.ActivityOrderBookBinding
 import com.example.koin_apps.viewModel.OrderBookViewModel
 import org.json.JSONException
@@ -23,9 +20,6 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var orderBookBinding: ActivityOrderBookBinding
     private lateinit var orderBookViewModel: OrderBookViewModel
     private lateinit var koinService: IKoinApiService
-    private lateinit var koinName: String
-
-    var mOrderBookData: OrderRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +28,7 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
 
         orderBookViewModel = ViewModelProvider(this)[OrderBookViewModel::class.java]
         koinService = RetrofitClient.koinApiService_Public
-        koinName = intent.getStringExtra("koinName").toString()
+
 
         setContentView(orderBookBinding.root)
     }
@@ -42,19 +36,20 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
-        orderBookViewModel.orderBookLiveData?.observe(
-            this,
-            { orderBookData ->
-
-                if(orderBookData?.data == null) {
-
-                    Toast.makeText(
-                        applicationContext,
-                        "OrderBook Data is Empty",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                } else { Log.d("order Book Data", "${orderBookData.data}") }
+        orderBookViewModel.orderBookLiveData?.observe(this,
+            {
+                if(it.status == "0000") {
+                    orderBookBinding.showOrderBook.text =
+                        getString(
+                            R.string.orderBook_Format,
+                            it.price,
+                            it.quantity,
+                            it.timestamp,
+                            it.timestamp,
+                            it.order_currency,
+                            it.payment_currency
+                        )
+                } else { orderBookBinding.showOrderBook.text = it.ErrorMsg }
 
             })
 
@@ -81,12 +76,7 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
             ) {
                 when(response.code()) {
 
-                    200 -> {
-                        mOrderBookData = response.body()
-
-                        orderBookBinding.showOrderBook.text =
-                            mOrderBookData?.data?.timestamp
-                    }
+                    200 -> orderBookViewModel.updateOrderBook(response.body())
 
                     400 -> {
                         val jsonObject: JSONObject
