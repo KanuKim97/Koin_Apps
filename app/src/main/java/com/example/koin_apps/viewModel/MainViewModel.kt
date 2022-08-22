@@ -22,26 +22,25 @@ class MainViewModel: ViewModel() {
     fun updateKoinTicker(
         responseTicker: TickerRoot?
     ){
-        if(responseTicker?.status == "0000") {
-            _tickerLiveData.value =
-                TickerData(
-                    responseTicker.status,
-                    responseTicker.message,
-                    responseTicker.data["opening_price"].toString(),
-                    responseTicker.data["closing_price"].toString(),
-                    responseTicker.data["min_price"].toString(),
-                    responseTicker.data["max_price"].toString(),
-                    responseTicker.data["units_traded"].toString(),
-                    responseTicker.data["acc_trade_value"].toString(),
-                    responseTicker.data["prev_closing_price"].toString(),
-                    responseTicker.data["units_traded_24H"].toString(),
-                    responseTicker.data["acc_trade_value_24H"].toString(),
-                    responseTicker.data["fluctate_24H"].toString(),
-                    responseTicker.data["fluctate_rate_24H"].toString(),
-                    responseTicker.data["date"].toString()
-                )
-        }
-
+       if(responseTicker != null) {
+           _tickerLiveData.value =
+               TickerData(
+                   responseTicker.status,
+                   responseTicker.message,
+                   responseTicker.data["opening_price"].toString(),
+                   responseTicker.data["closing_price"].toString(),
+                   responseTicker.data["min_price"].toString(),
+                   responseTicker.data["max_price"].toString(),
+                   responseTicker.data["units_traded"].toString(),
+                   responseTicker.data["acc_trade_value"].toString(),
+                   responseTicker.data["prev_closing_price"].toString(),
+                   responseTicker.data["units_traded_24H"].toString(),
+                   responseTicker.data["acc_trade_value_24H"].toString(),
+                   responseTicker.data["fluctate_24H"].toString(),
+                   responseTicker.data["fluctate_rate_24H"].toString(),
+                   responseTicker.data["date"].toString()
+               )
+       } else { throw NullPointerException("response Data is Empty") }
     }
 
     fun updateErrorTicker(

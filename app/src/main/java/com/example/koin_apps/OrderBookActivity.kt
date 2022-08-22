@@ -45,7 +45,6 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
                             it.price,
                             it.quantity,
                             it.timestamp,
-                            it.timestamp,
                             it.order_currency,
                             it.payment_currency
                         )

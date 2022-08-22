@@ -23,7 +23,7 @@ class TradeViewModel: ViewModel() {
     fun updateKoinTrade(
         koinTradeList: TickerRoot?
     ) {
-        if(koinTradeList?.status == "0000") {
+        if(koinTradeList != null) {
             _tradeLiveData.value =
                 TickerData(
                     koinTradeList.status,
@@ -41,7 +41,7 @@ class TradeViewModel: ViewModel() {
                     koinTradeList.data["fluctate_rate_24H"].toString(),
                     koinTradeList.data["date"].toString()
                 )
-        }
+        } else { throw NullPointerException("Response Data is Empty") }
     }
 
     fun updateErrorTicker(

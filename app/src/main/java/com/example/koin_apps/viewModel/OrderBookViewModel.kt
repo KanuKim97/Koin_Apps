@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
+import java.lang.NullPointerException
 
 class OrderBookViewModel: ViewModel() {
     private val _orderBookLiveData: MutableLiveData<OrderData>?
@@ -17,7 +18,7 @@ class OrderBookViewModel: ViewModel() {
     fun updateOrderBook(
         inputOrderData: OrderRoot?
     ){
-        if(inputOrderData != null){
+        if(inputOrderData != null) {
             _orderBookLiveData?.value =
                 OrderData(
                     inputOrderData.status,
@@ -28,8 +29,7 @@ class OrderBookViewModel: ViewModel() {
                     inputOrderData.data?.quantity,
                     inputOrderData.data?.price
                 )
-        }
-
+        } else { throw NullPointerException("Response Data is Empty") }
     }
 
     fun updateErrorOrder(

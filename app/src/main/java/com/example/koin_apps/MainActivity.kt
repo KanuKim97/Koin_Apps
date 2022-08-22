@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             this,
             {
                 if(it?.status == "0000") {
-
                     mainActivityBinding.openPrice.text =
                         getString(
                             R.string.Ticker_Format,
@@ -51,16 +50,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             it.max_price,
                             it.units_traded
                         )
-
                 } else { mainActivityBinding.openPrice.text = it?.errorMsg }
-
             })
 
         mainActivityBinding.KoinSearchBtn.setOnClickListener(this)
         mainActivityBinding.nextPageBtn.setOnClickListener(this)
         mainActivityBinding.tradePageBtn.setOnClickListener(this)
         mainActivityBinding.OrderBookBtn.setOnClickListener(this)
-
     }
 
     override fun onDestroy() {
@@ -72,27 +68,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val coinTicker = mainActivityBinding.KoinInput.text.toString()
 
         when(v?.id) {
-            R.id.KoinSearchBtn ->
-                tickerSearchCall(coinTicker)
+            R.id.KoinSearchBtn -> tickerSearchCall(coinTicker)
 
             R.id.nextPageBtn ->
                 Intent(this, LiveTimeActivity::class.java).also {
-
                     if(coinTicker.isNullOrEmpty()){
-
                         Toast.makeText(
                             applicationContext,
                             R.string.Empty_Coin_TxtBox,
                             Toast.LENGTH_SHORT
                         ).show()
-
                     } else {
-
                         it.putExtra("KoinName", coinTicker)
                         startActivity(it)
-
                     }
-
                 }
 
             R.id.tradePageBtn ->
@@ -158,13 +147,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
-
                 Toast.makeText(
                     applicationContext,
                     "${t.message}",
                     Toast.LENGTH_SHORT
                 ).show()
-
             }
 
         })

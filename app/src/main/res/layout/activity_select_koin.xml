@@ -27,15 +27,20 @@
         android:textColor="@color/black"
         android:layout_marginTop="-20dp" />
 
-    <View
-        android:layout_width="0dp"
+    <ListView
+        android:id="@+id/CoinTitleSet_View"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.9"/>
+        android:layout_weight="0.9"
+        android:padding="10dp"
+        android:choiceMode="multipleChoice"
+        />
 
     <Button
         android:id="@+id/compSelectBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:background="@color/black"
         android:text="@string/select_complete"
         android:textSize="18sp"

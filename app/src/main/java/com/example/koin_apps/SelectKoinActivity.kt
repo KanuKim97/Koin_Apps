@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.remote.RetrofitRepo
-import com.example.koin_apps.data.remote.model.requestError.RequestErrorRoot
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivitySelectKoinBinding
 import com.example.koin_apps.viewModel.SelectViewModel
@@ -98,7 +97,7 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    //ToDo select Page to go Main Page
+    //TODO select Page to go Main Page
     override fun onClick(v: View?) {
         when(v?.id) {
 
