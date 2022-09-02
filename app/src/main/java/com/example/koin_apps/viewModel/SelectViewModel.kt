@@ -20,7 +20,8 @@ class SelectViewModel: ViewModel() {
     fun updateSelectValue(
         koinTitleKeySet: Set<String?>?
     ) {
-
+        val coinTitleList: Array<String?> = koinTitleKeySet!!.toTypedArray()
+        
     }
 
     fun updateResponseError(
