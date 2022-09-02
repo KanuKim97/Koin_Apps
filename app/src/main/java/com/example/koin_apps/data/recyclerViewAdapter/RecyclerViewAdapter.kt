@@ -20,9 +20,9 @@ class RecyclerViewAdapter(private val coinTitleSet: Set<String?>?)
     }
 
     override fun onBindViewHolder(holder: CoinTitleViewHolder, position: Int) {
-        val coinTitleList: Set<String?>? = coinTitleSet
+        val coinTitleList: Array<String?> = coinTitleSet!!.toTypedArray()
 
-
+        holder.coinTitle.text = coinTitleList[position]
     }
 
     override fun getItemCount(): Int {
