@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.koin_apps.data.recyclerViewAdapter.RecyclerViewAdapter
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivitySelectKoinBinding
@@ -20,14 +23,21 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
     private lateinit var selectViewModel: SelectViewModel
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var collectionAdapter: RecyclerViewAdapter
+
     var mSelectKoin: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         selectViewModel = ViewModelProvider(this)[SelectViewModel::class.java]
-
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
+
+        recyclerView = selectKoinBinding.CoinTitleSetView
+        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView.setHasFixedSize(true)
+
         setContentView(selectKoinBinding.root)
     }
 
