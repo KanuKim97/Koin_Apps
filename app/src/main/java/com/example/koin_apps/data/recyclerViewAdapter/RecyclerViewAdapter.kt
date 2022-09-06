@@ -1,36 +1,52 @@
 package com.example.koin_apps.data.recyclerViewAdapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.koin_apps.R
+import com.example.koin_apps.data.remote.model.tickerTitle.TickerTitleData
+import com.example.koin_apps.databinding.TitlecoinlistBinding
 
-class RecyclerViewAdapter(private val coinTitleSet: Set<String?>?)
-    : RecyclerView.Adapter<RecyclerViewAdapter.CoinTitleViewHolder>() {
+class RecyclerViewAdapter
+    : ListAdapter<TickerTitleData, RecyclerViewAdapter.CoinsViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinTitleViewHolder {
-        val itemView = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.titlecoinlist, parent, false)
+    class CoinsViewHolder(private val binding: TitlecoinlistBinding)
+        : RecyclerView.ViewHolder(binding.root) {
 
-        return CoinTitleViewHolder(itemView)
+        fun bind(tickerTitleData: TickerTitleData) {
+            binding.apply {
+                checkCoin.isChecked = tickerTitleData.checked
+                titleCoin.text = tickerTitleData.tickerTitle
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: CoinTitleViewHolder, position: Int) {
-        val coinTitleList: Array<String?> = coinTitleSet!!.toTypedArray()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinsViewHolder {
+        val binding =
+            TitlecoinlistBinding
+                .inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
 
-        holder.coinTitle.text = coinTitleList[position]
+        return CoinsViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return coinTitleSet?.size!!
+    override fun onBindViewHolder(holder: CoinsViewHolder, position: Int) {
+        val currItem = getItem(position)
+        holder.bind(currItem)
     }
 
-    class CoinTitleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val checkList: CheckBox = itemView.findViewById(R.id.checkCoin)
-        val coinTitle: TextView = itemView.findViewById(R.id.title_Coin)
+    class DiffCallback: DiffUtil.ItemCallback<TickerTitleData>() {
+        override fun areItemsTheSame(oldItem: TickerTitleData, newItem: TickerTitleData) =
+            oldItem.tickerTitle == newItem.tickerTitle
+
+        override fun areContentsTheSame(
+            oldItem: TickerTitleData,
+            newItem: TickerTitleData
+        ) = oldItem == newItem
+
     }
 }

@@ -23,9 +23,6 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
     private lateinit var selectViewModel: SelectViewModel
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var collectionAdapter: RecyclerViewAdapter
-
     var mSelectKoin: TickerRoot? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +30,15 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
 
         selectViewModel = ViewModelProvider(this)[SelectViewModel::class.java]
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
+        val coinViewAdapter = RecyclerViewAdapter()
 
-        recyclerView = selectKoinBinding.CoinTitleSetView
-        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView.setHasFixedSize(true)
+        selectKoinBinding.apply {
+            CoinRecyclerView.apply {
+                adapter = coinViewAdapter
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+            }
+        }
 
         setContentView(selectKoinBinding.root)
     }

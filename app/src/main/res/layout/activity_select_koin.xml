@@ -28,7 +28,7 @@
         android:layout_marginTop="-20dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/CoinTitleSet_View"
+        android:id="@+id/CoinRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.9"
