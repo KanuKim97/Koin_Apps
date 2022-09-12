@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.data.recyclerViewAdapter.RecyclerViewAdapter
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
@@ -47,25 +46,16 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
         super.onResume()
         selectKoinResponse()
 
+        /*
         selectViewModel.selectKoinList.observe(
             this, { koinNameList ->
 
-            })
+        })
+        */
 
         selectKoinBinding.compSelectBtn.setOnClickListener(this)
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     private fun selectKoinResponse() {
         val mSelectKoinResponse = RetrofitRepo.getTickerSingleton("ALL")
