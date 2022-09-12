@@ -10,16 +10,31 @@
   - common
     - Common.kt
     - Constants.kt
-  - data/remote
-    - model
-      - assetsStatus
-      - orderBook
-      - requestError
-      - ticker
-      - transaction
-    - IKoinApiService.kt
-    - RetrofitClient.kt
-    - RetrofitRepo.kt
+  - data
+    - recyclerViewAdapter
+      - RecyclerViewAdapter.kt
+    - remote
+      - model
+        - assetsStatus
+          - AssetsData.kt
+          - AssetsRoot.kt
+        - orderBook
+          - OrderData.kt
+          - OrderRoot.kt
+        - requestError
+          - requestErrorRoot.kt
+        - tickerTitle
+          - tickerTitleData.kt
+        - ticker
+          - TickerData.kt
+          - TickerRoot.kt
+        - transaction
+          - TransactionList.kt
+          - TransactionData.kt
+          - TransactionRoot.kt
+      - IKoinApiService.kt
+      - RetrofitClient.kt
+      - RetrofitRepo.kt
   - viewModel
     - LiveTimeViewModel.kt
     - MainViewModel.kt
