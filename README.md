@@ -4,9 +4,12 @@
   Language : Kotlin
 
 ## Project Descrition 
-  - Search Coin and Check Coin wallet Application with Bithumb API
+  - Search cryptocurrency and check crytocurrency price Application with using Bithumb API
 
-## Project File & Contributor (KanuKim97)
+## Project Contributor
+  - [KanuKim97](https://github.com/KanuKim97)
+
+## Project File
   - common
     - Common.kt
     - Constants.kt
