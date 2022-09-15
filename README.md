@@ -11,6 +11,10 @@
     - Common.kt
     - Constants.kt
   - data
+    - entities
+      - KoinDAO.kt
+      - KoinDAOHelper.kt
+      - KoinDAOService.kt
     - recyclerViewAdapter
       - RecyclerViewAdapter.kt
     - remote
@@ -21,8 +25,6 @@
         - orderBook
           - OrderData.kt
           - OrderRoot.kt
-        - requestError
-          - requestErrorRoot.kt
         - tickerTitle
           - tickerTitleData.kt
         - ticker
@@ -89,6 +91,11 @@
   
   // Kotlin Coroutine
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
+  
+  //Room
+  implementation "androidx.room:room-runtime:2.4.3"
+  kapt "androidx.room:room-compiler:2.4.3"
+  implementation "androidx.room:room-ktx:2.4.3"
 ```
 
 ## Preference 
@@ -96,8 +103,11 @@
   Retrofit Kr Document 
   https://devflow.github.io/retrofit-kr/
   
-  Android Dev Document - lifecycle
+  Android developers Document - lifecycle
   https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ko
+  
+  Android developers Document - Room 
+  https://developer.android.com/training/data-storage/room?hl=ko
   
   Bithumb API Docs 
   https://apidocs.bithumb.com/
