@@ -1,52 +1,42 @@
 package com.example.koin_apps.data.recyclerViewAdapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.koin_apps.data.remote.model.tickerTitle.TickerTitleData
-import com.example.koin_apps.databinding.TitlecoinlistBinding
+import com.example.koin_apps.R
+import com.example.koin_apps.data.remote.model.tickerTitle.KoinTitleData
 
 class RecyclerViewAdapter
-    : ListAdapter<TickerTitleData, RecyclerViewAdapter.CoinsViewHolder>(DiffCallback()) {
+    : RecyclerView.Adapter<RecyclerViewAdapter.CoinsViewHolder>() {
 
-    class CoinsViewHolder(private val binding: TitlecoinlistBinding)
-        : RecyclerView.ViewHolder(binding.root) {
+    private val koinTitleList: List<KoinTitleData>? = null
 
-        fun bind(tickerTitleData: TickerTitleData) {
-            binding.apply {
-                checkCoin.isChecked = tickerTitleData.checked
-                titleCoin.text = tickerTitleData.tickerTitle
-            }
+    class CoinsViewHolder(view: View): RecyclerView.ViewHolder(view) {
+
+        fun bind(){
+
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinsViewHolder {
-        val binding =
-            TitlecoinlistBinding
-                .inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): CoinsViewHolder {
+        val view =
+            LayoutInflater
+                .from(parent.context)
+                .inflate(R.layout.titlecoinlist, parent, false)
 
-        return CoinsViewHolder(binding)
+        return CoinsViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CoinsViewHolder, position: Int) {
-        val currItem = getItem(position)
-        holder.bind(currItem)
+        TODO("Not yet implemented")
     }
 
-    class DiffCallback: DiffUtil.ItemCallback<TickerTitleData>() {
-        override fun areItemsTheSame(oldItem: TickerTitleData, newItem: TickerTitleData) =
-            oldItem.tickerTitle == newItem.tickerTitle
-
-        override fun areContentsTheSame(
-            oldItem: TickerTitleData,
-            newItem: TickerTitleData
-        ) = oldItem == newItem
-
+    override fun getItemCount(): Int {
+        return koinTitleList?.size ?: 0
     }
+
 }
