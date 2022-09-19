@@ -1,10 +1,15 @@
 # Koin!
-  Android Studio Version : ArcticFox 2020.3.1 Patch 4
+  Android Studio Version : Dolphin 2021.3.1
   
   Language : Kotlin
-
+  
+  Plugin : kotlin-kapt
+  
 ## Project Descrition 
   - Search cryptocurrency and check crytocurrency price Application with using Bithumb API
+
+## Application (Project) Architecture 
+![image](https://user-images.githubusercontent.com/74421057/191030817-d5619c1e-d0da-422c-b2b5-66a59f45f72a.png)
 
 ## Project Contributor
   - [KanuKim97](https://github.com/KanuKim97)
@@ -65,12 +70,12 @@
   - AssetsStatus
     - AssetsStatus {Path: CoinName} 
   
- ### Bithumb API (Private)
+ ### Bithumb API (Private), Expected
  
 ## Sdk Build Version 
   - minSdkVersion : 26
-  - targetSdkVersion : 31
-  - complieSdkVersion :  31
+  - targetSdkVersion : 33
+  - complieSdkVersion :  33
 
 ## Test Enviroment 
  - AVD(Android Virtual Device)
