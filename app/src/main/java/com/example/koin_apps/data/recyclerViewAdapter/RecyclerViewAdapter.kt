@@ -6,13 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.R
 import com.example.koin_apps.data.remote.model.tickerTitle.KoinTitleData
+import com.example.koin_apps.databinding.TitlecoinlistBinding
 
 class RecyclerViewAdapter
     : RecyclerView.Adapter<RecyclerViewAdapter.CoinsViewHolder>() {
 
     private val koinTitleList: List<KoinTitleData>? = null
 
-    class CoinsViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class CoinsViewHolder(private val binding: TitlecoinlistBinding)
+        : RecyclerView.ViewHolder(binding.root) {
+        val koinTitleData = binding.titleCoin
 
         fun bind(){
 
@@ -28,11 +31,11 @@ class RecyclerViewAdapter
                 .from(parent.context)
                 .inflate(R.layout.titlecoinlist, parent, false)
 
-        return CoinsViewHolder(view)
+        return CoinsViewHolder(TitlecoinlistBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: CoinsViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.koinTitleData.text = koinTitleList?.get(position)?.tickerTitle
     }
 
     override fun getItemCount(): Int {

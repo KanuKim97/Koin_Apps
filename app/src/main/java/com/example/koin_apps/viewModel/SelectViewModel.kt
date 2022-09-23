@@ -1,5 +1,6 @@
 package com.example.koin_apps.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,8 @@ class SelectViewModel: ViewModel() {
         koinTitleKeySet: Set<String?>?
     ) {
         val coinTitleList: Array<String?> = koinTitleKeySet!!.toTypedArray()
-        
+
+        Log.d("Title: ", "$coinTitleList")
     }
 
     fun updateResponseError(
