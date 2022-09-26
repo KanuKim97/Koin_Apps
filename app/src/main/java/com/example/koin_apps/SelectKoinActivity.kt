@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.koin_apps.data.recyclerViewAdapter.RecyclerViewAdapter
@@ -94,7 +95,11 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onFailure(call: Call<TickerRoot>, t: Throwable) {
-                Log.d("Error", t.message.toString())
+                Toast.makeText(
+                    applicationContext,
+                    "${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
