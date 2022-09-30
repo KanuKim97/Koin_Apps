@@ -3,7 +3,6 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -30,29 +29,25 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
 
         selectViewModel = ViewModelProvider(this)[SelectViewModel::class.java]
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
-        val coinViewAdapter = RecyclerViewAdapter()
-
-        selectKoinBinding.apply {
-            CoinRecyclerView.apply {
-                adapter = coinViewAdapter
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-            }
-        }
 
         setContentView(selectKoinBinding.root)
+
+        selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onResume() {
         super.onResume()
         selectKoinResponse()
 
-        /*
-        selectViewModel.selectKoinList.observe(
-            this, { koinNameList ->
 
-        })
-        */
+        selectViewModel.selectKoinList.observe(
+            this
+        ) { koinNameList ->
+            selectKoinBinding.CoinRecyclerView.adapter = RecyclerViewAdapter(
+                koinNameList
+            )
+        }
+
 
         selectKoinBinding.compSelectBtn.setOnClickListener(this)
     }
@@ -86,8 +81,6 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
 
                             selectViewModel.updateResponseError(responseErrorCode, responseErrorMsg)
                         } catch (e: JSONException) { e.printStackTrace() }
-
-
                     }
 
                 }

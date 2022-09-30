@@ -1,17 +1,17 @@
 package com.example.koin_apps.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class SelectViewModel: ViewModel() {
-    private val _selectKoinList = MutableLiveData<Set<String>?>()
+    private val _selectKoinList = MutableLiveData<List<String>?>()
 
-    val selectKoinList: LiveData<Set<String>?>
+    val selectedData = arrayListOf<String>()
+    val selectKoinList: LiveData<List<String>?>
         get() = _selectKoinList
 
-    init { _selectKoinList.value = null}
+    init { _selectKoinList.value = null }
 
     override fun onCleared() {
         super.onCleared()
@@ -21,16 +21,16 @@ class SelectViewModel: ViewModel() {
     fun updateSelectValue(
         koinTitleKeySet: Set<String?>?
     ) {
-        val coinTitleList: Array<String?> = koinTitleKeySet!!.toTypedArray()
+        val coinTitleList: List<String?>? = koinTitleKeySet?.toList()
 
-        Log.d("Title: ", "$coinTitleList")
+        _selectKoinList.value = coinTitleList as List<String>
     }
 
     fun updateResponseError(
         inputErrorCode: String,
         inputErrorMsg: String
     ){
-        val errorBody: Set<String> = setOf(inputErrorCode, inputErrorMsg)
+        val errorBody: List<String> = listOf(inputErrorCode, inputErrorMsg)
         _selectKoinList.value = errorBody
     }
 
