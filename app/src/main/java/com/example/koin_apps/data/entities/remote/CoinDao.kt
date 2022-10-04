@@ -1,19 +1,20 @@
-package com.example.koin_apps.data.entities
+package com.example.koin_apps.data.entities.remote
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.koin_apps.data.entities.db.CoinTitle
 
 @Dao
 interface CoinDao {
     @Query("SELECT * FROM cointitle")
     fun getAll(): List<CoinTitle>
 
-    /*
-    @Insert
-    fun insertAll()
 
+    @Insert
+    fun insertSelected()
+
+    /*
     @Delete
     fun delete(coinTitle: CoinTitle)
     */

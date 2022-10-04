@@ -13,7 +13,6 @@ class RecyclerViewAdapter(
     class CoinsViewHolder(private val binding: TitlecoinlistBinding)
         : RecyclerView.ViewHolder(binding.root) {
             val koinTitleData = binding.titleCoin
-
         }
 
     override fun onCreateViewHolder(

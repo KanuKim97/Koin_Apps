@@ -39,7 +39,6 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
         super.onResume()
         selectKoinResponse()
 
-
         selectViewModel.selectKoinList.observe(
             this
         ) { koinNameList ->
@@ -47,7 +46,6 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
                 koinNameList
             )
         }
-
 
         selectKoinBinding.compSelectBtn.setOnClickListener(this)
     }
@@ -73,7 +71,6 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
                         val jsonObject: JSONObject
 
                         try {
-
                             jsonObject = JSONObject(response.errorBody()!!.string())
 
                             val responseErrorCode = jsonObject.getString("status")

@@ -1,4 +1,4 @@
-package com.example.koin_apps.data.entities
+package com.example.koin_apps.data.entities.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
