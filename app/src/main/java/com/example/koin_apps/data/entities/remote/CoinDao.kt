@@ -12,7 +12,7 @@ interface CoinDao {
 
 
     @Insert
-    fun insertSelected()
+    fun insertSelected(selectedCoin: CoinTitle)
 
     /*
     @Delete

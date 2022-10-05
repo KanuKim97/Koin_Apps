@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.koin_apps.data.entities.AppDataBase
+import com.example.koin_apps.data.entities.remote.DaoClient
 import com.example.koin_apps.data.recyclerViewAdapter.RecyclerViewAdapter
 import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
@@ -22,7 +24,12 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
     private lateinit var selectViewModel: SelectViewModel
 
+    private var daoTransactionThread: DaoTransactionThread? = null
+
     var mSelectKoin: TickerRoot? = null
+
+    private val appDataBase: AppDataBase by lazy { DaoClient.createDBClient() }
+    val coinDao by lazy { appDataBase.coinTitleDao() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +110,35 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
                 finish()
             }
 
+        }
+    }
+
+    //Dao insert Transaction
+    inner class DaoTransactionThread(): Thread() {
+        var isRunning: Boolean = true
+
+        override fun run() {
+            while(isRunning) {
+                try {
+                    
+                } catch (e: InterruptedException) { e.printStackTrace() }
+            }
+        }
+    }
+
+    private fun setDaoTransactionThread() {
+        if (!DaoTransactionThread().isRunning) { interruptThread() }
+        else {
+            daoTransactionThread = DaoTransactionThread().apply { this.start() }
+        }
+    }
+
+    private fun interruptThread() {
+        daoTransactionThread?.run {
+            this.isRunning = false
+
+            if (!this.isInterrupted)
+                this.interrupt()
         }
     }
 

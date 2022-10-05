@@ -46,27 +46,29 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         super.onResume()
 
         liveTimeViewModel.transactionLiveData.observe(
-            this,
-            { transactionResult ->
-                if(transactionResult == null){
-                    liveTimeBinding.TransactionView.text = getString(R.string.API_DATA_Not_Founded)
-                } else {
-                    for(i in 0 until (transactionResult.size).minus(1)) {
-                        if (transactionResult[i].status == "0000") {
-                            liveTimeBinding.TransactionView.text =
-                                getString(
-                                    R.string.transaction_Format,
-                                    transactionResult[i].transactionType,
-                                    transactionResult[i].transactionDate,
-                                    transactionResult[i].transaction_Price,
-                                    transactionResult[i].units_Transaction_Traded,
-                                    transactionResult[i].transaction_Total
-                                )
-                        } else { liveTimeBinding.TransactionView.text = transactionResult[i].errorMsg }
+            this
+        ) { transactionResult ->
+            if (transactionResult == null) {
+                liveTimeBinding.TransactionView.text = getString(R.string.API_DATA_Not_Founded)
+            } else {
+                for (i in 0 until (transactionResult.size).minus(1)) {
+                    if (transactionResult[i].status == "0000") {
+                        liveTimeBinding.TransactionView.text =
+                            getString(
+                                R.string.transaction_Format,
+                                transactionResult[i].transactionType,
+                                transactionResult[i].transactionDate,
+                                transactionResult[i].transaction_Price,
+                                transactionResult[i].units_Transaction_Traded,
+                                transactionResult[i].transaction_Total
+                            )
+                    } else {
+                        liveTimeBinding.TransactionView.text = transactionResult[i].errorMsg
                     }
                 }
+            }
 
-            })
+        }
 
         liveTimeBinding.getBackBtn.setOnClickListener(this)
         liveTimeBinding.BtnTransaction.setOnClickListener(this)
