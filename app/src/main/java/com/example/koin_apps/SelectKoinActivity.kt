@@ -7,10 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.koin_apps.data.entities.AppDataBase
-import com.example.koin_apps.data.entities.remote.DaoClient
+import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.recyclerViewAdapter.RecyclerViewAdapter
-import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivitySelectKoinBinding
 import com.example.koin_apps.viewModel.SelectViewModel
@@ -23,13 +21,12 @@ import retrofit2.Response
 class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
     private lateinit var selectViewModel: SelectViewModel
-
-    private var daoTransactionThread: DaoTransactionThread? = null
-
     var mSelectKoin: TickerRoot? = null
 
+    /* TODO : insert Selected Data to Room DataBase
     private val appDataBase: AppDataBase by lazy { DaoClient.createDBClient() }
     val coinDao by lazy { appDataBase.coinTitleDao() }
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,17 +46,28 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
         selectViewModel.selectKoinList.observe(
             this
         ) { koinNameList ->
-            selectKoinBinding.CoinRecyclerView.adapter = RecyclerViewAdapter(
-                koinNameList
-            )
+            selectKoinBinding.CoinRecyclerView.adapter =
+                RecyclerViewAdapter(koinNameList)
         }
 
         selectKoinBinding.compSelectBtn.setOnClickListener(this)
     }
 
 
+    //TODO select Page to go Main Page
+    override fun onClick(v: View?) {
+        when(v?.id) {
+
+            R.id.compSelectBtn -> {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+
+        }
+    }
+
     private fun selectKoinResponse() {
-        val mSelectKoinResponse = RetrofitRepo.getTickerSingleton("ALL")
+        val mSelectKoinResponse = AppRepository.getTickerSingleton("ALL")
 
         mSelectKoinResponse.enqueue(object: Callback<TickerRoot> {
             override fun onResponse(
@@ -99,47 +107,6 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
                 ).show()
             }
         })
-    }
-
-    //TODO select Page to go Main Page
-    override fun onClick(v: View?) {
-        when(v?.id) {
-
-            R.id.compSelectBtn -> {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-
-        }
-    }
-
-    //Dao insert Transaction
-    inner class DaoTransactionThread(): Thread() {
-        var isRunning: Boolean = true
-
-        override fun run() {
-            while(isRunning) {
-                try {
-                    
-                } catch (e: InterruptedException) { e.printStackTrace() }
-            }
-        }
-    }
-
-    private fun setDaoTransactionThread() {
-        if (!DaoTransactionThread().isRunning) { interruptThread() }
-        else {
-            daoTransactionThread = DaoTransactionThread().apply { this.start() }
-        }
-    }
-
-    private fun interruptThread() {
-        daoTransactionThread?.run {
-            this.isRunning = false
-
-            if (!this.isInterrupted)
-                this.interrupt()
-        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.koin_apps.data.recyclerViewAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.R
 import com.example.koin_apps.databinding.TitlecoinlistBinding
@@ -12,8 +13,10 @@ class RecyclerViewAdapter(
 
     class CoinsViewHolder(private val binding: TitlecoinlistBinding)
         : RecyclerView.ViewHolder(binding.root) {
-            val koinTitleData = binding.titleCoin
-        }
+        val checkKoin = binding.checkCoin
+        val koinTitleData = binding.titleCoin
+
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

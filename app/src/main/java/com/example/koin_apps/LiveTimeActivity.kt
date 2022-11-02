@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.remote.IKoinApiService
-import com.example.koin_apps.data.remote.RetrofitClient
-import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.LiveTimeViewModel
@@ -36,7 +35,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
 
         liveTimeViewModel = ViewModelProvider(this)[LiveTimeViewModel::class.java]
-        koinService = RetrofitClient.koinApiService_Public
+        koinService = AppRepository.koinApiService_public
         koinName = intent.getStringExtra("KoinName").toString()
 
         setContentView(liveTimeBinding.root)
@@ -161,7 +160,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun transactionCoinResponse(coinName: String, transactionCount: Int) {
 
-        val mTransactionCoin = RetrofitRepo.getTransactionSingleton(coinName, transactionCount)
+        val mTransactionCoin = AppRepository.getTransactionSingleton(coinName, transactionCount)
 
         mTransactionCoin.enqueue(object: Callback<TransactionRoot>{
             override fun onResponse(

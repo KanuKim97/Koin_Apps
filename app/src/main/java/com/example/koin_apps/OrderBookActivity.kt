@@ -4,9 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.remote.IKoinApiService
-import com.example.koin_apps.data.remote.RetrofitClient
-import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
 import com.example.koin_apps.databinding.ActivityOrderBookBinding
 import com.example.koin_apps.viewModel.OrderBookViewModel
@@ -27,7 +26,7 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
         orderBookBinding = ActivityOrderBookBinding.inflate(layoutInflater)
 
         orderBookViewModel = ViewModelProvider(this)[OrderBookViewModel::class.java]
-        koinService = RetrofitClient.koinApiService_Public
+        koinService = AppRepository.koinApiService_public
 
 
         setContentView(orderBookBinding.root)
@@ -36,21 +35,23 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
-        orderBookViewModel.orderBookLiveData?.observe(this,
-            {
-                if(it.status == "0000") {
-                    orderBookBinding.showOrderBook.text =
-                        getString(
-                            R.string.orderBook_Format,
-                            it.price,
-                            it.quantity,
-                            it.timestamp,
-                            it.order_currency,
-                            it.payment_currency
-                        )
-                } else { orderBookBinding.showOrderBook.text = it.ErrorMsg }
+        orderBookViewModel.orderBookLiveData?.observe(this
+        ) {
+            if (it.status == "0000") {
+                orderBookBinding.showOrderBook.text =
+                    getString(
+                        R.string.orderBook_Format,
+                        it.price,
+                        it.quantity,
+                        it.timestamp,
+                        it.order_currency,
+                        it.payment_currency
+                    )
+            } else {
+                orderBookBinding.showOrderBook.text = it.ErrorMsg
+            }
 
-            })
+        }
 
         orderBookBinding.activeBtn.setOnClickListener(this)
     }
@@ -66,7 +67,7 @@ class OrderBookActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun orderBookResponse() {
 
-        val mOrderBook = RetrofitRepo.getOrderBookSingleton("BTC", 5)
+        val mOrderBook = AppRepository.getOrderBookSingleton("BTC", 5)
 
         mOrderBook.enqueue(object: Callback<OrderRoot>{
             override fun onResponse(

@@ -3,14 +3,12 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.viewModel.MainViewModel
 import com.example.koin_apps.data.remote.IKoinApiService
-import com.example.koin_apps.data.remote.RetrofitClient
-import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityMainBinding
 import org.json.JSONException
@@ -29,7 +27,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        koinService = RetrofitClient.koinApiService_Public
+        koinService = AppRepository.koinApiService_public
 
         setContentView(mainActivityBinding.root)
     }
@@ -117,7 +115,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun tickerSearchCall(coinName: String){
 
-        val mSearchTicker = RetrofitRepo.getTickerSingleton(coinName)
+        val mSearchTicker = AppRepository.getTickerSingleton(coinName)
 
         mSearchTicker.enqueue(object: Callback<TickerRoot>{
             override fun onResponse(

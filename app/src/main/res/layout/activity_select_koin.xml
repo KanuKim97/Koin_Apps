@@ -30,9 +30,17 @@
         android:id="@+id/CoinRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.9"
+        android:layout_weight="0.7"
         android:padding="10dp"
         android:choiceMode="multipleChoice"
+        />
+
+    <TextView
+        android:id = "@+id/List_Selected"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.18"
+        android:padding="10dp"
         />
 
     <Button

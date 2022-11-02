@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 class SelectViewModel: ViewModel() {
     private val _selectKoinList = MutableLiveData<List<String>?>()
 
-    val selectedData = arrayListOf<String>()
     val selectKoinList: LiveData<List<String>?>
         get() = _selectKoinList
 

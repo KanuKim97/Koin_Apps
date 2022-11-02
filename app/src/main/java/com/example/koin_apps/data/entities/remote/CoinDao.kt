@@ -10,12 +10,7 @@ interface CoinDao {
     @Query("SELECT * FROM cointitle")
     fun getAll(): List<CoinTitle>
 
-
     @Insert
     fun insertSelected(selectedCoin: CoinTitle)
 
-    /*
-    @Delete
-    fun delete(coinTitle: CoinTitle)
-    */
 }

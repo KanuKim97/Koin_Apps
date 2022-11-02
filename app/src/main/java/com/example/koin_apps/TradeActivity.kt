@@ -5,9 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.example.koin_apps.data.remote.RetrofitClient
+import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.remote.IKoinApiService
-import com.example.koin_apps.data.remote.RetrofitRepo
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.databinding.ActivityTradeBinding
 import com.example.koin_apps.viewModel.TradeViewModel
@@ -29,7 +28,7 @@ class TradeActivity : AppCompatActivity() {
 
         tradeActivityBinding = ActivityTradeBinding.inflate(layoutInflater)
         tradeViewModel = ViewModelProvider(this)[TradeViewModel::class.java]
-        koinService = RetrofitClient.koinApiService_Public
+        koinService = AppRepository.koinApiService_public
 
         setContentView(tradeActivityBinding.root)
     }
@@ -108,7 +107,7 @@ class TradeActivity : AppCompatActivity() {
 
 
     private fun tradeCoinResponse(CoinName: String){
-        val mTradeTicker = RetrofitRepo.getTickerSingleton(CoinName)
+        val mTradeTicker = AppRepository.getTickerSingleton(CoinName)
 
         mTradeTicker.enqueue(object: Callback<TickerRoot>{
             override fun onResponse(
