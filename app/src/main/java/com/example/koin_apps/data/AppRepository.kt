@@ -73,7 +73,7 @@ object AppRepository {
         return Room.databaseBuilder(
             AndroidApp.getApplicationContext(),
             AppDataBase::class.java,
-            "UserDB_v01"
+            "DB_v01"
         ).build()
     }
 

@@ -4,15 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
-data class CoinTitle(
+@Entity(tableName = "coin_table")
+data class CoinEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "coin_Number")
-    val coin_no: Int,
-
+    val uid: Int,
     @ColumnInfo(name = "coinTitle")
-    val coinTitle: String,
-
-    @ColumnInfo(name = "isChecked")
-    val isChecked: Boolean
+    val coinTitle: String
 )

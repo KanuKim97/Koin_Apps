@@ -2,7 +2,7 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Focused on Button-->
+    <!--Focused on EditText-->
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <stroke
@@ -13,14 +13,15 @@
         </shape>
     </item>
 
-    <!--Unfocused on Button-->
+    <!--Unfocused on EditText-->
     <item android:state_focused="false">
         <shape android:shape="rectangle">
             <stroke
                 android:width="2dp"
-                android:color="#BDBDBD"/>
+                android:color="#BCBCBC"/>
             <corners android:radius="20dp"/>
             <solid android:color="#FFFFFF"/>
         </shape>
     </item>
+
 </selector>

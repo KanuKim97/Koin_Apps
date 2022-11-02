@@ -3,16 +3,29 @@ package com.example.koin_apps.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.koin_apps.data.AppRepository
+import com.example.koin_apps.data.entities.DBRepository
+import com.example.koin_apps.data.entities.db.CoinEntity
 import com.example.koin_apps.data.remote.model.ticker.TickerData
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 
 class MainViewModel: ViewModel() {
     private val _tickerLiveData = MutableLiveData<TickerData?>()
+    //add Room DB Code
+    private val readAllData: LiveData<List<CoinEntity>>
+    private val coinDBRepo: DBRepository
 
     val tickerLiveData: LiveData<TickerData?>
         get() = _tickerLiveData
 
-    init { _tickerLiveData.value = null }
+    init {
+        _tickerLiveData.value = null
+
+        //add Room DB Code
+        val coinDBDao = AppRepository.createAppDBClient().coinTitleDao()
+        coinDBRepo = DBRepository(coinDBDao)
+        readAllData = coinDBRepo.readAllData
+    }
 
     override fun onCleared() {
         super.onCleared()

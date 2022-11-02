@@ -16,22 +16,21 @@
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/Txt_Input_Coin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="15dp" >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/KoinInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/koin_Input"
-                android:maxLines="1"
-                tools:ignore="TouchTargetSizeCheck" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:background="@drawable/edit_text_radius"
+            android:inputType="text"
+            android:hint="@string/input_coin_title"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:maxLines="1" />
 
         <Button
             android:id="@+id/KoinSearchBtn"
@@ -68,6 +67,7 @@
             android:id="@+id/OrderBookBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/radius_button"
             android:text="@string/btn_OrderBook"
             android:textSize="28sp"
@@ -78,6 +78,7 @@
             android:id="@+id/nextPageBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/radius_button"
             android:text="@string/btn_liveTimeActivity"
             android:textSize="28sp"

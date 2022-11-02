@@ -70,5 +70,6 @@
     <string name="welcome">Welcome!</string>
     <string name="select_your_coin">Select Your Coin!</string>
     <string name="select_complete">Select Complete!</string>
+    <string name="input_coin_title">Input Coin Title</string>
 
 </resources>

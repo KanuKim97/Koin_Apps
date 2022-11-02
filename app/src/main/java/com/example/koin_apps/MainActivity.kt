@@ -59,11 +59,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        mainActivityBinding.KoinInput.text?.clear()
+        mainActivityBinding.TxtInputCoin.text?.clear()
     }
 
     override fun onClick(v: View?) {
-        val coinTicker = mainActivityBinding.KoinInput.text.toString()
+        val coinTicker = mainActivityBinding.TxtInputCoin.text.toString()
 
         when(v?.id) {
             R.id.KoinSearchBtn -> tickerSearchCall(coinTicker)

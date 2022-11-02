@@ -9,7 +9,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IKoinApiService {
-
     @GET("ticker/{path}_KRW")
     fun getTicker(
         @Path("path")
@@ -31,5 +30,4 @@ interface IKoinApiService {
         @Query("count")
         count: Int
     ): Call<OrderRoot>
-
 }
