@@ -1,4 +1,4 @@
-package com.example.koin_apps.viewModel
+package com.example.koin_apps.viewModel.activity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

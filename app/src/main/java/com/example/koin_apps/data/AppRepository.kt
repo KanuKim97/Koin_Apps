@@ -1,80 +1,29 @@
 package com.example.koin_apps.data
 
-import androidx.room.Room
-import com.example.koin_apps.AndroidApp
-import com.example.koin_apps.common.Constants.IKoinPublicApiUri
-import com.example.koin_apps.data.entities.AppDataBase
+import androidx.lifecycle.LiveData
+import com.example.koin_apps.data.database.dao.CoinDao
+import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.remote.IKoinApiService
-import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
-import com.example.koin_apps.data.remote.model.ticker.TickerRoot
-import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
+import com.example.koin_apps.data.remote.RetroRepo
 
-object AppRepository {
-    val koinApiService_public: IKoinApiService
-        get() = getClient(IKoinPublicApiUri)
-            .create(IKoinApiService::class.java)
 
-    private var retrofit: Retrofit? = null
+class AppRepository(private val coinDao: CoinDao) {
 
-    //Create Retrofit Client
-    private fun getClient(baseUrl: String): Retrofit {
-        if(retrofit == null) {
-            val httpClient = OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .build()
 
-            retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(httpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        return retrofit!!
+    /* Room DataBase */
+    val readAllData: LiveData<List<CoinEntity>> = coinDao.readAllData()
+
+    fun addUser(coinEntity: CoinEntity) {
+        coinDao.insertCoinTitle(coinEntity)
     }
 
-    //Bithumb-Ticker
-    fun getTickerSingleton(
-        path: String
-    ): Call<TickerRoot> {
-        return getClient(IKoinPublicApiUri)
-            .create(IKoinApiService::class.java)
-            .getTicker(path)
-    }
+    /* Retrofit Client */
+    private val coinApiClient: IKoinApiService =
+        RetroRepo.getClient().create(IKoinApiService::class.java)
 
-    //Bithumb-Transaction
-    fun getTransactionSingleton(
-        path: String,
-        count:Int
-    ): Call<TransactionRoot> {
-        return getClient(IKoinPublicApiUri)
-            .create(IKoinApiService::class.java)
-            .getTransactionHistory(path, count)
-    }
+    fun getTicker(path: String) = coinApiClient.getTicker(path)
 
-    //Bithumb-OrderBook
-    fun getOrderBookSingleton(
-        path: String,
-        count: Int
-    ): Call<OrderRoot> {
-        return getClient(IKoinPublicApiUri)
-            .create(IKoinApiService::class.java)
-            .getOrderBook(path, count)
-    }
+    fun getTransaction(path: String, count:Int) = coinApiClient.getTransactionHistory(path, count)
 
-    //Create Room DB Client
-    fun createAppDBClient(): AppDataBase {
-        return Room.databaseBuilder(
-            AndroidApp.getApplicationContext(),
-            AppDataBase::class.java,
-            "DB_v01"
-        ).build()
-    }
-
+    fun getOrderBook(path: String, count: Int) = coinApiClient.getOrderBook(path, count)
 }

@@ -1,11 +1,18 @@
-package com.example.koin_apps.viewModel
+package com.example.koin_apps.viewModel.activity
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.remote.model.transaction.TransactionList
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
+import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class LiveTimeViewModel: ViewModel() {
+class LiveTimeViewModel(private val repos: AppRepository): ViewModel() {
     private val _transactionLiveData = MutableLiveData<List<TransactionList>?>()
     private val _koinTransactionArray = arrayListOf<TransactionList>()
 
@@ -15,12 +22,47 @@ class LiveTimeViewModel: ViewModel() {
 
     init { _transactionLiveData.value = null }
 
+    fun getTransaction(path: String, count: Int) {
+        repos.getTransaction(path, count).enqueue(object: Callback<TransactionRoot>{
+            override fun onResponse(
+                call: Call<TransactionRoot>,
+                response: Response<TransactionRoot>
+            ) {
+                when(response.code()) {
+                    200 -> {
+                        try {
+                            val coinTransDesc = response.body()
+
+                            Log.d("Transaction", "$coinTransDesc")
+                        } catch (e: NullPointerException) {
+                            throw NullPointerException("Response Data is Null or Empty")
+                        }
+                    }
+
+                    400 -> {
+                        val errJsonObj: JSONObject
+
+                        try{
+                            errJsonObj = JSONObject(response.errorBody()?.string()!!)
+                            val responseErrCode = errJsonObj.getString("status")
+                            val responseErrMsg = errJsonObj.getString("message")
+
+                            Log.d("400 Error", "$responseErrCode: $responseErrMsg")
+                        } catch (e: JSONException) { e.printStackTrace() }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<TransactionRoot>, t: Throwable) { t.printStackTrace() }
+        })
+    }
+
     override fun onCleared() {
         super.onCleared()
         _transactionLiveData.value = null
     }
 
-    fun updateKoinTransaction(
+/*    fun updateKoinTransaction(
         inputTransaction: TransactionRoot?,
         transactionCount: Int
     ){
@@ -64,6 +106,6 @@ class LiveTimeViewModel: ViewModel() {
         )
 
         _transactionLiveData.value = _koinTransactionArray
-    }
+    }*/
 
 }

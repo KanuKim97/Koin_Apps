@@ -1,11 +1,11 @@
-package com.example.koin_apps.data.entities.remote
+package com.example.koin_apps.data.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.koin_apps.data.entities.db.CoinEntity
+import com.example.koin_apps.data.database.tables.CoinEntity
 
 @Dao
 interface CoinDao {
@@ -13,5 +13,5 @@ interface CoinDao {
     fun readAllData(): LiveData<List<CoinEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertSelected(selectedCoin: CoinEntity)
+    fun insertCoinTitle(selectedCoin: CoinEntity)
 }
