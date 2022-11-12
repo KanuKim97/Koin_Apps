@@ -13,16 +13,17 @@ import com.example.koin_apps.databinding.ActivitySelectKoinBinding
 import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.SelectViewModel
 
-class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
+class SelectKoinActivity : AppCompatActivity(){
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
-    private lateinit var vmFactory: ViewModelFactory
     private lateinit var selectViewModel: SelectViewModel
+    private lateinit var vmFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vmFactory = ViewModelFactory(AppRepository(RoomRepo.provideDao(RoomRepo.createAppDBClient())))
         selectViewModel = ViewModelProvider(this, vmFactory)[SelectViewModel::class.java]
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
+
         setContentView(selectKoinBinding.root)
 
         selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -31,23 +32,21 @@ class SelectKoinActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         selectViewModel.getTicker()
-        selectViewModel.selectKoinList.observe(this) {
-            selectKoinBinding.CoinRecyclerView.adapter = RecyclerViewAdapter(it)
+
+        selectViewModel.coinList.observe(this) {
+            selectKoinBinding.CoinRecyclerView.adapter = RecyclerViewAdapter(it, selectViewModel)
         }
 
-        selectKoinBinding.compSelectBtn.setOnClickListener(this)
-    }
-
-    override fun onClick(v: View?) {
-        when(v?.id) {
-
-            R.id.compSelectBtn -> {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-
+        selectViewModel.selectedCoin.observe(this) {
+            if(it.size == 0) { selectKoinBinding.ListSelected.visibility = View.INVISIBLE }
+            else { selectKoinBinding.ListSelected.text = it.toString() }
         }
+
+        selectKoinBinding.compSelectBtn.setOnClickListener {
+            selectViewModel.storeTitleData()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+
     }
-
-
 }

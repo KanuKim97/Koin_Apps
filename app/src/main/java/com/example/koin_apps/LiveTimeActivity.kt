@@ -4,21 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.RoomRepo
-import com.example.koin_apps.data.remote.IKoinApiService
-import com.example.koin_apps.data.remote.RetroRepo
-import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.LiveTimeViewModel
-import org.json.JSONException
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.NumberFormatException
 
 class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {

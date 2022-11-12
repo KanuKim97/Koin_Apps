@@ -9,7 +9,6 @@ import com.example.koin_apps.data.remote.RetroRepo
 
 class AppRepository(private val coinDao: CoinDao) {
 
-
     /* Room DataBase */
     val readAllData: LiveData<List<CoinEntity>> = coinDao.readAllData()
 

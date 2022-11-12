@@ -7,21 +7,22 @@ import androidx.lifecycle.ViewModel
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
-import com.example.koin_apps.data.remote.model.tickerTitle.CoinTitleData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SelectViewModel(private val repos: AppRepository): ViewModel() {
+    private val _coinList = MutableLiveData<List<String?>?>()
+    private val _selectedCoin = MutableLiveData<MutableList<String>>()
 
-    private val _selectKoinList = MutableLiveData<List<String?>?>()
-
-    val selectKoinList: LiveData<List<String?>?>
-        get() = _selectKoinList
+    val coinList: LiveData<List<String?>?>
+        get() = _coinList
+    val selectedCoin: LiveData<MutableList<String>>
+        get()= _selectedCoin
 
     val coinTitleData = MutableLiveData<CoinEntity>()
 
-    init { _selectKoinList.value = null }
+    init { _coinList.value = null }
 
     fun getTicker() {
         repos.getTicker("ALL").enqueue(object: Callback<TickerRoot> {
@@ -31,10 +32,8 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
             ) {
                 when(response.code()) {
                     200 -> {
-                        Log.d("200 Value", "Coin Title: ${response.body()?.data?.keys}")
                         val coinTitleList = response.body()?.data?.keys?.toList()
-
-                        _selectKoinList.value = coinTitleList
+                        _coinList.value = coinTitleList
                     }
 
                     400 -> {
@@ -53,6 +52,11 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
         })
     }
 
+    fun getData(Elements: MutableList<String>) { _selectedCoin.value = Elements }
+
+    fun storeTitleData(){
+
+    }
 }
 
 

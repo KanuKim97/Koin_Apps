@@ -6,10 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.R
 import com.example.koin_apps.databinding.TitlecoinlistBinding
+import com.example.koin_apps.viewModel.activity.SelectViewModel
 
 class RecyclerViewAdapter(
-    private var coinTitleList: List<String?>?
+    private var coinTitleList: List<String?>?,
+    private var selectViewModel: SelectViewModel
 ) : RecyclerView.Adapter<RecyclerViewAdapter.CoinsViewHolder>() {
+    private val selectList: MutableList<String> = mutableListOf()
 
     class CoinsViewHolder(private val binding: TitlecoinlistBinding)
         : RecyclerView.ViewHolder(binding.root) {
@@ -31,15 +34,16 @@ class RecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: CoinsViewHolder, position: Int) {
         val titleListPosition = coinTitleList?.get(position)
+
         holder.koinTitleData.text = titleListPosition
         holder.checkKoin.isChecked
 
         holder.checkKoin.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked) {
-                Log.d("title Value", "$titleListPosition")
-            }
-        }
+            if(isChecked) { selectList.add(titleListPosition.toString()) }
+            else { selectList.remove(titleListPosition.toString()) }
 
+            selectViewModel.getData(selectList)
+        }
     }
 
     override fun getItemCount(): Int {
