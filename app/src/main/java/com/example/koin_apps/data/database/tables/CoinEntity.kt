@@ -9,7 +9,5 @@ data class CoinEntity(
     @PrimaryKey(autoGenerate = true)
     var uid: Int,
     @ColumnInfo(name = "coinTitle")
-    var coinTitle: String,
-    @ColumnInfo(name = "isChecked")
-    var isChecked: Boolean
+    var coinTitle: String
 )

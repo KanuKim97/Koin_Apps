@@ -1,12 +1,14 @@
 package com.example.koin_apps.viewModel.activity
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,9 +22,11 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
     val selectedCoin: LiveData<MutableList<String>>
         get()= _selectedCoin
 
-    val coinTitleData = MutableLiveData<CoinEntity>()
+    private var coinListElement: MutableList<String> = mutableListOf()
 
-    init { _coinList.value = null }
+    init {
+        _coinList.value = null
+    }
 
     fun getTicker() {
         repos.getTicker("ALL").enqueue(object: Callback<TickerRoot> {
@@ -36,15 +40,7 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
                         _coinList.value = coinTitleList
                     }
 
-                    400 -> {
-                        coinTitleData.postValue(
-                            CoinEntity(
-                                0,
-                                "",
-                                false
-                            ).apply { uid = response.code() }
-                        )
-                    }
+                    400 -> { }
                 }
             }
 
@@ -55,7 +51,17 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
     fun getData(Elements: MutableList<String>) { _selectedCoin.value = Elements }
 
     fun storeTitleData(){
+        coinListElement = _selectedCoin.value!!
 
+        if(coinListElement.size == 0) {
+            CoinEntity(0, "Data is Empty")
+        } else {
+            for(listElement in coinListElement) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    repos.addUser(CoinEntity(0, listElement))
+                }
+            }
+        }
     }
 }
 
