@@ -72,5 +72,7 @@
     <string name="select_complete">Select Complete!</string>
     <string name="input_coin_title">Input Coin Title</string>
     <string name="selected_Coin_List">Selected List</string>
+    <string name="coin_list">coinList</string>
+    <string name="your_cryptocurrency_list">Your Cryptocurrency List!</string>
 
 </resources>

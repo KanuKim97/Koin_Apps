@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.RoomRepo
-import com.example.koin_apps.data.recyclerViewAdapter.RecyclerViewAdapter
+import com.example.koin_apps.data.recyclerViewAdapter.SelectRecyclerAdapter
 import com.example.koin_apps.databinding.ActivitySelectKoinBinding
 import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.SelectViewModel
@@ -34,7 +34,7 @@ class SelectKoinActivity : AppCompatActivity(){
         selectViewModel.getTicker()
 
         selectViewModel.coinList.observe(this) {
-            selectKoinBinding.CoinRecyclerView.adapter = RecyclerViewAdapter(it, selectViewModel)
+            selectKoinBinding.CoinRecyclerView.adapter = SelectRecyclerAdapter(it, selectViewModel)
         }
 
         selectViewModel.selectedCoin.observe(this) {

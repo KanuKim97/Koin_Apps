@@ -19,40 +19,44 @@
         app:layout_constraintStart_toStartOf="parent"
         >
 
-        <EditText
-            android:id="@+id/Txt_Input_Coin"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="15dp"
-            android:gravity="center"
-            android:background="@drawable/edit_text_radius"
-            android:inputType="text"
-            android:hint="@string/input_coin_title"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:maxLines="1" />
-
-        <Button
-            android:id="@+id/KoinSearchBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/radius_button"
-            android:text="@string/btn_Search"
-            android:textSize="28sp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/coin_list"
+            android:textColor="@color/black"
             android:textStyle="bold"
-            android:textColor="@color/black" />
+            android:textSize="30sp"
+            android:fontFamily="@font/bungee_inline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/your_cryptocurrency_list"
+            android:textSize="19sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="-20dp" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/open_price"
+    <LinearLayout
+        android:id="@+id/mid_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_Layout"
+        app:layout_constraintTop_toBottomOf="@+id/search_Layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_Layout" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="multipleChoice" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottom_Layout"
@@ -62,28 +66,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
-
-        <Button
-            android:id="@+id/OrderBookBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/radius_button"
-            android:text="@string/btn_OrderBook"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@color/black" />
-
-        <Button
-            android:id="@+id/nextPageBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/radius_button"
-            android:text="@string/btn_liveTimeActivity"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/tradePageBtn"
