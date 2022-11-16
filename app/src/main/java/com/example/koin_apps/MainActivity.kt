@@ -41,65 +41,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         /*
             Todo: Observe ViewModel Livedata
          */
-        mainActivityBinding.KoinSearchBtn.setOnClickListener(this)
-        mainActivityBinding.nextPageBtn.setOnClickListener(this)
+        mainViewModel.readAllData()
+
         mainActivityBinding.tradePageBtn.setOnClickListener(this)
-        mainActivityBinding.OrderBookBtn.setOnClickListener(this)
+
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mainActivityBinding.TxtInputCoin.text?.clear()
-    }
 
     override fun onClick(v: View?) {
-        val tickerTitle = mainActivityBinding.TxtInputCoin.text.toString()
-
         when(v?.id) {
-            R.id.KoinSearchBtn -> mainViewModel.getTicker(tickerTitle)
+            R.id.tradePageBtn -> {
 
-            R.id.nextPageBtn ->
-                Intent(this, LiveTimeActivity::class.java).also {
-                    if(tickerTitle.isNullOrEmpty()){
-                        Toast.makeText(
-                            applicationContext,
-                            R.string.Empty_Coin_TxtBox,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        it.putExtra("CoinTitle", tickerTitle)
-                        startActivity(it)
-                    }
-                }
-
-            R.id.tradePageBtn ->
-                Intent(this, TradeActivity::class.java).also {
-                    if(tickerTitle.isNullOrEmpty()){
-                        Toast.makeText(
-                            applicationContext,
-                            R.string.Empty_Coin_TxtBox,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        it.putExtra("CoinTitle", tickerTitle)
-                        startActivity(it)
-                    }
-                }
-
-            R.id.OrderBookBtn ->
-                Intent(this, OrderBookActivity::class.java).also {
-                    if(tickerTitle.isNullOrEmpty()){
-                        Toast.makeText(
-                            applicationContext,
-                            R.string.Empty_Coin_TxtBox,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        it.putExtra("CoinTitle", tickerTitle)
-                        startActivity(it)
-                    }
-                }
-
+            }
         }
     }
 

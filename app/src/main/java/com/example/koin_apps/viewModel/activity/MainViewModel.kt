@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.remote.model.ticker.TickerData
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -21,7 +23,14 @@ class MainViewModel(private val repos: AppRepository): ViewModel() {
 
     init { _tickerLiveData.value = null }
 
-    fun getTicker(path: String) {
+    fun readAllData(){
+        viewModelScope.launch {
+            repos.readAllData()
+            Log.d("Select All","${repos.readAllData()}")
+        }
+    }
+
+     fun getTicker(path: String) {
         repos.getTicker(path).enqueue(object: Callback<TickerRoot> {
             override fun onResponse(
                 call: Call<TickerRoot>,

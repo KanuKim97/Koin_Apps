@@ -75,4 +75,12 @@
     <string name="coin_list">coinList</string>
     <string name="your_cryptocurrency_list">Your Cryptocurrency List!</string>
 
+    <string name="MainItem_Format">
+        최근 24시간 변동률: %s \n
+        최근 24시간 변동가: %s \n
+        전일 종가: %s \n
+        최근 24시간 거래 금액: %s \n
+        최근 24시간 거래량: %s \n
+    </string>
+
 </resources>
