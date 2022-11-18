@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koin_apps.data.AppRepository
+import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.remote.model.ticker.TickerData
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import kotlinx.coroutines.launch
@@ -17,18 +18,18 @@ import retrofit2.Response
 
 class MainViewModel(private val repos: AppRepository): ViewModel() {
     private val _tickerLiveData = MutableLiveData<TickerData?>()
+    private val _readAllCoinData: LiveData<List<CoinEntity>>
 
+    val readAllCoinData: LiveData<List<CoinEntity>>
+        get() = _readAllCoinData
     val tickerLiveData: LiveData<TickerData?>
         get() = _tickerLiveData
 
-    init { _tickerLiveData.value = null }
-
-    fun readAllData(){
-        viewModelScope.launch {
-            repos.readAllData()
-            Log.d("Select All","${repos.readAllData()}")
-        }
+    init {
+        _tickerLiveData.value = null
+        _readAllCoinData = repos.readAllData()
     }
+
 
      fun getTicker(path: String) {
         repos.getTicker(path).enqueue(object: Callback<TickerRoot> {
@@ -69,54 +70,5 @@ class MainViewModel(private val repos: AppRepository): ViewModel() {
         super.onCleared()
         _tickerLiveData.value = null
     }
-
-  /*
-    fun updateKoinTicker(
-        responseTicker: TickerRoot?
-    ){
-       if(responseTicker != null) {
-           _tickerLiveData.value =
-               TickerData(
-                   responseTicker.status,
-                   responseTicker.message,
-                   responseTicker.data["opening_price"].toString(),
-                   responseTicker.data["closing_price"].toString(),
-                   responseTicker.data["min_price"].toString(),
-                   responseTicker.data["max_price"].toString(),
-                   responseTicker.data["units_traded"].toString(),
-                   responseTicker.data["acc_trade_value"].toString(),
-                   responseTicker.data["prev_closing_price"].toString(),
-                   responseTicker.data["units_traded_24H"].toString(),
-                   responseTicker.data["acc_trade_value_24H"].toString(),
-                   responseTicker.data["fluctate_24H"].toString(),
-                   responseTicker.data["fluctate_rate_24H"].toString(),
-                   responseTicker.data["date"].toString()
-               )
-       } else { throw NullPointerException("response Data is Empty") }
-    }
-
-    fun updateErrorTicker(
-        inputErrorCode: String,
-        inputErrorMsg: String
-    ){
-        _tickerLiveData.value =
-            TickerData(
-                inputErrorCode,
-                inputErrorMsg,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            )
-    }
-    */
 
 }

@@ -1,5 +1,6 @@
 package com.example.koin_apps.viewModel.activity
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,8 @@ import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,9 +27,7 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
 
     private var coinListElement: MutableList<String> = mutableListOf()
 
-    init {
-        _coinList.value = null
-    }
+    init { _coinList.value = null }
 
     fun getTicker() {
         repos.getTicker("ALL").enqueue(object: Callback<TickerRoot> {
@@ -40,7 +41,17 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
                         _coinList.value = coinTitleList
                     }
 
-                    400 -> { }
+                    400 -> {
+                        val errJsonObj: JSONObject
+
+                        try{
+                            errJsonObj = JSONObject(response.errorBody()?.string()!!)
+                            val responseErrCode = errJsonObj.getString("status")
+                            val responseErrMsg = errJsonObj.getString("message")
+
+                            Log.d("400 Error", "$responseErrCode: $responseErrMsg")
+                        } catch (e: JSONException) { e.printStackTrace() }
+                    }
                 }
             }
 
@@ -54,7 +65,9 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
         coinListElement = _selectedCoin.value!!
 
         if(coinListElement.size == 0) {
-            CoinEntity(0, "Data is Empty")
+            viewModelScope.launch(Dispatchers.IO) {
+                repos.addUser(CoinEntity(0, "Data is Empty"))
+            }
         } else {
             for(listElement in coinListElement) {
                 viewModelScope.launch(Dispatchers.IO) {
@@ -63,6 +76,9 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
             }
         }
     }
+
+
+
 }
 
 

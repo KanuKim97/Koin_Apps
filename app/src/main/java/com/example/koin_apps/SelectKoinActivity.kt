@@ -23,10 +23,9 @@ class SelectKoinActivity : AppCompatActivity(){
         vmFactory = ViewModelFactory(AppRepository(RoomRepo.provideDao(RoomRepo.createAppDBClient())))
         selectViewModel = ViewModelProvider(this, vmFactory)[SelectViewModel::class.java]
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
+        selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
 
         setContentView(selectKoinBinding.root)
-
-        selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onResume() {
