@@ -20,6 +20,7 @@ class TradeViewModel: ViewModel() {
         _tradeLiveData.value = null
     }
 
+/*
     fun updateKoinTrade(
         koinTradeList: TickerRoot?
     ) {
@@ -44,27 +45,6 @@ class TradeViewModel: ViewModel() {
         } else { throw NullPointerException("Response Data is Empty") }
     }
 
-    fun updateErrorTicker(
-        inputErrorCode: String,
-        inputErrorMsg: String
-    ){
-        _tradeLiveData.value =
-            TickerData(
-                inputErrorCode,
-                inputErrorMsg,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            )
-    }
+*/
 
 }

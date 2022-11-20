@@ -18,7 +18,7 @@ import retrofit2.Response
 
 class MainViewModel(private val repos: AppRepository): ViewModel() {
     private val _tickerLiveData = MutableLiveData<TickerData?>()
-    private val _readAllCoinData: LiveData<List<CoinEntity>>
+    private lateinit var _readAllCoinData: LiveData<List<CoinEntity>>
 
     val readAllCoinData: LiveData<List<CoinEntity>>
         get() = _readAllCoinData
@@ -27,43 +27,44 @@ class MainViewModel(private val repos: AppRepository): ViewModel() {
 
     init {
         _tickerLiveData.value = null
-        _readAllCoinData = repos.readAllData()
+        viewModelScope.launch { _readAllCoinData = repos.readAllData() }
     }
 
+    fun getTickerPrice(path: List<CoinEntity>) {
+        for(elements in path) {
+            repos.getTicker(elements.coinTitle).enqueue(object: Callback<TickerRoot> {
+                override fun onResponse(
+                    call: Call<TickerRoot>,
+                    response: Response<TickerRoot>
+                ) {
+                    when(response.code()) {
+                        200 -> {
+                            try {
+                                val coinTickerDesc = response.body()
+                                Log.d("Map data", " ${elements.coinTitle}: ${coinTickerDesc!!.data}")
+                            } catch (e: NullPointerException) {
+                                throw NullPointerException("Response Data is Null or Empty")
+                            }
+                        }
 
-     fun getTicker(path: String) {
-        repos.getTicker(path).enqueue(object: Callback<TickerRoot> {
-            override fun onResponse(
-                call: Call<TickerRoot>,
-                response: Response<TickerRoot>
-            ) {
-                when(response.code()) {
-                    200 -> {
-                        try {
-                            val coinTickerDesc = response.body()
+                        400 -> {
+                            val errJsonObj: JSONObject
 
-                            Log.d("ticker", "$coinTickerDesc")
-                        } catch (e: NullPointerException) {
-                            throw NullPointerException("Response Data is Null or Empty")
+                            try{
+                                errJsonObj = JSONObject(response.errorBody()?.string()!!)
+                                val responseErrCode = errJsonObj.getString("status")
+                                val responseErrMsg = errJsonObj.getString("message")
+
+                                Log.d("400 Error", "$responseErrCode: $responseErrMsg")
+                            } catch (e: JSONException) { e.printStackTrace() }
                         }
                     }
-
-                    400 -> {
-                        val errJsonObj: JSONObject
-
-                        try{
-                            errJsonObj = JSONObject(response.errorBody()?.string()!!)
-                            val responseErrCode = errJsonObj.getString("status")
-                            val responseErrMsg = errJsonObj.getString("message")
-
-                            Log.d("400 Error", "$responseErrCode: $responseErrMsg")
-                        } catch (e: JSONException) { e.printStackTrace() }
-                    }
                 }
-            }
 
-            override fun onFailure(call: Call<TickerRoot>, t: Throwable) { t.printStackTrace() }
-        })
+                override fun onFailure(call: Call<TickerRoot>, t: Throwable) { t.printStackTrace() }
+            })
+        }
+
     }
 
     override fun onCleared() {

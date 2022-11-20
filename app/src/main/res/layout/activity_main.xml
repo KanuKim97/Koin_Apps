@@ -69,15 +69,15 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:id="@+id/tradePageBtn"
+            android:id="@+id/addCoin_Btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/radius_button"
-            android:text="@string/btn_TradeActivity"
-            android:textSize="28sp"
+            android:background="@color/black"
+            android:text="@string/add_more_cryptocurrency"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textAllCaps="false"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

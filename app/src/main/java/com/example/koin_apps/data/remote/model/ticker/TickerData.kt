@@ -1,9 +1,6 @@
 package com.example.koin_apps.data.remote.model.ticker
 
 data class TickerData(
-    val status: String?,
-    val errorMsg: String?,
-
     val opening_price: String?,
     val closing_price: String?,
 

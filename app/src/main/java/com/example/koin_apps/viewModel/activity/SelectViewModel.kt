@@ -19,7 +19,10 @@ import retrofit2.Response
 class SelectViewModel(private val repos: AppRepository): ViewModel() {
     private val _coinList = MutableLiveData<List<String?>?>()
     private val _selectedCoin = MutableLiveData<MutableList<String>>()
+    private val _readAllData: LiveData<List<CoinEntity>>
 
+    val readAllData: LiveData<List<CoinEntity>>
+        get() = _readAllData
     val coinList: LiveData<List<String?>?>
         get() = _coinList
     val selectedCoin: LiveData<MutableList<String>>
@@ -27,7 +30,10 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
 
     private var coinListElement: MutableList<String> = mutableListOf()
 
-    init { _coinList.value = null }
+    init {
+        _coinList.value = null
+        _readAllData = repos.readAllData()
+    }
 
     fun getTicker() {
         repos.getTicker("ALL").enqueue(object: Callback<TickerRoot> {
@@ -37,7 +43,10 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
             ) {
                 when(response.code()) {
                     200 -> {
+                        Log.d("response", "${response.body()}")
+
                         val coinTitleList = response.body()?.data?.keys?.toList()
+
                         _coinList.value = coinTitleList
                     }
 
@@ -62,22 +71,16 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
     fun getData(Elements: MutableList<String>) { _selectedCoin.value = Elements }
 
     fun storeTitleData(){
-        coinListElement = _selectedCoin.value!!
+        try {
+            coinListElement = _selectedCoin.value!!
 
-        if(coinListElement.size == 0) {
-            viewModelScope.launch(Dispatchers.IO) {
-                repos.addUser(CoinEntity(0, "Data is Empty"))
-            }
-        } else {
             for(listElement in coinListElement) {
                 viewModelScope.launch(Dispatchers.IO) {
                     repos.addUser(CoinEntity(0, listElement))
                 }
             }
-        }
+        } catch (e: NullPointerException) { e.printStackTrace() }
     }
-
-
 
 }
 

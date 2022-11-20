@@ -12,6 +12,6 @@ interface CoinDao {
     @Query("SELECT * FROM coin_table ORDER BY uid ASC")
     fun readAllData(): LiveData<List<CoinEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCoinTitle(selectedCoin: CoinEntity)
 }

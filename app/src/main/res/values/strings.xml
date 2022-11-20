@@ -82,5 +82,6 @@
         최근 24시간 거래 금액: %s \n
         최근 24시간 거래량: %s \n
     </string>
+    <string name="add_more_cryptocurrency">Add More Cryptocurrency</string>
 
 </resources>
