@@ -36,6 +36,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace 'com.example.koin_apps'
 }
 
 dependencies {

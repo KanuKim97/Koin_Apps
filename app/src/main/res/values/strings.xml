@@ -15,24 +15,6 @@
         Transaction Total: %s \n
     </string>
 
-
-    <!--Main Activity String Value-->
-    <string name="koin_Input">Koin Name</string>
-    <string name="btn_liveTimeActivity">LiveTime</string>
-    <string name="btn_TradeActivity">TradeLiveTime</string>
-    <string name="btn_OrderBook">Order Book</string>
-    <string name="btn_Search">Search!</string>
-    <string name="txt_EmptyTickerData">TickerData is Empty</string>
-
-    <string name="Ticker_Format">
-        Opening Price: %s \n
-        Closing Price: %s \n
-        minTicker Price: %s \n
-        maxTicker Price: %s \n
-        TradeTicker Units: %s \n
-    </string>
-
-
     <!--Trade Activity String Value-->
     <string name="Trade_Format">
         CoinName: %s \n
@@ -52,7 +34,6 @@
     </string>
 
     <!--Common String Value-->
-
     <string name="API_DATA_Not_Founded">
         Coin Data is Empty Plz reload Activity
     </string>
@@ -66,7 +47,22 @@
         %s Error plz reload Application
     </string>
 
+
     <string name="logo">Logo</string>
+
+    <!-- After Refactoring String Value -->
+
+    <!-- Retrofit Response String Value -->
+    <string name="Ok_200_Data_Null">
+        Response data is Null or Empty \n
+        Please Reload Application
+    </string>
+
+    <string name="NotFound_400">
+        You have wrong Cryptocurrency List
+    </string>
+
+    <!-- SelectKoin Activity String Value -->
     <string name="welcome">Welcome!</string>
     <string name="select_your_coin">Select Your Coin!</string>
     <string name="select_complete">Select Complete!</string>
@@ -75,13 +71,21 @@
     <string name="coin_list">coinList</string>
     <string name="your_cryptocurrency_list">Your Cryptocurrency List!</string>
 
-    <string name="MainItem_Format">
-        최근 24시간 변동률: %s \n
-        최근 24시간 변동가: %s \n
-        전일 종가: %s \n
-        최근 24시간 거래 금액: %s \n
-        최근 24시간 거래량: %s \n
-    </string>
-    <string name="add_more_cryptocurrency">Add More Cryptocurrency</string>
+    <!-- MainActivity String Value -->
+    <string name="MainItem_24H_Flucatate_rate">최근 24시간 변동률: %s \n</string>
+    <string name="MainItem_24H_Flucatate">최근 24시간 변동가: %s \n</string>
+    <string name="MainItem_Prev_Closing_Price">전일 종가: %s \n</string>
+    <string name="MainItem_24H_acc_trade_value">최근 24시간 거래 금액: %s \n</string>
+    <string name="MainItem_24H_Units_traded">최근 24시간 거래량: %s \n</string>
 
+    <string name="add_more_cryptocurrency">Add More Cryptocurrency</string>
+    
+    <!-- null data Dialog String Value -->
+    <string name="NullDialog_Title">Cryptocurrency was not chosen</string>
+    <string name="NullDialog_Content">
+        Cryptocurrency was not chosen \n
+        Plz Choose your favorite Cryptocurrency
+    </string>
+    <string name="NullDialog_okBtn">OK</string>
+    
 </resources>

@@ -4,19 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.R
-import com.example.koin_apps.data.database.tables.CoinEntity
+import com.example.koin_apps.data.remote.model.mainViewTicker.MainTickerData
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
-import com.example.koin_apps.viewModel.activity.MainViewModel
+
 
 class MainRecyclerAdapter(
-    private var coinTitleList: List<CoinEntity>,
-    private var mainViewModel: MainViewModel
+    private var coinTitleList: MainTickerData
 ): RecyclerView.Adapter<MainRecyclerAdapter.MainViewTitleHolder>(){
 
     class MainViewTitleHolder(binding: MainCoinviewItemBinding)
         : RecyclerView.ViewHolder(binding.root){
             val titleCoin = binding.titleCoin
-            val titlePrice = binding.tickerPrice
+            //val titlePrice = binding.tickerPrice
     }
 
     override fun onCreateViewHolder(
@@ -32,12 +31,16 @@ class MainRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: MainViewTitleHolder, position: Int) {
-        val coinDesc = coinTitleList[position]
+        val coinDesc = coinTitleList
         holder.titleCoin.text = coinDesc.coinTitle
+        //holder.titlePrice.text =
     }
 
-    override fun getItemCount(): Int = coinTitleList.size
+
+    //override fun getItemCount(): Int = coinTitleList.size
 
     override fun getItemViewType(position: Int): Int = position
+
+    override fun getItemCount(): Int { TODO("Not yet implemented") }
 
 }

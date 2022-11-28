@@ -3,6 +3,7 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,12 +32,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         mainViewModel.readAllCoinData.observe(this, {
             if(it.isNullOrEmpty()) { showDataNullDialog() }
-            else {
-                mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(it, mainViewModel)
-                mainViewModel.getTickerPrice(it)
-            }
+            else { mainViewModel.getTickerPrice(it) }
+        })
+
+//        mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(it, mainViewModel)
+
+        mainViewModel.tickerLiveData.observe(this, {
+            Log.d("data", "$it")
+            mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(it)
+
         })
 
         mainActivityBinding.addCoinBtn.setOnClickListener {
@@ -48,10 +55,10 @@ class MainActivity : AppCompatActivity() {
     private fun showDataNullDialog() {
         val builder = AlertDialog.Builder(this)
         builder
-            .setTitle("Cryptocurrency wasn't chosen")
-            .setMessage("Cryptocurrency wasn't chosen \nPlz Choose your favorite Cryptocurrency")
+            .setTitle(getString(R.string.NullDialog_Title))
+            .setMessage(getString(R.string.NullDialog_Content))
             .setIcon(R.drawable.ic_dangerous)
-            .setPositiveButton("OK") {_, _ ->}
+            .setPositiveButton(getString(R.string.NullDialog_okBtn)) {_, _ ->}
             .create()
             .show()
     }

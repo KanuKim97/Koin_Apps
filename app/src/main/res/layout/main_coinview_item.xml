@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView
     xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -27,14 +26,55 @@
 
 
         <TextView
-            android:id="@+id/ticker_Price"
+            android:id="@+id/ticker_24H_Flucatate_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/MainItem_Format"
+            android:text="@string/MainItem_24H_Flucatate_rate"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_Coin" />
+
+        <TextView
+            android:id="@+id/ticker_24H_Flucatate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/MainItem_24H_Flucatate"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ticker_24H_Flucatate_rate" />
+
+        <TextView
+            android:id="@+id/ticker_Prev_Closing_Price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/MainItem_Prev_Closing_Price"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ticker_24H_Flucatate" />
+
+        <TextView
+            android:id="@+id/ticker_24H_acc_trade_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/MainItem_24H_acc_trade_value"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ticker_Prev_Closing_Price" />
+
+        <TextView
+            android:id="@+id/ticker_24H_Units_traded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/MainItem_24H_Units_traded"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ticker_24H_acc_trade_value" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
