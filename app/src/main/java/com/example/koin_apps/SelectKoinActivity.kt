@@ -32,8 +32,7 @@ class SelectKoinActivity : AppCompatActivity(){
 
     override fun onResume() {
         super.onResume()
-        selectViewModel.getTicker()
-
+        selectViewModel.getCoinTitle()
 
         selectViewModel.coinList.observe(this) {
             selectKoinBinding.CoinRecyclerView.adapter = SelectRecyclerAdapter(it, selectViewModel)

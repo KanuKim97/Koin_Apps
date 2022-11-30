@@ -4,16 +4,17 @@ import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IKoinApiService {
     @GET("ticker/{path}_KRW")
-    fun getTicker(
+    suspend fun getTicker(
         @Path("path")
         path: String
-    ): Call<TickerRoot>
+    ): Response<TickerRoot>
 
     @GET("transaction_history/{path}_KRW")
     fun getTransactionHistory(

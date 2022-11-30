@@ -9,6 +9,7 @@ import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,7 +20,7 @@ import retrofit2.Response
 class SelectViewModel(private val repos: AppRepository): ViewModel() {
     private val _coinList = MutableLiveData<List<String?>?>()
     private val _selectedCoin = MutableLiveData<MutableList<String>>()
-    private val _readAllData: LiveData<List<CoinEntity>>
+    private lateinit var _readAllData: LiveData<List<CoinEntity>>
 
     val readAllData: LiveData<List<CoinEntity>>
         get() = _readAllData
@@ -32,40 +33,32 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
 
     init {
         _coinList.value = null
-        _readAllData = repos.readAllData()
+        viewModelScope.launch { _readAllData = repos.readAllData() }
     }
 
-    fun getTicker() {
-        repos.getTicker("ALL").enqueue(object: Callback<TickerRoot> {
-            override fun onResponse(
-                call: Call<TickerRoot>,
-                response: Response<TickerRoot>
-            ) {
-                when(response.code()) {
-                    200 -> {
-                        Log.d("response", "${response.body()}")
+     fun getCoinTitle() {
+         viewModelScope.launch(Dispatchers.IO) {
+             val response = repos.getTicker("ALL")
 
-                        val coinTitleList = response.body()?.data?.keys?.toList()
+             when (response.code()) {
+                 200 -> {
+                     val coinTitleList = response.body()?.data?.keys?.toList()
+                     _coinList.postValue(coinTitleList)
+                 }
+                 400 -> {
+                     val errJsonObj: JSONObject
 
-                        _coinList.value = coinTitleList
-                    }
+                     try{
+                         errJsonObj = JSONObject(response.errorBody()?.string()!!)
+                         val responseErrCode = errJsonObj.getString("status")
+                         val responseErrMsg = errJsonObj.getString("message")
 
-                    400 -> {
-                        val errJsonObj: JSONObject
+                         Log.d("400 Error", "$responseErrCode: $responseErrMsg")
+                     } catch (e: JSONException) { e.printStackTrace() }
+                 }
+             }
 
-                        try{
-                            errJsonObj = JSONObject(response.errorBody()?.string()!!)
-                            val responseErrCode = errJsonObj.getString("status")
-                            val responseErrMsg = errJsonObj.getString("message")
-
-                            Log.d("400 Error", "$responseErrCode: $responseErrMsg")
-                        } catch (e: JSONException) { e.printStackTrace() }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<TickerRoot>, t: Throwable) { t.printStackTrace() }
-        })
+         }
     }
 
     fun getData(Elements: MutableList<String>) { _selectedCoin.value = Elements }

@@ -35,15 +35,12 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.readAllCoinData.observe(this, {
             if(it.isNullOrEmpty()) { showDataNullDialog() }
-            else { mainViewModel.getTickerPrice(it) }
+            else { mainViewModel.getPriceTicker(coinEntity = it) }
         })
-
-//        mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(it, mainViewModel)
 
         mainViewModel.tickerLiveData.observe(this, {
             Log.d("data", "$it")
             mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(it)
-
         })
 
         mainActivityBinding.addCoinBtn.setOnClickListener {

@@ -11,15 +11,13 @@ class AppRepository(private val coinDao: CoinDao) {
 
     fun readAllData(): LiveData<List<CoinEntity>> = coinDao.readAllData()
 
-    suspend fun addUser(coinEntity: CoinEntity) {
-        coinDao.insertCoinTitle(coinEntity)
-    }
+    fun addUser(coinEntity: CoinEntity) { coinDao.insertCoinTitle(coinEntity) }
 
     /* Retrofit Client */
     private val coinApiClient: IKoinApiService =
         RetroRepo.getClient().create(IKoinApiService::class.java)
 
-    fun getTicker(path: String) = coinApiClient.getTicker(path)
+    suspend fun getTicker(path: String) = coinApiClient.getTicker(path)
 
     fun getTransaction(path: String, count:Int) = coinApiClient.getTransactionHistory(path, count)
 
