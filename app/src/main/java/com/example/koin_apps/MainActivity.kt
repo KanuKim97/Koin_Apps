@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         mainViewModel.tickerLiveData.observe(this, {
-            Log.d("data", "$it")
+            Log.d("ListData", "$it")
             mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(it)
         })
 

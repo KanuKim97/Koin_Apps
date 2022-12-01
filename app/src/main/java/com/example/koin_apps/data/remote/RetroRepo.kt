@@ -1,12 +1,7 @@
 package com.example.koin_apps.data.remote
 
 import com.example.koin_apps.common.Constants
-import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
-import com.example.koin_apps.data.remote.model.ticker.TickerRoot
-import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
 import okhttp3.OkHttpClient
-import okhttp3.Response
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
