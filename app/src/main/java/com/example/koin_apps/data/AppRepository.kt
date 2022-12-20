@@ -11,7 +11,9 @@ class AppRepository(private val coinDao: CoinDao) {
 
     fun readAllData(): LiveData<List<CoinEntity>> = coinDao.readAllData()
 
-    fun addUser(coinEntity: CoinEntity) { coinDao.insertCoinTitle(coinEntity) }
+    fun addCoinList(coinEntity: CoinEntity) { coinDao.insertCoinTitle(coinEntity) }
+
+    fun deleteCoinList(coinEntity: CoinEntity) { coinDao.deleteCoinTitle(coinEntity) }
 
     /* Retrofit Client */
     private val coinApiClient: IKoinApiService =

@@ -7,9 +7,8 @@ import com.example.koin_apps.R
 import com.example.koin_apps.data.remote.model.mainViewTicker.MainTickerData
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
 
-
 class MainRecyclerAdapter(
-    private var coinTitleList: List<MainTickerData>
+    private var coinTitleList: ArrayList<MainTickerData>
 ): RecyclerView.Adapter<MainRecyclerAdapter.MainViewTitleHolder>(){
 
     class MainViewTitleHolder(binding: MainCoinviewItemBinding)
@@ -43,7 +42,6 @@ class MainRecyclerAdapter(
         holder.accTradeVal24H.text = coinDesc.ticker_24H_Acc_Trade_Value
         holder.unitsTrade24H.text = coinDesc.ticker_24H_Units_Traded
     }
-
 
     override fun getItemCount(): Int = coinTitleList.size
 

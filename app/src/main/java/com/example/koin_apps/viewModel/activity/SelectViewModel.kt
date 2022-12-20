@@ -7,15 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
-import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SelectViewModel(private val repos: AppRepository): ViewModel() {
     private val _coinList = MutableLiveData<List<String?>?>()
@@ -69,7 +64,7 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
 
             for(listElement in coinListElement) {
                 viewModelScope.launch(Dispatchers.IO) {
-                    repos.addUser(CoinEntity(0, listElement))
+                    repos.addCoinList(CoinEntity(0, listElement))
                 }
             }
         } catch (e: NullPointerException) { e.printStackTrace() }

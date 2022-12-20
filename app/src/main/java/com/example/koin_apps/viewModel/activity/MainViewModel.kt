@@ -12,18 +12,20 @@ import org.json.JSONObject
 import com.example.koin_apps.data.remote.model.mainViewTicker.MainTickerData as MainTickerData
 
 class MainViewModel(private val repos: AppRepository): ViewModel() {
-    private val _tickerLiveData = MutableLiveData<List<MainTickerData>>()
+    private val _tickerLiveData = MutableLiveData<ArrayList<MainTickerData>>()
     private lateinit var _readAllCoinData: LiveData<List<CoinEntity>>
 
     val readAllCoinData: LiveData<List<CoinEntity>>
         get() = _readAllCoinData
-    val tickerLiveData: LiveData<List<MainTickerData>>
+    val tickerLiveData: LiveData<ArrayList<MainTickerData>>
         get() = _tickerLiveData
 
     init { viewModelScope.launch { _readAllCoinData = repos.readAllData() } }
 
     fun getPriceTicker(coinEntity: List<CoinEntity>) {
-        Log.d("coinEntity", "$coinEntity")
+        Log.d("_coinEntity", "$coinEntity")
+        Log.d("_tickerLiveData", "${_tickerLiveData.value}")
+
         for (elements in coinEntity) { getBithumbTicker(elements.coinTitle) }
     }
 
@@ -33,8 +35,9 @@ class MainViewModel(private val repos: AppRepository): ViewModel() {
 
             when (response.code()) {
                 200 -> {
-                    try { setResponseData(element, response.body()) }
-                    catch (e: NullPointerException) {
+                    try {
+
+                    } catch (e: NullPointerException) {
                         throw NullPointerException("Response Data is Null or Empty")
                     }
                 }
@@ -52,27 +55,7 @@ class MainViewModel(private val repos: AppRepository): ViewModel() {
             }
 
         }
-    }
 
-    private fun setResponseData(
-        coinTitle: String,
-        responseBody: TickerRoot?
-    ) {
-        val coinResult = mutableListOf<MainTickerData>()
-
-        if (responseBody != null) {
-
-            coinResult += MainTickerData(
-                coinTitle = coinTitle,
-                ticker_24H_FluctateRate = responseBody.data["fluctate_rate_24H"] as String,
-                ticker_24H_Fluctate = responseBody.data["fluctate_24H"] as String,
-                ticker_Prev_Closing_Price = responseBody.data["prev_closing_price"] as String,
-                ticker_24H_Units_Traded = responseBody.data["units_traded_24H"] as String,
-                ticker_24H_Acc_Trade_Value = responseBody.data["acc_trade_value_24H"] as String
-            )
-
-            _tickerLiveData.postValue(coinResult)
-        } else { throw NullPointerException("Response Data is Null or Empty") }
     }
 
 }

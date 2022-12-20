@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit
 object RetroRepo {
     private var retrofit: Retrofit? = null
 
-    //Create Retrofit Client
     fun getClient(): Retrofit {
         if(retrofit == null) {
             val httpClient = OkHttpClient.Builder()
