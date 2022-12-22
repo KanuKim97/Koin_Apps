@@ -12,8 +12,8 @@ import org.json.JSONObject
 import com.example.koin_apps.data.remote.model.mainViewTicker.MainTickerData as MainTickerData
 
 class MainViewModel(private val repos: AppRepository): ViewModel() {
-    private val _tickerLiveData = MutableLiveData<ArrayList<MainTickerData>>()
     private lateinit var _readAllCoinData: LiveData<List<CoinEntity>>
+    private val _tickerLiveData = MutableLiveData<ArrayList<MainTickerData>>()
 
     val readAllCoinData: LiveData<List<CoinEntity>>
         get() = _readAllCoinData
@@ -23,9 +23,6 @@ class MainViewModel(private val repos: AppRepository): ViewModel() {
     init { viewModelScope.launch { _readAllCoinData = repos.readAllData() } }
 
     fun getPriceTicker(coinEntity: List<CoinEntity>) {
-        Log.d("_coinEntity", "$coinEntity")
-        Log.d("_tickerLiveData", "${_tickerLiveData.value}")
-
         for (elements in coinEntity) { getBithumbTicker(elements.coinTitle) }
     }
 
@@ -36,7 +33,11 @@ class MainViewModel(private val repos: AppRepository): ViewModel() {
             when (response.code()) {
                 200 -> {
                     try {
+                        val responseBody = response.body()
 
+                        if (responseBody != null) {
+                            // TODO : 채워넣기
+                        }
                     } catch (e: NullPointerException) {
                         throw NullPointerException("Response Data is Null or Empty")
                     }

@@ -18,12 +18,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="25sp"
+            android:textSize="35sp"
             android:textColor="@color/black"
             android:fontFamily="@font/bungee"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
         <TextView
             android:id="@+id/ticker_24H_Flucatate_rate"
