@@ -31,10 +31,6 @@ class SelectKoinActivity : AppCompatActivity(){
     override fun onResume() {
         super.onResume()
 
-        selectViewModel.readAllData.observe(this) {
-            if (it != null) { startActivity(Intent(this, MainActivity::class.java)) }
-        }
-
         selectViewModel.getCoinTitle()
 
         selectViewModel.coinList.observe(this) {

@@ -15,10 +15,7 @@ import org.json.JSONObject
 class SelectViewModel(private val repos: AppRepository): ViewModel() {
     private val _coinList = MutableLiveData<List<String?>?>()
     private val _selectedCoin = MutableLiveData<MutableList<String>>()
-    private lateinit var _readAllData: LiveData<List<CoinEntity>>
 
-    val readAllData: LiveData<List<CoinEntity>>
-        get() = _readAllData
     val coinList: LiveData<List<String?>?>
         get() = _coinList
     val selectedCoin: LiveData<MutableList<String>>
@@ -26,10 +23,7 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
 
     private var coinListElement: MutableList<String> = mutableListOf()
 
-    init {
-        _coinList.value = null
-        viewModelScope.launch { _readAllData = repos.readAllData() }
-    }
+    init { _coinList.value = null }
 
      fun getCoinTitle() {
          viewModelScope.launch(Dispatchers.IO) {

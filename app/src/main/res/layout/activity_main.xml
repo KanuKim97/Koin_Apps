@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="@color/background"
+    android:background="@color/Mint_100"
     tools:context=".MainActivity"
     android:orientation="vertical">
 
@@ -14,28 +14,28 @@
         android:id="@+id/search_Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:text="@string/coin_list"
-            android:textColor="@color/black"
+            android:textColor="@color/Blue_100"
             android:textStyle="bold"
             android:textSize="30sp"
             android:fontFamily="@font/bungee_inline" />
 
-        <TextView
+        <ImageButton
+            android:id="@+id/addCoin_Btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/your_cryptocurrency_list"
-            android:textSize="19sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="-20dp" />
+            android:layout_height="match_parent"
+            android:background="@color/Mint_100"
+            android:src="@drawable/ic_baseline_add_24"
+            android:contentDescription="@string/add_more_cryptocurrency" />
 
     </LinearLayout>
 
@@ -43,41 +43,18 @@
         android:id="@+id/mid_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_Layout"
-        app:layout_constraintTop_toBottomOf="@+id/search_Layout"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_Layout">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mainRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:choiceMode="multipleChoice" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bottom_Layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <Button
-            android:id="@+id/addCoin_Btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:text="@string/add_more_cryptocurrency"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
 
     </LinearLayout>
 
