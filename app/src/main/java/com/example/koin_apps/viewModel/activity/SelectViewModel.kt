@@ -58,7 +58,7 @@ class SelectViewModel(private val repos: AppRepository): ViewModel() {
 
             for(listElement in coinListElement) {
                 viewModelScope.launch(Dispatchers.IO) {
-                    repos.addCoinList(CoinEntity(0, listElement))
+                    repos.addCoinList(CoinEntity( listElement))
                 }
             }
         } catch (e: NullPointerException) { e.printStackTrace() }

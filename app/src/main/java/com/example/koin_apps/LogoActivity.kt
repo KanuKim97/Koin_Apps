@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.RoomRepo

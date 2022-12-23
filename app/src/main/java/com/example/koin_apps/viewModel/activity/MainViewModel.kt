@@ -14,6 +14,7 @@ import com.example.koin_apps.data.remote.model.mainViewTicker.MainTickerData as 
 class MainViewModel(private val repos: AppRepository): ViewModel() {
     private lateinit var _readAllCoinData: LiveData<List<CoinEntity>>
     private val _tickerLiveData = MutableLiveData<ArrayList<MainTickerData>>()
+    private val _responseData = ArrayList<MainTickerData>()
 
     val readAllCoinData: LiveData<List<CoinEntity>>
         get() = _readAllCoinData
@@ -36,7 +37,14 @@ class MainViewModel(private val repos: AppRepository): ViewModel() {
                         val responseBody = response.body()
 
                         if (responseBody != null) {
-                            // TODO : 채워넣기
+                            _responseData.add(
+                                MainTickerData(
+                                    element,
+                                    responseBody.data["fluctate_24H"].toString(),
+                                    responseBody.data["fluctate_rate_24H"].toString()
+                                )
+                            )
+                            _tickerLiveData.postValue(_responseData)
                         }
                     } catch (e: NullPointerException) {
                         throw NullPointerException("Response Data is Null or Empty")

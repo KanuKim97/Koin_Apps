@@ -10,7 +10,7 @@ import com.example.koin_apps.data.database.tables.CoinEntity
 
 @Dao
 interface CoinDao {
-    @Query("SELECT * FROM coin_table ORDER BY uid ASC")
+    @Query("SELECT * FROM coin_table ORDER BY coinTitle ASC")
     fun readAllData(): LiveData<List<CoinEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

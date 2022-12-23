@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/coin_list"
@@ -31,7 +31,7 @@
 
         <ImageButton
             android:id="@+id/addCoin_Btn"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:background="@color/Mint_100"
             android:src="@drawable/ic_baseline_add_24"

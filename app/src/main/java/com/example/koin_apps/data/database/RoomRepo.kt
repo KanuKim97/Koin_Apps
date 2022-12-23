@@ -12,7 +12,7 @@ object RoomRepo{
         return Room.databaseBuilder(
             AndroidApp.getApplicationContext(),
             AppDataBase::class.java,
-            "DB_v01"
+            "coinDB_ver0.1"
         ).build()
     }
 

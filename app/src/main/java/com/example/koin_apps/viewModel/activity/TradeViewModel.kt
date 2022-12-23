@@ -20,31 +20,5 @@ class TradeViewModel: ViewModel() {
         _tradeLiveData.value = null
     }
 
-/*
-    fun updateKoinTrade(
-        koinTradeList: TickerRoot?
-    ) {
-        if(koinTradeList != null) {
-            _tradeLiveData.value =
-                TickerData(
-                    koinTradeList.status,
-                    koinTradeList.message,
-                    koinTradeList.data["opening_price"].toString(),
-                    koinTradeList.data["closing_price"].toString(),
-                    koinTradeList.data["min_price"].toString(),
-                    koinTradeList.data["max_price"].toString(),
-                    koinTradeList.data["units_traded"].toString(),
-                    koinTradeList.data["acc_trade_value"].toString(),
-                    koinTradeList.data["prev_closing_price"].toString(),
-                    koinTradeList.data["units_traded_24H"].toString(),
-                    koinTradeList.data["acc_trade_value_24H"].toString(),
-                    koinTradeList.data["fluctate_24H"].toString(),
-                    koinTradeList.data["fluctate_rate_24H"].toString(),
-                    koinTradeList.data["date"].toString()
-                )
-        } else { throw NullPointerException("Response Data is Empty") }
-    }
-
-*/
 
 }
