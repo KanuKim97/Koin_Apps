@@ -1,10 +1,8 @@
 package com.example.koin_apps.data.recyclerViewAdapter
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.LiveTimeActivity
 import com.example.koin_apps.R
@@ -15,8 +13,8 @@ class MainRecyclerAdapter(
     private var coinTitleList: ArrayList<MainTickerData>
 ): RecyclerView.Adapter<MainRecyclerAdapter.MainViewTitleHolder>(){
 
-    class MainViewTitleHolder(binding: MainCoinviewItemBinding)
-        : RecyclerView.ViewHolder(binding.root){
+    inner class MainViewTitleHolder(binding: MainCoinviewItemBinding)
+        : RecyclerView.ViewHolder (binding.root) {
         val titleCoin = binding.titleCoin
         val priceFluctate24H = binding.ticker24HFlucatate
         val rateFluctate24H = binding.ticker24HFlucatateRate
@@ -41,10 +39,9 @@ class MainRecyclerAdapter(
         holder.priceFluctate24H.text = coinDesc.ticker_24H_Fluctate
 
         holder.itemView.setOnClickListener {
-            Log.d("Click Item:", "${holder.titleCoin.text}")
-            Intent(it.context, LiveTimeActivity::class.java).also {
-                it.putExtra("CoinTitle", holder.titleCoin.text)
-            }
+            val intent = Intent(it.context,  LiveTimeActivity::class.java)
+            intent.putExtra("coinTitle", coinDesc.coinTitle)
+            intent.run { it.context.startActivity(intent) }
         }
     }
 

@@ -17,12 +17,12 @@ interface IKoinApiService {
     ): Response<TickerRoot>
 
     @GET("transaction_history/{path}_KRW")
-    fun getTransactionHistory(
+    suspend fun getTransactionHistory(
         @Path("path")
         path: String,
         @Query("count")
         count: Int
-    ): Call<TransactionRoot>
+    ): Response<TransactionRoot>
 
     @GET("orderbook/{path}_KRW")
     fun getOrderBook(

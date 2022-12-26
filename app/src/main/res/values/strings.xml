@@ -62,7 +62,17 @@
         You have wrong Cryptocurrency List
     </string>
 
-    <!-- SelectKoin Activity String Value -->
+    <!-- LiveTimeActivity String Value -->
+    <string name="tickerDollar">$28.57</string>
+    <string name="tickerWon">35,237원</string>
+    <string name="ticker_Flucatate_rate24H">+1.25%</string>
+    <string name="ticker_Flucatate_won24H">500원</string>
+
+    <string name="Btn_Transaction">최근 체결 내역</string>
+    <string name="Btn_OrderBook">호가 정보</string>
+    <string name="Btn_Community">커뮤니티</string>
+
+    <!-- SelectKoinActivity String Value -->
     <string name="welcome">Welcome!</string>
     <string name="select_your_coin">Select Your Coin!</string>
     <string name="select_complete">Select Complete!</string>
@@ -79,7 +89,7 @@
     <string name="MainItem_24H_Units_traded">최근 24시간 거래량: %s \n</string>
 
     <string name="add_more_cryptocurrency">Add More Cryptocurrency</string>
-    
+
     <!-- null data Dialog String Value -->
     <string name="NullDialog_Title">Cryptocurrency was not chosen</string>
     <string name="NullDialog_Content">
@@ -87,5 +97,7 @@
         Plz Choose your favorite Cryptocurrency
     </string>
     <string name="NullDialog_okBtn">OK</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

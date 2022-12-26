@@ -21,7 +21,7 @@ class AppRepository(private val coinDao: CoinDao) {
 
     suspend fun getTicker(path: String) = coinApiClient.getTicker(path)
 
-    fun getTransaction(path: String, count:Int) = coinApiClient.getTransactionHistory(path, count)
+    suspend fun getTransaction(path: String, count:Int) = coinApiClient.getTransactionHistory(path, count)
 
     fun getOrderBook(path: String, count: Int) = coinApiClient.getOrderBook(path, count)
 }

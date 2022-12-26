@@ -1,16 +1,13 @@
 package com.example.koin_apps
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.RoomRepo
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.LiveTimeViewModel
-import java.lang.NumberFormatException
 
 class LiveTimeActivity : AppCompatActivity() {
     private lateinit var liveTimeBinding: ActivityLiveTimeBinding
@@ -25,5 +22,6 @@ class LiveTimeActivity : AppCompatActivity() {
 
         setContentView(liveTimeBinding.root)
     }
+
 
 }
