@@ -7,56 +7,9 @@
   
 ## Project Descrition 
   - Search cryptocurrency and check crytocurrency price Application with using Bithumb API
-
-## Application (Project) Architecture 
-![image](https://user-images.githubusercontent.com/74421057/191030817-d5619c1e-d0da-422c-b2b5-66a59f45f72a.png)
-
+  
 ## Project Contributor
   - [KanuKim97](https://github.com/KanuKim97)
-
-## Project File
-  - common
-    - Common.kt
-    - Constants.kt
-  - data
-    - entities
-      - KoinDAO.kt
-      - KoinDAOHelper.kt
-      - KoinDAOService.kt
-    - recyclerViewAdapter
-      - RecyclerViewAdapter.kt
-    - remote
-      - model
-        - assetsStatus
-          - AssetsData.kt
-          - AssetsRoot.kt
-        - orderBook
-          - OrderData.kt
-          - OrderRoot.kt
-        - tickerTitle
-          - tickerTitleData.kt
-        - ticker
-          - TickerData.kt
-          - TickerRoot.kt
-        - transaction
-          - TransactionList.kt
-          - TransactionData.kt
-          - TransactionRoot.kt
-      - IKoinApiService.kt
-      - RetrofitClient.kt
-      - RetrofitRepo.kt
-  - viewModel
-    - LiveTimeViewModel.kt
-    - MainViewModel.kt
-    - OrderBookViewModel.kt
-    - SelectViewModel.kt
-    - TradeViewModel.kt
-   - LiveTimeActivity.kt
-   - LogoActivity.kt
-   - MainActivity.kt
-   - OrderBookActivity.kt
-   - SelectKoinActivity.kt
-   - TradeActivity.kt
   
 ## APIs
  ### Bithumb API (Public)
@@ -84,18 +37,18 @@
 ## Dependency 
 ```
   //navigation View
-  implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
-  implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
+  implementation "androidx.navigation:navigation-fragment-ktx:2.5.2"
+  implementation "androidx.navigation:navigation-ui-ktx:2.5.2"
   
   //Retrofit2
-  com.squareup.retrofit2:retrofit:2.3.0
-  com.squareup.retrofit2:converter-gson:2.3.0
+  com.squareup.retrofit2:retrofit:2.9.0
+  com.squareup.retrofit2:converter-gson:2.9.0
   
   //Android Jetpack ViewModel
-  androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha06
+  androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha02
   
   //Android Jetpack LiveData
-  androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-alpha06
+  androidx.lifecycle:lifecycle-livedata-ktx:2.6.0-alpha02
   
   // Kotlin Coroutine
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
