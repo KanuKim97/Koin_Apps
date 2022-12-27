@@ -5,18 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.koin_apps.databinding.FragmentTransactionBinding
+import com.example.koin_apps.databinding.FragmentCommunityBinding
 
-class TransactionFragment : Fragment() {
-    private lateinit var TransactionBinding: FragmentTransactionBinding
+class CommunityFragment : Fragment() {
+    private lateinit var communityBinding: FragmentCommunityBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        TransactionBinding = FragmentTransactionBinding.inflate(inflater, container, false)
-        return TransactionBinding.root
+        communityBinding = FragmentCommunityBinding.inflate(inflater, container, false)
+        return communityBinding.root
     }
 
 }

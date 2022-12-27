@@ -2,6 +2,7 @@ package com.example.koin_apps
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.RoomRepo
@@ -9,10 +10,10 @@ import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.LiveTimeViewModel
 
-class LiveTimeActivity : AppCompatActivity() {
+class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var liveTimeBinding: ActivityLiveTimeBinding
-    private lateinit var vmFactory: ViewModelFactory
     private lateinit var liveTimeViewModel: LiveTimeViewModel
+    private lateinit var vmFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,5 +24,40 @@ class LiveTimeActivity : AppCompatActivity() {
         setContentView(liveTimeBinding.root)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val coinTitle = intent.getStringExtra("coinTitle")
+
+        liveTimeBinding.coinTitle.text = coinTitle
+        liveTimeBinding.BtnTransaction.setOnClickListener(this)
+        liveTimeBinding.BtnOrderBook.setOnClickListener(this)
+        liveTimeBinding.BtnCommunity.setOnClickListener(this)
+
+        supportFragmentManager.beginTransaction()
+    }
+
+    override fun onClick(v: View?) {
+
+        when (v?.id) {
+            R.id.Btn_Transaction -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.FragmentLayout, TransactionFragment())
+                    .commit()
+            }
+            R.id.Btn_OrderBook -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.FragmentLayout, OrderBookFragment())
+                    .commit()
+            }
+            R.id.Btn_Community -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.FragmentLayout, CommunityFragment())
+                    .commit()
+            }
+        }
+    }
 
 }

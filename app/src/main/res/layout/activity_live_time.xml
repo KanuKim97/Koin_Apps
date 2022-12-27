@@ -15,19 +15,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/coinTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/bungee"
             android:text="@string/app_name"
-            android:textSize="25sp"
-            android:textStyle="bold"
             android:textColor="@color/Blue_100"
-            android:fontFamily="@font/bungee" />
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/titleView_Mid"
@@ -40,9 +40,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tickerDollar"
+                android:textColor="@color/white"
                 android:textSize="28sp"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tickerWon"
@@ -50,9 +50,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="@string/tickerWon"
+                android:textColor="@color/white"
                 android:textSize="17sp"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,41 +88,42 @@
                 android:id="@+id/Btn_Transaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/Mint_100"
                 android:text="@string/Btn_Transaction"
                 android:textStyle="bold"
-                android:background="@color/Mint_100"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/Btn_OrderBook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/Mint_100"
                 android:text="@string/Btn_OrderBook"
                 android:textStyle="bold"
-                android:background="@color/Mint_100"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/Btn_Transaction" />
+                app:layout_constraintStart_toEndOf="@id/Btn_Transaction"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/Btn_Community"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/Mint_100"
                 android:text="@string/Btn_Community"
                 android:textStyle="bold"
-                android:background="@color/Mint_100"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/Btn_OrderBook" />
+                app:layout_constraintStart_toEndOf="@id/Btn_OrderBook"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
-            android:id="@+id/Fragment"
+            android:id="@+id/FragmentLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         </FrameLayout>
 
     </LinearLayout>

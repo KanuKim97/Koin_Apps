@@ -1,20 +1,6 @@
 <resources>
     <string name="app_name">Koin!</string>
 
-    <!--Live Time Activity String Value -->
-    <string name="cnt_TransactionInput">Transaction Number</string>
-    <string name="btn_Transaction">Get Transaction</string>
-    <string name="btn_GoHome">Go Back</string>
-    <string name="transaction_Not_Founded">Transaction is Not Founded</string>
-
-    <string name="transaction_Format">
-        Transaction Type: %s \n
-        Transaction Date: %s \n
-        Transaction Price: %s \n
-        Transaction Units: %s \n
-        Transaction Total: %s \n
-    </string>
-
     <!--Trade Activity String Value-->
     <string name="Trade_Format">
         CoinName: %s \n
@@ -33,34 +19,24 @@
         Payment Currency: %s \n
     </string>
 
-    <!--Common String Value-->
-    <string name="API_DATA_Not_Founded">
-        Coin Data is Empty Plz reload Activity
-    </string>
-
-    <string name="Empty_Coin_TxtBox">
-        Coin Title is Empty \n
-        Plz Enter Coin Title
-    </string>
-
-    <string name="Error_400">
-        %s Error plz reload Application
-    </string>
-
-
-    <string name="logo">Logo</string>
-
     <!-- After Refactoring String Value -->
 
-    <!-- Retrofit Response String Value -->
-    <string name="Ok_200_Data_Null">
-        Response data is Null or Empty \n
-        Please Reload Application
-    </string>
+    <!-- Logo Activity String Value -->
+    <string name="logo">Logo</string>
 
-    <string name="NotFound_400">
-        You have wrong Cryptocurrency List
-    </string>
+    <!-- SelectKoinActivity String Value -->
+    <string name="welcome">Welcome!</string>
+    <string name="select_your_coin">Select Your Coin!</string>
+    <string name="selected_Coin_List">Selected List</string>
+    <string name="select_complete">Select Complete!</string>
+
+
+    <!-- MainActivity String Value -->
+    <string name="MainItem_24H_Flucatate_rate">최근 24시간 변동률: %s \n</string>
+    <string name="MainItem_24H_Flucatate">최근 24시간 변동가: %s \n</string>
+    <string name="coin_list">coinList</string>
+    <string name="add_more_cryptocurrency">Add More Cryptocurrency</string>
+
 
     <!-- LiveTimeActivity String Value -->
     <string name="tickerDollar">$28.57</string>
@@ -72,23 +48,20 @@
     <string name="Btn_OrderBook">호가 정보</string>
     <string name="Btn_Community">커뮤니티</string>
 
-    <!-- SelectKoinActivity String Value -->
-    <string name="welcome">Welcome!</string>
-    <string name="select_your_coin">Select Your Coin!</string>
-    <string name="select_complete">Select Complete!</string>
-    <string name="input_coin_title">Input Coin Title</string>
-    <string name="selected_Coin_List">Selected List</string>
-    <string name="coin_list">coinList</string>
-    <string name="your_cryptocurrency_list">Your Cryptocurrency List!</string>
+    <!-- Fragment OrderBook String Value -->
+    <string name="warning">warning</string>
+    <string name="update_soon">Will be update Soon</string>
 
-    <!-- MainActivity String Value -->
-    <string name="MainItem_24H_Flucatate_rate">최근 24시간 변동률: %s \n</string>
-    <string name="MainItem_24H_Flucatate">최근 24시간 변동가: %s \n</string>
-    <string name="MainItem_Prev_Closing_Price">전일 종가: %s \n</string>
-    <string name="MainItem_24H_acc_trade_value">최근 24시간 거래 금액: %s \n</string>
-    <string name="MainItem_24H_Units_traded">최근 24시간 거래량: %s \n</string>
+    <!-- Retrofit Response String Value -->
+    <string name="Ok_200_Data_Null">
+        Response data is Null or Empty \n
+        Please Reload Application
+    </string>
 
-    <string name="add_more_cryptocurrency">Add More Cryptocurrency</string>
+    <string name="NotFound_400">
+        You have wrong Cryptocurrency List
+    </string>
+
 
     <!-- null data Dialog String Value -->
     <string name="NullDialog_Title">Cryptocurrency was not chosen</string>
@@ -97,7 +70,5 @@
         Plz Choose your favorite Cryptocurrency
     </string>
     <string name="NullDialog_okBtn">OK</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="25dp"
-        android:src="@drawable/logo_app_monochrome" />
+        android:src="@drawable/logo_app_monochrome"
+        android:contentDescription="@string/logo"/>
 
 </LinearLayout>

@@ -23,7 +23,6 @@ class LiveTimeViewModel(private val repos: AppRepository): ViewModel() {
     val transactionLiveData: LiveData<List<TransactionList>>
         get() = _transactionLiveData
 
-
     fun getTickerTransaction(path: String, count: Int) {
         viewModelScope.launch (Dispatchers.IO) {
             val response = repos.getTransaction(path, count)
