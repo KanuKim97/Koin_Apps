@@ -11,4 +11,6 @@
     <color name="Light_Violet_100">#D8D1F0</color>
     <color name="Light_Pink_200">#E8CDEE</color>
 
+    <color name="Red_700">#ff0000</color>
+    <color name="Blue_700">#0080ff</color>
 </resources>

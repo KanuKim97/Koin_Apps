@@ -4,12 +4,11 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
-import com.example.koin_apps.data.remote.model.ticker.TickerRoot
+import com.example.koin_apps.data.remote.model.ticker.mainViewTicker.MainTickerData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
-import com.example.koin_apps.data.remote.model.mainViewTicker.MainTickerData as MainTickerData
 
 class MainViewModel(private val repos: AppRepository): ViewModel() {
     private lateinit var _readAllCoinData: LiveData<List<CoinEntity>>

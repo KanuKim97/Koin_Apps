@@ -1,5 +1,6 @@
 package com.example.koin_apps
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -35,6 +36,12 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         liveTimeBinding.coinTitle.text = coinTitle
 
         liveTimeViewModel.getTickerLive(coinTitle.toString())
+
+        liveTimeViewModel.tickerLiveViewData.observe(this) {
+            liveTimeBinding.tickerWon.text = it.closing_price
+            liveTimeBinding.FlucatateRate24H.text = it.fluctate_rate_24H
+            liveTimeBinding.Flucatate24H.text = it.fluctate_24H
+        }
 
         liveTimeBinding.BtnTransaction.setOnClickListener(this)
         liveTimeBinding.BtnOrderBook.setOnClickListener(this)

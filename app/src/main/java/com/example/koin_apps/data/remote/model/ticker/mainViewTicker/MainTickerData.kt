@@ -1,4 +1,4 @@
-package com.example.koin_apps.data.remote.model.mainViewTicker
+package com.example.koin_apps.data.remote.model.ticker.mainViewTicker
 
 import com.google.gson.annotations.SerializedName
 

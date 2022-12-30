@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.LiveTimeActivity
 import com.example.koin_apps.R
-import com.example.koin_apps.data.remote.model.mainViewTicker.MainTickerData
+import com.example.koin_apps.data.remote.model.ticker.mainViewTicker.MainTickerData
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
 
 class MainRecyclerAdapter(
