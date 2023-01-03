@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".OrderBookFragment">
 
-    <TextView
+    <ListView
+        android:id="@+id/OrderBookList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="OrderBook Fragments" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

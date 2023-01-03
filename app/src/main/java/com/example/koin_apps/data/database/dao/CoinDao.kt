@@ -14,8 +14,8 @@ interface CoinDao {
     fun readAllData(): LiveData<List<CoinEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCoinTitle(selectedCoin: CoinEntity)
+    suspend fun insertCoinTitle(selectedCoin: CoinEntity)
 
     @Delete
-    fun deleteCoinTitle(selectedCoin: CoinEntity)
+    suspend fun deleteCoinTitle(selectedCoin: CoinEntity)
 }

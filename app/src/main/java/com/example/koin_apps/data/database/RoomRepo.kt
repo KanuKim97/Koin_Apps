@@ -13,15 +13,14 @@ object RoomRepo{
             AndroidApp.getApplicationContext(),
             AppDataBase::class.java,
             "coinDB_ver0.1"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
+            .build()
     }
 
     fun provideDao(AppDB: AppDataBase): CoinDao {
         return AppDB.coinTitleDao()
-    }
-
-    fun provideUserRepo(coinDao: CoinDao): AppRepository {
-        return AppRepository(coinDao)
     }
 
 }

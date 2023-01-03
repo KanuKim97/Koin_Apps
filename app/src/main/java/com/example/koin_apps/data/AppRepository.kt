@@ -1,6 +1,5 @@
 package com.example.koin_apps.data
 
-import androidx.lifecycle.LiveData
 import com.example.koin_apps.data.database.dao.CoinDao
 import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.remote.IKoinApiService
@@ -9,11 +8,11 @@ import com.example.koin_apps.data.remote.RetroRepo
 
 class AppRepository(private val coinDao: CoinDao) {
 
-    fun readAllData(): LiveData<List<CoinEntity>> = coinDao.readAllData()
+    fun readAllData() = coinDao.readAllData()
 
-    fun addCoinList(coinEntity: CoinEntity) { coinDao.insertCoinTitle(coinEntity) }
+    suspend fun addCoinList(coinEntity: CoinEntity) { coinDao.insertCoinTitle(coinEntity) }
 
-    fun deleteCoinList(coinEntity: CoinEntity) { coinDao.deleteCoinTitle(coinEntity) }
+    suspend fun deleteCoinList(coinEntity: CoinEntity) { coinDao.deleteCoinTitle(coinEntity) }
 
     /* Retrofit Client */
     private val coinApiClient: IKoinApiService =

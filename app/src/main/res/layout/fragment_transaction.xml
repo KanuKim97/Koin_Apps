@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".TransactionFragment">
 
-    <TextView
+    <ListView
+        android:id="@+id/transaction_ListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Transaction Fragments" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

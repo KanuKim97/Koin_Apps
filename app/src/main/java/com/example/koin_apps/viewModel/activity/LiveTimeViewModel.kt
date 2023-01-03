@@ -12,7 +12,6 @@ import kotlinx.coroutines.*
 import org.json.JSONException
 import org.json.JSONObject
 
-
 class LiveTimeViewModel(private val repos: AppRepository): ViewModel() {
     private val _tickerLiveViewData = MutableLiveData<LiveTickerData>()
 
@@ -22,9 +21,6 @@ class LiveTimeViewModel(private val repos: AppRepository): ViewModel() {
     fun getTickerLive(path: String) {
         val tickerResponse = viewModelScope.launch {
             while (true) {
-                delay(3000L)
-                Log.d("Coroutine","Transaction is Running")
-
                 val response = repos.getTicker(path)
 
                 when (response.code()) {
@@ -58,6 +54,7 @@ class LiveTimeViewModel(private val repos: AppRepository): ViewModel() {
                     }
                 }
 
+                delay(3000L)
             }
         }
 

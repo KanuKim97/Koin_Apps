@@ -26,34 +26,20 @@
             android:fontFamily="@font/bungee"
             android:text="@string/app_name"
             android:textColor="@color/Blue_100"
-            android:textSize="25sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/titleView_Mid"
+        <TextView
+            android:id="@+id/tickerWon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-<!--
-            <TextView
-                android:id="@+id/tickerDollar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tickerDollar"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                android:textStyle="bold" />
--->
-            <TextView
-                android:id="@+id/tickerWon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/tickerWon"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:layout_marginTop="-20dp"
+            android:text="@string/tickerWon"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textAlignment="textStart"
+            android:textStyle="bold" />
+
 
         <LinearLayout
             android:id="@+id/titleView_Bottom"

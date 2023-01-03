@@ -4,15 +4,21 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.RoomRepo
 import com.example.koin_apps.data.recyclerViewAdapter.MainRecyclerAdapter
+import com.example.koin_apps.data.remote.model.ticker.mainViewTicker.MainTickerData
 import com.example.koin_apps.viewModel.activity.MainViewModel
 import com.example.koin_apps.databinding.ActivityMainBinding
 import com.example.koin_apps.viewModel.ViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainActivityBinding: ActivityMainBinding
@@ -46,6 +52,21 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SelectKoinActivity::class.java))
             finish()
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d("onRestart()", "onRestart()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("onPause()", "onPause()")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("onDestory()", "OnDestory()")
     }
 
     private fun showDataNullDialog() {

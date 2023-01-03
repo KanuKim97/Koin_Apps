@@ -33,14 +33,20 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         val coinTitle = intent.getStringExtra("coinTitle")
-        liveTimeBinding.coinTitle.text = coinTitle
-
         liveTimeViewModel.getTickerLive(coinTitle.toString())
 
+        liveTimeBinding.coinTitle.text = coinTitle
+
         liveTimeViewModel.tickerLiveViewData.observe(this) {
-            liveTimeBinding.tickerWon.text = it.closing_price
-            liveTimeBinding.FlucatateRate24H.text = it.fluctate_rate_24H
-            liveTimeBinding.Flucatate24H.text = it.fluctate_24H
+            liveTimeBinding.tickerWon.text = getString(R.string.tickerWon, it.closing_price)
+            liveTimeBinding.FlucatateRate24H.text = getString(
+                R.string.ticker_Flucatate_rate24H,
+                it.fluctate_rate_24H
+            )
+            liveTimeBinding.Flucatate24H.text = getString(
+                R.string.ticker_Flucatate_won24H,
+                it.fluctate_24H
+            )
         }
 
         liveTimeBinding.BtnTransaction.setOnClickListener(this)

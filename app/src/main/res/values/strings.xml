@@ -33,16 +33,16 @@
 
     <!-- MainActivity String Value -->
     <string name="MainItem_24H_Flucatate_rate">최근 24시간 변동률: %s \n</string>
-    <string name="MainItem_24H_Flucatate">최근 24시간 변동가: %s \n</string>
+    <string name="MainItem_24H_Flucatate">최근 24시간 변동가: %s원 \n</string>
     <string name="coin_list">coinList</string>
     <string name="add_more_cryptocurrency">Add More Cryptocurrency</string>
 
 
     <!-- LiveTimeActivity String Value -->
     <string name="tickerDollar">$28.57</string>
-    <string name="tickerWon">35,237원</string>
-    <string name="ticker_Flucatate_rate24H">+1.25%</string>
-    <string name="ticker_Flucatate_won24H">500원</string>
+    <string name="tickerWon">%s원</string>
+    <string name="ticker_Flucatate_rate24H">%s%%</string>
+    <string name="ticker_Flucatate_won24H">%s원</string>
 
     <string name="Btn_Transaction">최근 체결 내역</string>
     <string name="Btn_OrderBook">호가 정보</string>

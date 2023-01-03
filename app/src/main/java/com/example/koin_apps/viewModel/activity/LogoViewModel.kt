@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class LogoViewModel(private val repos: AppRepository): ViewModel() {
     private lateinit var _readAllData: LiveData<List<CoinEntity>>
-
     val readAllData: LiveData<List<CoinEntity>>
         get() = _readAllData
 
