@@ -9,10 +9,8 @@ import com.example.koin_apps.LiveTimeActivity
 import com.example.koin_apps.data.remote.model.ticker.mainViewTicker.MainTickerData
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
 
-class MainRecyclerAdapter(
-    private var coinTitleList: ArrayList<MainTickerData>
-): RecyclerView.Adapter<MainRecyclerAdapter.MainViewItemHolder>() {
-
+class MainRecyclerAdapter: RecyclerView.Adapter<MainRecyclerAdapter.MainViewItemHolder>() {
+    private var coinTitleList = ArrayList<MainTickerData>()
     inner class MainViewItemHolder(private val binding: MainCoinviewItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
         fun bind(mainTickerData: MainTickerData) {
@@ -20,14 +18,14 @@ class MainRecyclerAdapter(
             binding.ticker24HFlucatate.text = mainTickerData.ticker_24H_Fluctate
             binding.ticker24HFlucatateRate.text = mainTickerData.ticker_24H_FluctateRate
 
-            /*if(position != RecyclerView.NO_POSITION) {
+            if(position != RecyclerView.NO_POSITION) {
                 itemView.setOnClickListener {
                     Intent(it.context, LiveTimeActivity::class.java).apply {
                         putExtra("coinTitle", mainTickerData.coinTitle)
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }.run { it.context.startActivity(this) }
                 }
-            }*/
+            }
         }
     }
 
@@ -48,21 +46,14 @@ class MainRecyclerAdapter(
     override fun onBindViewHolder(
         holder: MainViewItemHolder,
         position: Int
-    ) {
-        holder.bind(coinTitleList[position])
-        holder.itemView.setOnClickListener {
-            Intent(it.context, LiveTimeActivity::class.java)
-                .apply { putExtra("coinTitle", coinTitleList[position].coinTitle) }
-                .run { it.context.startActivity(this) }
-        }
-
-        Log.d(
-            "Adapter Position",
-            "$position : ${coinTitleList[position].coinTitle}"
-        )
-    }
+    ) { holder.bind(coinTitleList[position]) }
 
     override fun getItemCount(): Int = coinTitleList.size
 
     override fun getItemViewType(position: Int): Int = position
+
+    fun setData(coinList: ArrayList<MainTickerData>) {
+        coinTitleList = coinList
+        notifyDataSetChanged()
+    }
 }

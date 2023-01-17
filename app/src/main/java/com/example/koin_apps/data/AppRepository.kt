@@ -8,7 +8,7 @@ import com.example.koin_apps.data.remote.RetroRepo
 
 class AppRepository(private val coinDao: CoinDao) {
 
-    fun readAllData() = coinDao.readAllData()
+    suspend fun readAllData() = coinDao.readAllData()
 
     suspend fun addCoinList(coinEntity: CoinEntity) { coinDao.insertCoinTitle(coinEntity) }
 
@@ -22,5 +22,5 @@ class AppRepository(private val coinDao: CoinDao) {
 
     suspend fun getTransaction(path: String, count:Int) = coinApiClient.getTransactionHistory(path, count)
 
-    fun getOrderBook(path: String, count: Int) = coinApiClient.getOrderBook(path, count)
+    suspend fun getOrderBook(path: String, count: Int) = coinApiClient.getOrderBook(path, count)
 }

@@ -25,10 +25,10 @@ interface IKoinApiService {
     ): Response<TransactionRoot>
 
     @GET("orderbook/{path}_KRW")
-    fun getOrderBook(
+    suspend fun getOrderBook(
         @Path("path")
         path: String,
         @Query("count")
         count: Int
-    ): Call<OrderRoot>
+    ): Response<OrderRoot>
 }

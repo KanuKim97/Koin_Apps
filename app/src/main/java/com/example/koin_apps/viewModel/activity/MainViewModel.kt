@@ -9,22 +9,18 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repos: AppRepository): ViewModel() {
-    private lateinit var _readAllCoinData: LiveData<List<CoinEntity>>
     private val _tickerLiveData = MutableLiveData<ArrayList<MainTickerData>>()
     private val _responseData = ArrayList<MainTickerData>()
 
-    val readAllCoinData: LiveData<List<CoinEntity>>
-        get() = _readAllCoinData
     val tickerLiveData: LiveData<ArrayList<MainTickerData>>
         get() = _tickerLiveData
 
-    init { viewModelScope.launch (Dispatchers.IO) { _readAllCoinData = repos.readAllData() } }
+    lateinit var readAllCoinData: LiveData<List<CoinEntity>>
 
-    fun getPriceTicker(coinEntity: List<CoinEntity>) {
-        for (elements in coinEntity) {
-            getBithumbTicker(elements.coinTitle)
-        }
-    }
+    init { viewModelScope.launch (Dispatchers.IO) { readAllCoinData = repos.readAllData() } }
+
+    fun getPriceTicker(coinEntity: List<CoinEntity>) =
+        coinEntity.forEach { elements -> getBithumbTicker(elements.coinTitle) }
 
     private fun getBithumbTicker(element: String) {
         viewModelScope.launch {

@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainActivityBinding: ActivityMainBinding
     private lateinit var vmFactory: ViewModelFactory
     private lateinit var mainViewModel: MainViewModel
+    private val MainAdapter by lazy { MainRecyclerAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this, vmFactory)[MainViewModel::class.java]
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         mainActivityBinding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
+        mainActivityBinding.mainRecyclerView.adapter = MainAdapter
 
         setContentView(mainActivityBinding.root)
     }
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         mainViewModel.tickerLiveData.observe(this, {
-            mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(it)
+            MainAdapter.setData(it)
         })
 
         mainActivityBinding.addCoinBtn.setOnClickListener {
