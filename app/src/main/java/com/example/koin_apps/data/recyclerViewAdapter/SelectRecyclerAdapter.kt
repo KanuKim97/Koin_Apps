@@ -38,11 +38,8 @@ class SelectRecyclerAdapter(
         holder.checkKoin.isChecked
 
         holder.checkKoin.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                selectList.add(titleListPosition.toString())
-            } else {
-                selectList.remove(titleListPosition.toString())
-            }
+            if (isChecked) { selectList.add(titleListPosition.toString()) }
+            else { selectList.remove(titleListPosition.toString()) }
 
             selectViewModel.getData(selectList)
         }

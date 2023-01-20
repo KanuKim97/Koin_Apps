@@ -8,7 +8,7 @@ import com.example.koin_apps.data.remote.RetroRepo
 
 class AppRepository(private val coinDao: CoinDao) {
 
-    suspend fun readAllData() = coinDao.readAllData()
+    val allCoinData = coinDao.readAllData()
 
     suspend fun addCoinList(coinEntity: CoinEntity) { coinDao.insertCoinTitle(coinEntity) }
 

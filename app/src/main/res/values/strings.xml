@@ -36,7 +36,7 @@
     <string name="MainItem_24H_Flucatate">최근 24시간 변동가: %s원 \n</string>
     <string name="coin_list">coinList</string>
     <string name="add_more_cryptocurrency">Add More Cryptocurrency</string>
-
+    <string name="navigate_next_Btn">Navigate Next Activity</string>
 
     <!-- LiveTimeActivity String Value -->
     <string name="tickerDollar">$28.57</string>
@@ -62,15 +62,12 @@
         You have wrong Cryptocurrency List
     </string>
 
-
     <!-- null data Dialog String Value -->
     <string name="NullDialog_Title">Cryptocurrency was not chosen</string>
     <string name="NullDialog_Content">
-        Cryptocurrency was not chosen \n
-        Plz Choose your favorite Cryptocurrency
+        Cryptocurrency was not chosen\nPlz Choose your favorite Cryptocurrency
     </string>
     <string name="NullDialog_okBtn">OK</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

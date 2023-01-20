@@ -1,30 +1,28 @@
 package com.example.koin_apps.data.recyclerViewAdapter
 
+import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.LiveTimeActivity
+import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.remote.model.ticker.mainViewTicker.MainTickerData
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
 
-class MainRecyclerAdapter: RecyclerView.Adapter<MainRecyclerAdapter.MainViewItemHolder>() {
-    private var coinTitleList = ArrayList<MainTickerData>()
+class MainRecyclerAdapter(
+    private val context: Context,
+    private val coinTitle: List<CoinEntity>
+    ): RecyclerView.Adapter<MainRecyclerAdapter.MainViewItemHolder>() {
+
     inner class MainViewItemHolder(private val binding: MainCoinviewItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
-        fun bind(mainTickerData: MainTickerData) {
-            binding.titleCoin.text = mainTickerData.coinTitle
-            binding.ticker24HFlucatate.text = mainTickerData.ticker_24H_Fluctate
-            binding.ticker24HFlucatateRate.text = mainTickerData.ticker_24H_FluctateRate
-
-            if(position != RecyclerView.NO_POSITION) {
-                itemView.setOnClickListener {
-                    Intent(it.context, LiveTimeActivity::class.java).apply {
-                        putExtra("coinTitle", mainTickerData.coinTitle)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }.run { it.context.startActivity(this) }
-                }
+        fun bind(coinEntity: CoinEntity ) {
+            binding.titleCoin.text = coinEntity.coinTitle
+            binding.NavigateCoinDesc.setOnClickListener {
+                Intent(context, LiveTimeActivity::class.java)
+                    .putExtra("coinTitle", coinEntity.coinTitle)
+                    .run { context.startActivity(this) }
             }
         }
     }
@@ -46,14 +44,10 @@ class MainRecyclerAdapter: RecyclerView.Adapter<MainRecyclerAdapter.MainViewItem
     override fun onBindViewHolder(
         holder: MainViewItemHolder,
         position: Int
-    ) { holder.bind(coinTitleList[position]) }
+    ) { holder.bind(coinTitle[position]) }
 
-    override fun getItemCount(): Int = coinTitleList.size
+    override fun getItemCount(): Int = coinTitle.size
 
     override fun getItemViewType(position: Int): Int = position
 
-    fun setData(coinList: ArrayList<MainTickerData>) {
-        coinTitleList = coinList
-        notifyDataSetChanged()
-    }
 }
