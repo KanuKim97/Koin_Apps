@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.R
-import com.example.koin_apps.databinding.SelectCointitleItemBinding
+import com.example.koin_apps.databinding.SelectCoinviewItemBinding
 import com.example.koin_apps.viewModel.activity.SelectViewModel
 
 class SelectRecyclerAdapter(
@@ -13,7 +13,7 @@ class SelectRecyclerAdapter(
 ): RecyclerView.Adapter<SelectRecyclerAdapter.CoinsViewHolder>() {
     private val selectList: MutableList<String> = mutableListOf()
 
-    class CoinsViewHolder(binding: SelectCointitleItemBinding)
+    class CoinsViewHolder(binding: SelectCoinviewItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
             val checkKoin = binding.checkCoin
             val koinTitleData = binding.titleCoin
@@ -26,9 +26,9 @@ class SelectRecyclerAdapter(
         val view =
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.select_cointitle_item, parent, false)
+                .inflate(R.layout.select_coinview_item, parent, false)
 
-        return CoinsViewHolder(SelectCointitleItemBinding.bind(view))
+        return CoinsViewHolder(SelectCoinviewItemBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: CoinsViewHolder, position: Int) {

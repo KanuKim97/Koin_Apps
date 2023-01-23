@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class OrderBookViewModel(private val repos: AppRepository): ViewModel() {
@@ -18,10 +19,15 @@ class OrderBookViewModel(private val repos: AppRepository): ViewModel() {
         when(response.code()) {
             200 -> {
                 try {
-                    if(response.isSuccessful) { _orderBookLiveData.postValue(response.body()?.data) }
+                    if(response.isSuccessful)
+                        _orderBookLiveData.postValue(response.body()?.data)
                 } catch (e: NullPointerException) { throw (e) }
             }
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
+    }
 }

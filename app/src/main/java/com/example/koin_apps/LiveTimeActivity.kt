@@ -1,20 +1,15 @@
 package com.example.koin_apps
 
-import android.graphics.Color
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.RoomRepo
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.LiveTimeViewModel
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var liveTimeBinding: ActivityLiveTimeBinding

@@ -6,7 +6,6 @@ import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.dao.CoinDao
 
 object RoomRepo{
-
     //Create Room DB Client
     fun createAppDBClient(): AppDataBase {
         return Room.databaseBuilder(
