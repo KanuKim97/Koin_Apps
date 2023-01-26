@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.koin_apps.data.AppRepository
 import com.example.koin_apps.data.database.RoomRepo
+import com.example.koin_apps.data.listViewAdapter.TransactionListAdapter
 import com.example.koin_apps.databinding.FragmentTransactionBinding
 import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.fragment.OrderBookViewModel
@@ -22,8 +23,11 @@ class TransactionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val coinTitle = arguments?.getString("coinTitle")
+
         vmFactory = ViewModelFactory(AppRepository(RoomRepo.provideDao(RoomRepo.createAppDBClient())))
         transactionViewModel = ViewModelProvider(this, vmFactory)[TransactionViewModel::class.java]
+        transactionViewModel.setOrderParameter(coinTitle.toString())
     }
 
     override fun onCreateView(
@@ -37,6 +41,10 @@ class TransactionFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        transactionViewModel.transactionLiveData.observe(this) {
+            transactionBinding.TransactionList.adapter = TransactionListAdapter(it)
+        }
     }
 
 }

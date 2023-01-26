@@ -19,7 +19,7 @@ class TransactionViewModel(private val repos: AppRepository): ViewModel() {
 
     init {
         vPath = ""
-        vCount = 0
+        vCount = 5
     }
 
     private val transactionResponse = viewModelScope.launch {
@@ -30,14 +30,13 @@ class TransactionViewModel(private val repos: AppRepository): ViewModel() {
         }
     }
 
-    fun setOrderParameter(path: String, count: Int) {
+    fun setOrderParameter(path: String) {
         vPath = path
-        vCount = count
         runTransactionScope()
     }
 
     private fun runTransactionScope() {
-        if(vPath.isEmpty() || vCount == 0) { throw (NullPointerException("Parameter is Empty")) }
+        if(vPath.isEmpty()) { throw (NullPointerException("Parameter is Empty")) }
         else { transactionResponse.start() }
     }
 
