@@ -3,29 +3,19 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.example.koin_apps.data.AppRepository
-import com.example.koin_apps.data.database.RoomRepo
+import androidx.activity.viewModels
 import com.example.koin_apps.databinding.ActivityLogoBinding
-import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.LogoViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LogoActivity : AppCompatActivity() {
     private lateinit var logoBinding: ActivityLogoBinding
-    private lateinit var logoViewModel: LogoViewModel
-    private lateinit var vmFactory: ViewModelFactory
+    private val logoViewModel: LogoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vmFactory = ViewModelFactory(AppRepository(RoomRepo.provideDao(RoomRepo.createAppDBClient())))
-        logoViewModel = ViewModelProvider(this, vmFactory)[LogoViewModel::class.java]
         logoBinding = ActivityLogoBinding.inflate(layoutInflater)
-
         setContentView(logoBinding.root)
     }
 

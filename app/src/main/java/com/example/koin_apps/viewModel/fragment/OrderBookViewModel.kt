@@ -4,12 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.koin_apps.data.AppRepository
+import com.example.koin_apps.data.di.AppRepository
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class OrderBookViewModel(private val repos: AppRepository): ViewModel() {
+@HiltViewModel
+class OrderBookViewModel @Inject constructor(
+    private val repos: AppRepository
+): ViewModel() {
     private val _orderBookLiveData = MutableLiveData<OrderData>()
     val orderBookLiveData: LiveData<OrderData>
         get() = _orderBookLiveData

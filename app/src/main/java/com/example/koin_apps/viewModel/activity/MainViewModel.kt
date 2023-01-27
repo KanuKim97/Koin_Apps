@@ -1,9 +1,14 @@
 package com.example.koin_apps.viewModel.activity
 
 import androidx.lifecycle.*
-import com.example.koin_apps.data.AppRepository
+import com.example.koin_apps.data.di.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel(private val repos: AppRepository): ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repos: AppRepository
+): ViewModel() {
     var readAllCoinData: LiveData<List<CoinEntity>> = repos.allCoinData
 }

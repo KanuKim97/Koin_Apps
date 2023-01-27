@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.koin_apps.databinding.FragmentCommunityBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CommunityFragment : Fragment() {
     private lateinit var communityBinding: FragmentCommunityBinding
 

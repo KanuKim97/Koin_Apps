@@ -7,8 +7,9 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.koin_apps.R
 import com.example.koin_apps.data.remote.model.orderBook.OrderAskBidData
+import javax.inject.Inject
 
-class OrderBookAskListAdapter(
+class OrderBookAskListAdapter @Inject constructor(
     private val orderAskData: ArrayList<OrderAskBidData>
 ): BaseAdapter() {
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {

@@ -1,21 +1,17 @@
 package com.example.koin_apps
 
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
-import com.example.koin_apps.data.AppRepository
-import com.example.koin_apps.data.database.RoomRepo
+import androidx.activity.viewModels
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
-import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.LiveTimeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var liveTimeBinding: ActivityLiveTimeBinding
-    private lateinit var liveTimeViewModel: LiveTimeViewModel
-    private lateinit var vmFactory: ViewModelFactory
+    private val liveTimeViewModel: LiveTimeViewModel by viewModels()
 
     private val bundle = Bundle()
     private val transactionFragment = TransactionFragment()
@@ -26,10 +22,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         val coinTitle = intent.getStringExtra("coinTitle")
         bundle.putString("coinTitle", coinTitle)
 
-        vmFactory = ViewModelFactory(AppRepository(RoomRepo.provideDao(RoomRepo.createAppDBClient())))
-        liveTimeViewModel = ViewModelProvider(this, vmFactory)[LiveTimeViewModel::class.java]
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
-
         liveTimeBinding.coinTitle.text = coinTitle
         liveTimeViewModel.getTickerLive(coinTitle.toString())
 

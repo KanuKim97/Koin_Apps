@@ -5,14 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.koin_apps.data.AppRepository
-import com.example.koin_apps.data.remote.model.ticker.TickerData
-import com.example.koin_apps.data.remote.model.ticker.liveViewTicker.LiveTickerData
 import kotlinx.coroutines.*
+import com.example.koin_apps.data.di.AppRepository
+import com.example.koin_apps.data.remote.model.ticker.liveViewTicker.LiveTickerData
 import org.json.JSONException
 import org.json.JSONObject
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LiveTimeViewModel(private val repos: AppRepository): ViewModel() {
+@HiltViewModel
+class LiveTimeViewModel @Inject constructor(
+    private val repos: AppRepository
+): ViewModel() {
     private val _tickerLiveViewData = MutableLiveData<LiveTickerData>()
 
     val tickerLiveViewData: LiveData<LiveTickerData>

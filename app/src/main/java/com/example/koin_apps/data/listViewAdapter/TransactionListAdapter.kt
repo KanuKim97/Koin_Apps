@@ -7,8 +7,9 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.koin_apps.R
 import com.example.koin_apps.data.remote.model.transaction.TransactionData
+import javax.inject.Inject
 
-class TransactionListAdapter(
+class TransactionListAdapter @Inject constructor(
     private val transactionData: ArrayList<TransactionData>
 ): BaseAdapter() {
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
