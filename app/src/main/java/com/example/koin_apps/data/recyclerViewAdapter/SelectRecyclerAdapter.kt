@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.R
 import com.example.koin_apps.databinding.SelectCoinviewItemBinding
 import com.example.koin_apps.viewModel.activity.SelectViewModel
+import javax.inject.Inject
 
 class SelectRecyclerAdapter(
     private var coinTitleList: List<String?>?,

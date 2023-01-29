@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.LiveTimeActivity
 import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
+import javax.inject.Inject
 
 class MainRecyclerAdapter(
     private val context: Context,
@@ -40,10 +41,8 @@ class MainRecyclerAdapter(
         return MainViewItemHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: MainViewItemHolder,
-        position: Int
-    ) { holder.bind(coinTitle[position]) }
+    override fun onBindViewHolder(holder: MainViewItemHolder, position: Int) =
+        holder.bind(coinTitle[position])
 
     override fun getItemCount(): Int = coinTitle.size
 

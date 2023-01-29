@@ -11,20 +11,29 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var liveTimeBinding: ActivityLiveTimeBinding
-    private val liveTimeViewModel: LiveTimeViewModel by viewModels()
 
     private val bundle = Bundle()
     private val transactionFragment = TransactionFragment()
     private val orderBookFragment = OrderBookFragment()
     private val communityFragment = CommunityFragment()
+    private val liveTimeViewModel: LiveTimeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val coinTitle = intent.getStringExtra("coinTitle")
+
         bundle.putString("coinTitle", coinTitle)
+        transactionFragment.arguments = bundle
+        orderBookFragment.arguments = bundle
+        communityFragment.arguments = bundle
 
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
         liveTimeBinding.coinTitle.text = coinTitle
         liveTimeViewModel.getTickerLive(coinTitle.toString())
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.FragmentLayout, transactionFragment)
+            .commit()
 
         setContentView(liveTimeBinding.root)
     }
@@ -35,12 +44,6 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
         liveTimeBinding.BtnOrderBook.setOnClickListener(this)
         liveTimeBinding.BtnCommunity.setOnClickListener(this)
 
-        transactionFragment.arguments = bundle
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.FragmentLayout, transactionFragment)
-            .commit()
-
         liveTimeViewModel.tickerLiveViewData.observe(this) {
             liveTimeBinding.tickerWon.text = getString(R.string.tickerWon, it.closing_price)
             liveTimeBinding.FlucatateRate24H.text =
@@ -48,14 +51,9 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
             liveTimeBinding.Flucatate24H.text =
                 getString(R.string.ticker_Flucatate_won24H, it.fluctate_24H)
         }
-
     }
 
     override fun onClick(v: View?) {
-        transactionFragment.arguments = bundle
-        orderBookFragment.arguments = bundle
-        communityFragment.arguments = bundle
-
         when (v?.id) {
             R.id.Btn_Transaction -> {
                 supportFragmentManager

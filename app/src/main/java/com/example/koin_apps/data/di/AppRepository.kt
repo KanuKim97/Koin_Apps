@@ -2,10 +2,8 @@ package com.example.koin_apps.data.di
 
 import com.example.koin_apps.data.database.dao.CoinDao
 import com.example.koin_apps.data.database.tables.CoinEntity
-import com.example.koin_apps.data.di.AppModule
 import com.example.koin_apps.data.remote.IKoinApiService
 import javax.inject.Inject
-
 
 class AppRepository @Inject constructor(
     private val coinDao: CoinDao,

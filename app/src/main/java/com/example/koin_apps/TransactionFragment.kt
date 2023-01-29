@@ -10,6 +10,7 @@ import com.example.koin_apps.data.listViewAdapter.TransactionListAdapter
 import com.example.koin_apps.databinding.FragmentTransactionBinding
 import com.example.koin_apps.viewModel.fragment.TransactionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TransactionFragment : Fragment() {
