@@ -39,6 +39,13 @@ android {
 
     buildFeatures {
         viewBinding = true
+        // Jetpack Compose
+        compose true
+    }
+
+    /* -- Jetpack Compose -- */
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0-alpha02"
     }
 
     namespace 'com.example.koin_apps'
@@ -80,6 +87,20 @@ dependencies {
     //Dagger
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-android-compiler:2.44"
+
+    /* -- Jetpack Compose -- */
+    def composeBom = platform('androidx.compose:compose-bom:2022.12.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+
+    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    implementation 'androidx.compose.runtime:runtime-livedata'
 }
 
 kapt {
