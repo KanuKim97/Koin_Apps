@@ -50,13 +50,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun getClient(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-               .baseUrl(provideBaseUrl())
-               .client(okHttpClient)
-               .addConverterFactory(GsonConverterFactory.create())
-               .build()
-    }
+    fun getClient(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+        .baseUrl(provideBaseUrl())
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
     @Provides
     @Singleton
