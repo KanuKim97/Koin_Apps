@@ -9,6 +9,4 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repos: AppRepository
-): ViewModel() {
-    var readAllCoinData: LiveData<List<CoinEntity>> = repos.allCoinData
-}
+): ViewModel() { val readAllCoinData: LiveData<List<CoinEntity>> = repos.allCoinData }

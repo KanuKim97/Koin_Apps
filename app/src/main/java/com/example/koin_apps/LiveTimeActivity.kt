@@ -19,7 +19,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
     private val liveTimeViewModel: LiveTimeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val coinTitle = intent.getStringExtra("coinTitle")
+        val coinTitle = intent.getStringExtra("coinTitle").toString()
 
         bundle.putString("coinTitle", coinTitle)
         transactionFragment.arguments = bundle
@@ -28,7 +28,7 @@ class LiveTimeActivity : AppCompatActivity(), View.OnClickListener {
 
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
         liveTimeBinding.coinTitle.text = coinTitle
-        liveTimeViewModel.getTickerLive(coinTitle.toString())
+        liveTimeViewModel.setTickerPath(coinTitle)
 
         supportFragmentManager
             .beginTransaction()

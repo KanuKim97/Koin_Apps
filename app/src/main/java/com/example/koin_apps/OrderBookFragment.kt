@@ -19,7 +19,7 @@ class OrderBookFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val coinTitle = arguments?.getString("coinTitle")
-        orderBookViewModel.getOrderBookData(coinTitle!!, 5)
+
     }
 
     override fun onCreateView(
@@ -29,19 +29,6 @@ class OrderBookFragment : Fragment() {
     ): View {
         orderBookBinding = FragmentOrderBookBinding.inflate(inflater, container, false)
         return orderBookBinding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        orderBookViewModel.orderBookLiveData.observe(viewLifecycleOwner) { orderData->
-            orderBookBinding.orderBookCurrency.text =
-                getString(R.string.orderBook_Currency, orderData.order_currency)
-            orderBookBinding.orderBookPaymentCurrency.text =
-                getString(R.string.orderBook_paymentCurrency, orderData.payment_currency)
-            orderBookBinding.OrderbookBidList.adapter = OrderBookBidListAdapter(orderData.bids!!)
-            orderBookBinding.OrderBookAskList.adapter = OrderBookAskListAdapter(orderData.asks!!)
-        }
     }
 
 }
