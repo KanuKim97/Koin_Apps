@@ -44,11 +44,7 @@
     <string name="orderBook_Bid_Txt">매수</string>
 
     <string name="orderBook_Ticker_Info">
-        현재가 %s
-        전일가 %s
-        고가 %s
-        저가 %s
-        거래량 %s
+        \n현재가: %s\n전일가: %s\n고가: %s\n저가: %s\n거래량: %s
     </string>
 
     <!-- Fragment Community String Value -->
@@ -58,7 +54,7 @@
     <!-- null data Dialog String Value -->
     <string name="NullDialog_Title">Cryptocurrency was not chosen</string>
     <string name="NullDialog_Content">
-        Cryptocurrency was not chosen\nPlz Choose your favorite Cryptocurrency
+        \nCryptocurrency was not chosen\nPlz Choose your favorite Cryptocurrency
     </string>
     <string name="NullDialog_okBtn">OK</string>
 
