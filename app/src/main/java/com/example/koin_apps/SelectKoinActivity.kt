@@ -4,24 +4,20 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.koin_apps.data.AppRepository
-import com.example.koin_apps.data.database.RoomRepo
 import com.example.koin_apps.data.recyclerViewAdapter.SelectRecyclerAdapter
 import com.example.koin_apps.databinding.ActivitySelectKoinBinding
-import com.example.koin_apps.viewModel.ViewModelFactory
 import com.example.koin_apps.viewModel.activity.SelectViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectKoinActivity : AppCompatActivity(){
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
-    private lateinit var selectViewModel: SelectViewModel
-    private lateinit var vmFactory: ViewModelFactory
+    private val selectViewModel: SelectViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vmFactory = ViewModelFactory(AppRepository(RoomRepo.provideDao(RoomRepo.createAppDBClient())))
-        selectViewModel = ViewModelProvider(this, vmFactory)[SelectViewModel::class.java]
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
         selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
 

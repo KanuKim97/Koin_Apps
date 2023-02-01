@@ -5,14 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.koin_apps.data.AppRepository
+import com.example.koin_apps.data.di.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
+import javax.inject.Inject
 
-class SelectViewModel(private val repos: AppRepository): ViewModel() {
+@HiltViewModel
+class SelectViewModel @Inject constructor(
+    private val repos: AppRepository
+): ViewModel() {
     private val _coinList = MutableLiveData<List<String?>?>()
     private val _selectedCoin = MutableLiveData<MutableList<String>>()
 

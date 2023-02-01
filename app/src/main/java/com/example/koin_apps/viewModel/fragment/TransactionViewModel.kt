@@ -4,12 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.koin_apps.data.AppRepository
+import com.example.koin_apps.data.di.AppRepository
 import com.example.koin_apps.data.remote.model.transaction.TransactionData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TransactionViewModel(private val repos: AppRepository): ViewModel() {
+@HiltViewModel
+class TransactionViewModel @Inject constructor(
+    private val repos: AppRepository
+): ViewModel() {
     private val _transactionLiveData = MutableLiveData<ArrayList<TransactionData>>()
     val transactionLiveData: LiveData<ArrayList<TransactionData>>
         get() = _transactionLiveData
