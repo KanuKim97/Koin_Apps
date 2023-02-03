@@ -28,8 +28,7 @@ object AppModule {
             context,
             AppDataBase::class.java,
             "coinDB_ver0.1"
-        ).fallbackToDestructiveMigration() // Delete data before use it and Migrate new version
-            .allowMainThreadQueries() // allow using DB Queries in Main Thread
+        ).allowMainThreadQueries() // allow using DB Queries in Main Thread
             .build()
 
     @Provides

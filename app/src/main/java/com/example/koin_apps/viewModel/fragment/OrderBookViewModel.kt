@@ -1,6 +1,5 @@
 package com.example.koin_apps.viewModel.fragment
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,9 +9,7 @@ import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.ticker.OrderTickerData
 import com.example.koin_apps.data.remote.model.transaction.TransactionData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,40 +29,39 @@ class OrderBookViewModel @Inject constructor(
 
     private var coinTitle: String = ""
 
-    private val tickerJob: Job = viewModelScope.launch {
+    private val apiCallJob: Job = viewModelScope.launch {
         while (true) {
-            val response = repos.getTicker(coinTitle)
-            if (response.isSuccessful && response.body() != null) {
-                _tickerLiveData.postValue(
-                    OrderTickerData(response.body()!!.data["closing_price"].toString(),
-                        response.body()!!.data["prev_closing_price"].toString(),
-                        response.body()!!.data["max_price"].toString(),
-                        response.body()!!.data["min_price"].toString(),
-                        response.body()!!.data["units_traded_24H"].toString()
+            launch {
+                val tickerResponse = repos.getTicker(coinTitle)
+                if (tickerResponse.isSuccessful && tickerResponse.body() != null) {
+                    _tickerLiveData.postValue(
+                        OrderTickerData(
+                            tickerResponse.body()!!.data["closing_price"].toString(),
+                            tickerResponse.body()!!.data["prev_closing_price"].toString(),
+                            tickerResponse.body()!!.data["max_price"].toString(),
+                            tickerResponse.body()!!.data["min_price"].toString(),
+                            tickerResponse.body()!!.data["units_traded_24H"].toString()
+                        )
                     )
-                )
-            }
-            delay(1000L)
-        }
-    }
+                }
+                delay(1000)
+            }.join()
 
-    private val transactionJob: Job = viewModelScope.launch {
-        while (true) {
-            val response = repos.getTransaction(coinTitle, 10)
-            if (response.isSuccessful && response.body() != null) {
-                _transactionLiveData.postValue(response.body()!!.data)
-            }
-            delay(1000L)
-        }
-    }
+            launch {
+                val transactionResponse = repos.getTransaction(coinTitle, 10)
+                if (transactionResponse.isSuccessful && transactionResponse.body() != null) {
+                    _transactionLiveData.postValue(transactionResponse.body()!!.data)
+                }
+                delay(1000)
+            }.join()
 
-    private val orderBookJob: Job = viewModelScope.launch {
-        while (true) {
-            val response = repos.getOrderBook(coinTitle, 10)
-            if (response.isSuccessful && response.body() != null) {
-                _orderBookLiveData.postValue(response.body()!!.data)
+            launch {
+                val orderBookResponse = repos.getOrderBook(coinTitle, 10)
+                if (orderBookResponse.isSuccessful && orderBookResponse.body()!!.data != null) {
+                    _orderBookLiveData.postValue(orderBookResponse.body()!!.data)
+                }
+                delay(1000)
             }
-            delay(1000L)
         }
     }
 
@@ -74,16 +70,10 @@ class OrderBookViewModel @Inject constructor(
         if (coinTitle.isNotEmpty()) { startAPICallJob() }
     }
 
-    private fun startAPICallJob() {
-        tickerJob.start()
-        transactionJob.start()
-        orderBookJob.start()
-    }
+    private fun startAPICallJob() = apiCallJob.start()
 
     override fun onCleared() {
         super.onCleared()
-        tickerJob.cancel()
-        transactionJob.cancel()
-        orderBookJob.cancel()
+        apiCallJob.cancel()
     }
 }
