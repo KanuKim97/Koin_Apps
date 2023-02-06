@@ -9,6 +9,7 @@ import com.example.koin_apps.data.di.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
@@ -18,57 +19,34 @@ import javax.inject.Inject
 class SelectViewModel @Inject constructor(
     private val repos: AppRepository
 ): ViewModel() {
-    private val _coinList = MutableLiveData<List<String?>?>()
-    private val _selectedCoin = MutableLiveData<MutableList<String>>()
+    private val _coinTitleList = MutableLiveData<List<String?>?>()
+    private val _selectedCoinTitle = MutableLiveData<List<String>>()
 
-    val coinList: LiveData<List<String?>?>
-        get() = _coinList
-    val selectedCoin: LiveData<MutableList<String>>
-        get()= _selectedCoin
+    val coinTitleList: LiveData<List<String?>?>
+        get() = _coinTitleList
+    val selectedTitleCoin: LiveData<List<String>>
+        get()= _selectedCoinTitle
 
+    init { _coinTitleList.value = null }
     private var coinListElement: MutableList<String> = mutableListOf()
 
-    init { _coinList.value = null }
+    /* Store Selected data function
+    * private val storeCoinTitleJob: Job = viewModelScope.launch { repos.addCoinList(coinListElement) }
+    */
+    private val tickerTitleJob: Job = viewModelScope.launch {
+        val tickerTitleResponse = repos.getTickerAll()
 
-     fun getCoinTitle() {
-         viewModelScope.launch(Dispatchers.IO) {
-             val response = repos.getTicker("ALL")
-
-             when (response.code()) {
-                 200 -> {
-                     val coinTitleList = response.body()?.data?.keys?.toList()
-                     _coinList.postValue(coinTitleList)
-                 }
-                 400 -> {
-                     val errJsonObj: JSONObject
-
-                     try{
-                         errJsonObj = JSONObject(response.errorBody()?.string()!!)
-                         val responseErrCode = errJsonObj.getString("status")
-                         val responseErrMsg = errJsonObj.getString("message")
-
-                         Log.d("400 Error", "$responseErrCode: $responseErrMsg")
-                     } catch (e: JSONException) { e.printStackTrace() }
-                 }
-             }
-
-         }
+        if (tickerTitleResponse.isSuccessful && tickerTitleResponse.body() != null) {
+            val coinTitleList = tickerTitleResponse.body()?.data?.keys?.toList()
+            _coinTitleList.postValue(coinTitleList)
+        }
     }
 
-    fun getData(Elements: MutableList<String>) { _selectedCoin.value = Elements }
-
-    fun storeTitleData(){
-        try {
-            coinListElement = _selectedCoin.value!!
-
-            for(listElement in coinListElement) {
-                viewModelScope.launch(Dispatchers.IO) {
-                    repos.addCoinList(CoinEntity( listElement))
-                }
-            }
-        } catch (e: NullPointerException) { e.printStackTrace() }
-    }
-
+    fun getCoinTitle() = tickerTitleJob.start()
+    fun setSelectedData(selectedItem: List<String>) { _selectedCoinTitle.value = selectedItem }
+    fun getCoinTitleData(TitleElements: MutableList<String>) { _selectedCoinTitle.postValue(TitleElements) }
+    fun storeCoinTitleData() =
+        try { /* store coinTitle Job */ } catch (e: NullPointerException) { e.printStackTrace() }
 }
 
 

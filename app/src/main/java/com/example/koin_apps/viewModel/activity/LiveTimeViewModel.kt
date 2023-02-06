@@ -19,7 +19,7 @@ class LiveTimeViewModel @Inject constructor(
         get() = _tickerLiveViewData
 
     private var path: String = ""
-    private val tickerLiveJob = viewModelScope.launch {
+    private val tickerLiveJob: Job = viewModelScope.launch {
         while (true) {
             val response = repos.getTicker(path = path)
             if (response.isSuccessful && response.code() == 200) {

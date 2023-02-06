@@ -14,6 +14,7 @@ class AppRepository @Inject constructor(
     suspend fun deleteCoinList(coinEntity: CoinEntity) { coinDao.deleteCoinTitle(coinEntity) }
 
     /* Retrofit Client */
+    suspend fun getTickerAll() = koinApiService.getTickerALL()
     suspend fun getTicker(path: String) = koinApiService.getTicker(path)
     suspend fun getTransaction(path: String, count:Int) = koinApiService.getTransactionHistory(path, count)
     suspend fun getOrderBook(path: String, count: Int) = koinApiService.getOrderBook(path, count)

@@ -9,6 +9,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IKoinApiService {
+    @GET("ticker/ALL_KRW")
+    suspend fun getTickerALL(): Response<TickerRoot>
+
     @GET("ticker/{path}_KRW")
     suspend fun getTicker(
         @Path("path")

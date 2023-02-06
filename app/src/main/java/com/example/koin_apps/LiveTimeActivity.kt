@@ -2,7 +2,6 @@ package com.example.koin_apps
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import com.example.koin_apps.databinding.ActivityLiveTimeBinding
 import com.example.koin_apps.viewModel.activity.LiveTimeViewModel

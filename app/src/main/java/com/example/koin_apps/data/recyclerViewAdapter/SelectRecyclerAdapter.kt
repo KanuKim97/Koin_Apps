@@ -10,44 +10,39 @@ import javax.inject.Inject
 
 class SelectRecyclerAdapter(
     private var coinTitleList: List<String?>?,
-    private var selectViewModel: SelectViewModel
 ): RecyclerView.Adapter<SelectRecyclerAdapter.CoinsViewHolder>() {
-    private val selectList: MutableList<String> = mutableListOf()
+    private val selectedCoinList: MutableList<String> = mutableListOf()
 
-    class CoinsViewHolder(binding: SelectCoinviewItemBinding)
-        : RecyclerView.ViewHolder(binding.root) {
-            val checkKoin = binding.checkCoin
-            val koinTitleData = binding.titleCoin
-    }
+    fun getSelectedItems(): List<String> = selectedCoinList
+
+    inner class CoinsViewHolder(private val binding: SelectCoinviewItemBinding)
+        :RecyclerView.ViewHolder(binding.root) {
+            fun bind(coinTitle: String) {
+                binding.titleCoin.text = coinTitle
+                binding.checkCoin.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        selectedCoinList.add(coinTitle)
+                    } else {
+                        selectedCoinList.remove(coinTitle)
+                    }
+                }
+            }
+        }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): CoinsViewHolder {
-        val view =
-            LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.select_coinview_item, parent, false)
+        val binding = SelectCoinviewItemBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return CoinsViewHolder(SelectCoinviewItemBinding.bind(view))
+        return CoinsViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CoinsViewHolder, position: Int) {
-        val titleListPosition = coinTitleList?.get(position)
-
-        holder.koinTitleData.text = titleListPosition
-        holder.checkKoin.isChecked
-
-        holder.checkKoin.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) { selectList.add(titleListPosition.toString()) }
-            else { selectList.remove(titleListPosition.toString()) }
-
-            selectViewModel.getData(selectList)
-        }
-    }
+    override fun onBindViewHolder(holder: CoinsViewHolder, position: Int) =
+        holder.bind(coinTitleList?.get(position)!!.toString())
 
     override fun getItemCount(): Int { return coinTitleList?.size ?: 0 }
 
     override fun getItemViewType(position: Int): Int = position
-
 }
