@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.koin_apps.data.di.AppRepository
+import com.example.koin_apps.data.di.repository.ApiRepository
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.ticker.OrderTickerData
 import com.example.koin_apps.data.remote.model.transaction.TransactionData
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderBookViewModel @Inject constructor(
-    private val repos: AppRepository
+    private val ApiRepo: ApiRepository
 ): ViewModel() {
     private val _transactionLiveData = MutableLiveData<ArrayList<TransactionData>>()
     private val _orderBookLiveData = MutableLiveData<OrderData>()
@@ -32,7 +32,7 @@ class OrderBookViewModel @Inject constructor(
     private val apiCallJob: Job = viewModelScope.launch {
         while (true) {
             launch {
-                val tickerResponse = repos.getTicker(coinTitle)
+                val tickerResponse = ApiRepo.getTicker(coinTitle)
                 if (tickerResponse.isSuccessful && tickerResponse.body() != null) {
                     _tickerLiveData.postValue(
                         OrderTickerData(
@@ -48,7 +48,7 @@ class OrderBookViewModel @Inject constructor(
             }.join()
 
             launch {
-                val transactionResponse = repos.getTransaction(coinTitle, 10)
+                val transactionResponse = ApiRepo.getTransactionHistory(coinTitle, 10)
                 if (transactionResponse.isSuccessful && transactionResponse.body() != null) {
                     _transactionLiveData.postValue(transactionResponse.body()!!.data)
                 }
@@ -56,7 +56,7 @@ class OrderBookViewModel @Inject constructor(
             }.join()
 
             launch {
-                val orderBookResponse = repos.getOrderBook(coinTitle, 10)
+                val orderBookResponse = ApiRepo.getOrderBook(coinTitle, 10)
                 if (orderBookResponse.isSuccessful && orderBookResponse.body()!!.data != null) {
                     _orderBookLiveData.postValue(orderBookResponse.body()!!.data)
                 }

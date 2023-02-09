@@ -3,21 +3,16 @@ package com.example.koin_apps.data.recyclerViewAdapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.koin_apps.R
 import com.example.koin_apps.databinding.SelectCoinviewItemBinding
-import com.example.koin_apps.viewModel.activity.SelectViewModel
-import javax.inject.Inject
 
 class SelectRecyclerAdapter(
     private var coinTitleList: List<String?>?,
 ): RecyclerView.Adapter<SelectRecyclerAdapter.CoinsViewHolder>() {
     private val selectedCoinList: MutableList<String> = mutableListOf()
 
-    fun getSelectedItems(): List<String> = selectedCoinList
-
     inner class CoinsViewHolder(private val binding: SelectCoinviewItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
-            fun bind(coinTitle: String) {
+        fun bind(coinTitle: String) {
                 binding.titleCoin.text = coinTitle
                 binding.checkCoin.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
@@ -27,7 +22,9 @@ class SelectRecyclerAdapter(
                     }
                 }
             }
-        }
+    }
+
+    fun getSelectedItems(): List<String> = selectedCoinList
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
