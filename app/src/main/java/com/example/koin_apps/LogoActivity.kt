@@ -16,15 +16,15 @@ class LogoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logoBinding = ActivityLogoBinding.inflate(layoutInflater)
-        setContentView(logoBinding.root)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         logoViewModel.readAllData.observe(this) {
-            if (it != null) { startActivity(Intent(this, MainActivity::class.java)) }
-            else { startActivity(Intent(this, SelectKoinActivity::class.java)) }
+            if (it != null) {
+                startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                startActivity(Intent(this, SelectKoinActivity::class.java))
+            }
         }
+
+        setContentView(logoBinding.root)
     }
 }

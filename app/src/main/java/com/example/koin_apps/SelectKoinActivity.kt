@@ -36,5 +36,4 @@ class SelectKoinActivity : AppCompatActivity(){
 
         setContentView(selectKoinBinding.root)
     }
-
 }
