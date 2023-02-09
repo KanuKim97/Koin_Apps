@@ -1,5 +1,6 @@
 package com.example.koin_apps.viewModel.activity
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.example.koin_apps.data.di.repository.CoinTitleDBRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,9 +23,6 @@ class SelectViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
     private val _coinTitleList = MutableLiveData<List<String?>?>()
-    private val _selectedCoinTitle = MutableLiveData<List<String>>()
-    private var coinListElement: MutableList<String> = mutableListOf()
-
     private val tickerTitleJob: Job = viewModelScope.launch {
         val tickerTitleResponse = ApiRepo.getTickerAll()
 
@@ -33,29 +32,22 @@ class SelectViewModel @Inject constructor(
         }
     }
 
-    private val storeCoinTitle: Job = viewModelScope.launch(ioDispatcher) {
-        for (listElement in coinListElement) { coinDBRepo.insertCoinTitle(CoinEntity(listElement)) }
-    }
-
     val coinTitleList: LiveData<List<String?>?>
         get() = _coinTitleList
-    val selectedTitleCoin: LiveData<List<String>>
-        get()= _selectedCoinTitle
 
     fun getCoinTitle() = tickerTitleJob.start()
-    fun storeCoinTitleData() = storeCoinTitle.start()
-    fun setSelectedData(selectedItem: List<String>) { _selectedCoinTitle.postValue(selectedItem) }
-    fun getCoinTitleData(titleElements: MutableList<String>) { _selectedCoinTitle.postValue(titleElements) }
+
+    fun storeCoinTitle(selectedCoinTitle: List<String>) {
+        viewModelScope.launch(ioDispatcher) {
+            for (listElement in selectedCoinTitle) {
+                coinDBRepo.insertCoinTitle(CoinEntity(listElement))
+            }
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()
         tickerTitleJob.cancel()
-        storeCoinTitle.cancel()
+        viewModelScope.cancel()
     }
 }
-
-
-
-
-
-
