@@ -26,10 +26,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        mainViewModel.readAllCoinData.observe(this, {
-            if(it.isNullOrEmpty()) { showDataNullDialog() }
-            else { mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(this, it) }
-        })
+        mainViewModel.readAllCoinData.observe(this) {
+            if (it.isNullOrEmpty()) {
+                showDataNullDialog()
+            } else {
+                mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(this, it)
+            }
+        }
 
         mainActivityBinding.addCoinBtn.setOnClickListener {
             startActivity(Intent(this, SelectKoinActivity::class.java))
