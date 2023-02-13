@@ -1,4 +1,4 @@
-package com.example.koin_apps.data.remote.model.ticker
+package com.example.koin_apps.data.remote.model.ticker.liveViewTicker
 
 data class LiveTickerData (
     val closing_price: String,

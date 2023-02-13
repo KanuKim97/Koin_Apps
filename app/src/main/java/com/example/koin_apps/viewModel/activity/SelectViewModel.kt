@@ -5,49 +5,74 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.koin_apps.data.di.AppRepository
 import com.example.koin_apps.data.database.tables.CoinEntity
-import com.example.koin_apps.data.di.coroutineDispatcher.IoDispatcher
-import com.example.koin_apps.data.di.repository.ApiRepository
-import com.example.koin_apps.data.di.repository.CoinTitleDBRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
 class SelectViewModel @Inject constructor(
-    private val ApiRepo: ApiRepository,
-    private val coinDBRepo: CoinTitleDBRepository,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val repos: AppRepository
 ): ViewModel() {
-    private val _coinTitleList = MutableLiveData<List<String?>?>()
-    private val tickerTitleJob: Job = viewModelScope.launch {
-        val tickerTitleResponse = ApiRepo.getTickerAll()
+    private val _coinList = MutableLiveData<List<String?>?>()
+    private val _selectedCoin = MutableLiveData<MutableList<String>>()
 
-        if (tickerTitleResponse.isSuccessful && tickerTitleResponse.body() != null) {
-            val coinTitleList = tickerTitleResponse.body()?.data?.keys?.toList()
-            _coinTitleList.postValue(coinTitleList)
-        }
+    val coinList: LiveData<List<String?>?>
+        get() = _coinList
+    val selectedCoin: LiveData<MutableList<String>>
+        get()= _selectedCoin
+
+    private var coinListElement: MutableList<String> = mutableListOf()
+
+    init { _coinList.value = null }
+
+     fun getCoinTitle() {
+         viewModelScope.launch(Dispatchers.IO) {
+             val response = repos.getTicker("ALL")
+
+             when (response.code()) {
+                 200 -> {
+                     val coinTitleList = response.body()?.data?.keys?.toList()
+                     _coinList.postValue(coinTitleList)
+                 }
+                 400 -> {
+                     val errJsonObj: JSONObject
+
+                     try{
+                         errJsonObj = JSONObject(response.errorBody()?.string()!!)
+                         val responseErrCode = errJsonObj.getString("status")
+                         val responseErrMsg = errJsonObj.getString("message")
+
+                         Log.d("400 Error", "$responseErrCode: $responseErrMsg")
+                     } catch (e: JSONException) { e.printStackTrace() }
+                 }
+             }
+
+         }
     }
 
-    val coinTitleList: LiveData<List<String?>?>
-        get() = _coinTitleList
+    fun getData(Elements: MutableList<String>) { _selectedCoin.value = Elements }
 
-    fun getCoinTitle() = tickerTitleJob.start()
+    fun storeTitleData(){
+        try {
+            coinListElement = _selectedCoin.value!!
 
-    fun storeCoinTitle(selectedCoinTitle: List<String>) {
-        viewModelScope.launch(ioDispatcher) {
-            for (listElement in selectedCoinTitle) {
-                coinDBRepo.insertCoinTitle(CoinEntity(listElement))
+            for(listElement in coinListElement) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    repos.addCoinList(CoinEntity( listElement))
+                }
             }
-        }
+        } catch (e: NullPointerException) { e.printStackTrace() }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        tickerTitleJob.cancel()
-        viewModelScope.cancel()
-    }
 }
+
+
+
+
+
+

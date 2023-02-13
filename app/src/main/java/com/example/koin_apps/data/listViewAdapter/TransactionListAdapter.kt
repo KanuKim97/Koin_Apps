@@ -22,10 +22,12 @@ class TransactionListAdapter @Inject constructor(
         val transactionType = convertView?.findViewById<TextView>(R.id.transaction_Type)
         val transactionPrice = convertView?.findViewById<TextView>(R.id.transaction_Price)
         val transactionUnits = convertView?.findViewById<TextView>(R.id.transaction_Units)
+        val transactionTotal = convertView?.findViewById<TextView>(R.id.transaction_Total)
 
         transactionType?.text = transactionData[position].type
         transactionPrice?.text = transactionData[position].price
         transactionUnits?.text = transactionData[position].units_traded
+        transactionTotal?.text = transactionData[position].total
 
         return convertView!!
     }

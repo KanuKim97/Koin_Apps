@@ -1,48 +1,73 @@
 package com.example.koin_apps.viewModel.activity
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.koin_apps.data.di.repository.ApiRepository
 import kotlinx.coroutines.*
-import com.example.koin_apps.data.remote.model.ticker.LiveTickerData
+import com.example.koin_apps.data.di.AppRepository
+import com.example.koin_apps.data.remote.model.ticker.liveViewTicker.LiveTickerData
+import org.json.JSONException
+import org.json.JSONObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LiveTimeViewModel @Inject constructor(
-    private val bithumbApiRepos: ApiRepository
+    private val repos: AppRepository
 ): ViewModel() {
     private val _tickerLiveViewData = MutableLiveData<LiveTickerData>()
+
     val tickerLiveViewData: LiveData<LiveTickerData>
         get() = _tickerLiveViewData
 
-    private var path: String = ""
-    private val tickerLiveJob: Job = viewModelScope.launch {
-        while (true) {
-            val response = bithumbApiRepos.getTicker(path = path)
-            if (response.isSuccessful && response.code() == 200) {
-                val resultData = LiveTickerData(
-                    response.body()?.data?.get("closing_price").toString(),
-                    response.body()?.data?.get("fluctate_24H").toString(),
-                    response.body()?.data?.get("fluctate_rate_24H").toString()
-                )
+    fun getTickerLive(path: String) {
+        val tickerResponse = viewModelScope.launch {
+            while (true) {
+                val response = repos.getTicker(path)
 
-                _tickerLiveViewData.postValue(resultData)
+                when (response.code()) {
+                    200 -> {
+                        try {
+                            val responseBody = response.body()
+
+                            if (responseBody != null) {
+                                _tickerLiveViewData.postValue(
+                                    LiveTickerData(
+                                        responseBody.data["closing_price"].toString(),
+                                        responseBody.data["fluctate_24H"].toString(),
+                                        responseBody.data["fluctate_rate_24H"].toString()
+                                    )
+                                )
+                            }
+                        } catch (e: NullPointerException) {
+                            throw NullPointerException("Response Data is Null or Empty")
+                        }
+                    }
+                    400-> {
+                        val errJsonObj: JSONObject
+
+                        try {
+                            errJsonObj = JSONObject(response.errorBody()?.string()!!)
+                            val responseErrCode = errJsonObj.getString("status")
+                            val responseErrMsg = errJsonObj.getString("message")
+
+                            Log.d("400 Error", "$responseErrCode: $responseErrMsg")
+                        } catch (e: JSONException) { e.printStackTrace() }
+                    }
+                }
+
+                delay(3000L)
             }
-            delay(1000L)
         }
+
+        tickerResponse.start()
     }
 
-    fun setTickerPath(coinTitle: String) {
-        path = coinTitle
-        getTickerLiveData()
-    }
-
-    private fun getTickerLiveData() { if (path.isNotEmpty()) { tickerLiveJob.start() } }
     override fun onCleared() {
         super.onCleared()
-        tickerLiveJob.cancel()
+        viewModelScope.cancel()
     }
+
 }

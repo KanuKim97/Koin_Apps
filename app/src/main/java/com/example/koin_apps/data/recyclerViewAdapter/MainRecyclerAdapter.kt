@@ -17,7 +17,7 @@ class MainRecyclerAdapter(
 
     inner class MainViewItemHolder(private val binding: MainCoinviewItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
-        fun bind(coinEntity: CoinEntity) {
+        fun bind(coinEntity: CoinEntity ) {
             binding.titleCoin.text = coinEntity.coinTitle
             binding.NavigateCoinDesc.setOnClickListener {
                 Intent(context, LiveTimeActivity::class.java)
@@ -32,7 +32,11 @@ class MainRecyclerAdapter(
         viewType: Int
     ): MainViewItemHolder {
         val binding = MainCoinviewItemBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
+            .inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
 
         return MainViewItemHolder(binding)
     }
@@ -43,4 +47,5 @@ class MainRecyclerAdapter(
     override fun getItemCount(): Int = coinTitle.size
 
     override fun getItemViewType(position: Int): Int = position
+
 }

@@ -12,85 +12,84 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/orderBook_Ask_Title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/OrderBook_TopView"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="@string/orderBook_Ask_quantity"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/orderBook_Price_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:text="@string/orderBook_price_Title"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@id/orderBook_Ask_Title"
-            app:layout_constraintEnd_toStartOf="@id/orderBook_Bid_Title"
-            app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/orderBook_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/orderBook_Currency"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/orderBook_Bid_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:text="@string/orderBook_Bid_quantity"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/orderBook_paymentCurrency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/orderBook_paymentCurrency"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
-        <ListView
-            android:id="@+id/orderBook_Ask_List"
-            android:layout_width="0dp"
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/transaction_List"
-            app:layout_constraintEnd_toEndOf="@+id/orderBook_Price_Title"
-            app:layout_constraintTop_toBottomOf="@id/orderBook_Ask_Title" />
-
-        <ListView
-            android:id="@+id/orderBook_Bid_List"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/orderBook_Price_Title"
-            app:layout_constraintTop_toBottomOf="@+id/orderBook_Ask_List" />
-
-        <ListView
-            android:id="@+id/transaction_List"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/orderBook_Bid_List"
-            app:layout_constraintTop_toBottomOf="@id/orderBook_Ask_List" />
+            app:layout_constraintTop_toBottomOf="@+id/OrderBook_TopView">
 
-        <TextView
-            android:id="@+id/orderBook_Ticker_Info"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="5dp"
-            android:text="@string/orderBook_Ticker_Info"
-            android:gravity="center_vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/orderBook_Bid_List"
-            app:layout_constraintStart_toEndOf="@id/orderBook_Price_Title"
-            app:layout_constraintTop_toBottomOf="@id/orderBook_Ask_Title" />
+            <LinearLayout
+                android:id="@+id/Orderbook_ListView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/OrderBook_Bid_Txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/orderBook_bid_Txt"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+
+                <ListView
+                    android:id="@+id/Orderbook_Bid_List"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/OrderBook_Ask_Txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/orderBook_ask_Txt"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <ListView
+                    android:id="@+id/OrderBook_Ask_List"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
