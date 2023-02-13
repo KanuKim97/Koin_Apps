@@ -10,7 +10,7 @@ import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
 import javax.inject.Inject
 
-class MainRecyclerAdapter(
+class MainRecyclerAdapter @Inject constructor(
     private val context: Context,
     private val coinTitle: List<CoinEntity>
     ): RecyclerView.Adapter<MainRecyclerAdapter.MainViewItemHolder>() {

@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.databinding.SelectCoinviewItemBinding
+import javax.inject.Inject
 
-class SelectRecyclerAdapter(
+class SelectRecyclerAdapter @Inject constructor(
     private var coinTitleList: List<String?>?,
 ): RecyclerView.Adapter<SelectRecyclerAdapter.CoinsViewHolder>() {
     private val selectedCoinList: MutableList<String> = mutableListOf()
