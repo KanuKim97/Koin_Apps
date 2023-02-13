@@ -56,7 +56,7 @@ android {
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
@@ -72,10 +72,10 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 
     //Android Jetpack ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha05"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-beta01"
 
     //Android Jetpack LiveData`
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.0-alpha05"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.0-beta01"
 
     // Kotlin Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
@@ -89,8 +89,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.44.2"
     kapt "com.google.dagger:hilt-android-compiler:2.44.2"
 
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-android-compiler:2.44"
+    implementation "com.google.dagger:hilt-android:2.44.2"
+    kapt "com.google.dagger:hilt-android-compiler:2.44.2"
 
     /* -- Jetpack Compose -- */
     def composeBom = platform('androidx.compose:compose-bom:2022.12.00')
