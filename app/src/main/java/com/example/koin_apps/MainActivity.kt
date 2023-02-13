@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityBinding.addCoinBtn.setOnClickListener {
             startActivity(Intent(this, SelectKoinActivity::class.java))
+            finish()
         }
 
         setContentView(mainActivityBinding.root)

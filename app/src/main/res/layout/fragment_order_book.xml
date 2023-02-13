@@ -25,6 +25,18 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
+            android:id="@+id/orderBook_Ask_Txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/orderBook_Ask_Txt"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/orderBook_Ask_Title"
+            app:layout_constraintEnd_toStartOf="@id/orderBook_Price_Title"/>
+
+        <TextView
             android:id="@+id/orderBook_Price_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,6 +49,18 @@
             app:layout_constraintStart_toEndOf="@id/orderBook_Ask_Title"
             app:layout_constraintEnd_toStartOf="@id/orderBook_Bid_Title"
             app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/orderBook_Bid_Txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/orderBook_Bid_Txt"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/orderBook_Price_Title"
+            app:layout_constraintEnd_toStartOf="@id/orderBook_Bid_Title"/>
 
         <TextView
             android:id="@+id/orderBook_Bid_Title"
@@ -55,10 +79,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="5dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/transaction_List"
-            app:layout_constraintEnd_toEndOf="@+id/orderBook_Price_Title"
-            app:layout_constraintTop_toBottomOf="@id/orderBook_Ask_Title" />
+            app:layout_constraintEnd_toStartOf="@+id/orderBook_Bid_Txt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/orderBook_Ask_Title"
+            tools:listitem="@layout/order_coinview_asks_item" />
 
         <ListView
             android:id="@+id/orderBook_Bid_List"
@@ -67,7 +92,7 @@
             android:layout_marginEnd="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/orderBook_Price_Title"
+            app:layout_constraintStart_toEndOf="@+id/transaction_List"
             app:layout_constraintTop_toBottomOf="@+id/orderBook_Ask_List" />
 
         <ListView
@@ -76,20 +101,22 @@
             android:layout_height="0dp"
             android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/orderBook_Ask_Txt"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/orderBook_Bid_List"
-            app:layout_constraintTop_toBottomOf="@id/orderBook_Ask_List" />
+            app:layout_constraintTop_toBottomOf="@id/orderBook_Ask_List"
+            tools:listitem="@layout/transaction_coinview_item" />
 
         <TextView
             android:id="@+id/orderBook_Ticker_Info"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="5dp"
-            android:text="@string/orderBook_Ticker_Info"
             android:gravity="center_vertical"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/orderBook_Ticker_Info"
             app:layout_constraintBottom_toTopOf="@+id/orderBook_Bid_List"
-            app:layout_constraintStart_toEndOf="@id/orderBook_Price_Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/orderBook_Bid_Txt"
             app:layout_constraintTop_toBottomOf="@id/orderBook_Ask_Title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
