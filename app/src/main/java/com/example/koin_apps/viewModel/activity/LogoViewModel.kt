@@ -1,20 +1,13 @@
 package com.example.koin_apps.viewModel.activity
 
 import com.example.koin_apps.data.database.tables.CoinEntity
-import com.example.koin_apps.data.di.AppRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.launch
-import androidx.lifecycle.viewModelScope
+import com.example.koin_apps.data.di.repository.CoinTitleDBRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LogoViewModel @Inject constructor(
-    private val repos: AppRepository
-): ViewModel() {
-    private lateinit var _readAllData: LiveData<List<CoinEntity>>
-    val readAllData: LiveData<List<CoinEntity>>
-        get() = _readAllData
-    init { viewModelScope.launch { _readAllData = repos.allCoinData } }
-}
+    private val coinDBRepo: CoinTitleDBRepository
+): ViewModel() { val readAllData: LiveData<List<CoinEntity>> get() = coinDBRepo.readAllCoinTitle }

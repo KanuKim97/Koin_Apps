@@ -65,50 +65,12 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/titleNavView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/Btn_Transaction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/Mint_100"
-                android:text="@string/Btn_Transaction"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/Btn_OrderBook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/Mint_100"
-                android:text="@string/Btn_OrderBook"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/Btn_Transaction"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/Btn_Community"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/Mint_100"
-                android:text="@string/Btn_Community"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/Btn_OrderBook"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <FrameLayout
             android:id="@+id/FragmentLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/radius_layout">
 
         </FrameLayout>
 

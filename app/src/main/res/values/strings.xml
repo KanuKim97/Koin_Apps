@@ -1,15 +1,5 @@
 <resources>
     <string name="app_name">Koin!</string>
-
-    <!--Trade Activity String Value-->
-    <string name="Trade_Format">
-        CoinName: %s \n
-        PrevClosingPrice: %s \n
-        TradeValue_24H: %s \n
-        FluctateRate_24H: %s \n
-    </string>
-    <!-- After Refactoring String Value -->
-
     <!-- Logo Activity String Value -->
     <string name="logo">Logo</string>
 
@@ -18,7 +8,6 @@
     <string name="select_your_coin">Select Your Coin!</string>
     <string name="selected_Coin_List">Selected List</string>
     <string name="select_complete">Select Complete!</string>
-
 
     <!-- MainActivity String Value -->
     <string name="coin_list">coinList</string>
@@ -43,31 +32,29 @@
     <string name="transaction_Total">총 거래 금액: %s</string>
 
     <!-- Fragment OrderBook String Value -->
-    <string name="orderBook_bid_Txt">매수 요청 내역(Bid)</string>
-    <string name="orderBook_ask_Txt">매도 요청 내역(Ask)</string>
     <string name="orderBook_Currency">주문 통화(코인): %s</string>
     <string name="orderBook_paymentCurrency">결제 통화: %s</string>
     <string name="orderBook_Price">거래가: %s 원</string>
     <string name="orderBook_quantity">거래량: %s</string>
 
+    <string name="orderBook_price_Title">가격</string>
+    <string name="orderBook_Ask_quantity">매도 수량</string>
+    <string name="orderBook_Bid_quantity">매수 수량</string>
+    <string name="orderBook_Ask_Txt">매도</string>
+    <string name="orderBook_Bid_Txt">매수</string>
+
+    <string name="orderBook_Ticker_Info">
+        \n현재가: %s\n전일가: %s\n고가: %s\n저가: %s\n거래량: %s
+    </string>
+
     <!-- Fragment Community String Value -->
     <string name="warning">warning</string>
     <string name="update_soon">Will be update Soon</string>
 
-    <!-- Retrofit Response String Value -->
-    <string name="Ok_200_Data_Null">
-        Response data is Null or Empty \n
-        Please Reload Application
-    </string>
-
-    <string name="NotFound_400">
-        You have wrong Cryptocurrency List
-    </string>
-
     <!-- null data Dialog String Value -->
     <string name="NullDialog_Title">Cryptocurrency was not chosen</string>
     <string name="NullDialog_Content">
-        Cryptocurrency was not chosen\nPlz Choose your favorite Cryptocurrency
+        \nCryptocurrency was not chosen\nPlz Choose your favorite Cryptocurrency
     </string>
     <string name="NullDialog_okBtn">OK</string>
 
