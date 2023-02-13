@@ -15,8 +15,8 @@
 ## API
  ### Bithumb API (Public)
   - Ticker
-    - Ticker {Path: Coin Name}
     - Ticker {Path: ALL}
+    - Ticker {Path: Coin Name}
   - Transacton
     - Transaction {Path: CoinName}, {Query: Count}
   - Orderbook
@@ -29,7 +29,7 @@
 
 ## Test Enviroment 
  - AVD(Android Virtual Device)
- - Pixel 6 API 33)
+ - Pixel 6 API 33
 
 ## Dependencies
 ```
