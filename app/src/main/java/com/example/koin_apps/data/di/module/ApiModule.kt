@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-    /* Create Retrofit Instance */
     @Provides
     fun providesBaseUrl(): String = Constants.IKoinPublicApiUri
 
