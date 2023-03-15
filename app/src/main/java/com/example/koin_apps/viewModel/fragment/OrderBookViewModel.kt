@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.di.repository.ApiRepository
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.ticker.OrderTickerData
@@ -14,25 +15,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderBookViewModel @Inject constructor(
-    private val ApiRepo: ApiRepository
+    private val bithumbApiRepos: ApiRepository
 ): ViewModel() {
     private val _transactionLiveData = MutableLiveData<ArrayList<TransactionData>>()
     private val _orderBookLiveData = MutableLiveData<OrderData>()
     private val _tickerLiveData = MutableLiveData<OrderTickerData>()
 
-    val transactionLiveData: LiveData<ArrayList<TransactionData>>
-        get() = _transactionLiveData
-    val orderBookLiveData: LiveData<OrderData>
-        get() = _orderBookLiveData
-    val tickerLiveData: LiveData<OrderTickerData>
-        get() = _tickerLiveData
+    val transactionLiveData: LiveData<ArrayList<TransactionData>> get() = _transactionLiveData
+    val orderBookLiveData: LiveData<OrderData> get() = _orderBookLiveData
+    val tickerLiveData: LiveData<OrderTickerData> get() = _tickerLiveData
 
-    private var coinTitle: String = ""
-
-    private val apiCallJob: Job = viewModelScope.launch {
+    fun loadTickerInfo(tickerTitle: String) = viewModelScope.launch {
         while (true) {
             launch {
-                val tickerResponse = ApiRepo.getTicker(coinTitle)
+                val tickerResponse = bithumbApiRepos.getTicker(tickerTitle)
                 if (tickerResponse.isSuccessful && tickerResponse.body() != null) {
                     _tickerLiveData.postValue(
                         OrderTickerData(
@@ -44,36 +40,32 @@ class OrderBookViewModel @Inject constructor(
                         )
                     )
                 }
-                delay(1000)
+
+                delay(Constants.DelayTimeMillis)
             }.join()
 
             launch {
-                val transactionResponse = ApiRepo.getTransactionHistory(coinTitle, 10)
+                val transactionResponse = bithumbApiRepos.getTransactionHistory(tickerTitle, 10)
                 if (transactionResponse.isSuccessful && transactionResponse.body() != null) {
                     _transactionLiveData.postValue(transactionResponse.body()!!.data)
                 }
-                delay(1000)
+
+                delay(Constants.DelayTimeMillis)
             }.join()
 
             launch {
-                val orderBookResponse = ApiRepo.getOrderBook(coinTitle, 10)
+                val orderBookResponse = bithumbApiRepos.getOrderBook(tickerTitle, 10)
                 if (orderBookResponse.isSuccessful && orderBookResponse.body()!!.data != null) {
                     _orderBookLiveData.postValue(orderBookResponse.body()!!.data)
                 }
-                delay(1000)
+
+                delay(Constants.DelayTimeMillis)
             }
         }
     }
 
-    fun setCurrencyTitle(path: String) {
-        coinTitle = path
-        if (coinTitle.isNotEmpty()) { startAPICallJob() }
-    }
-
-    private fun startAPICallJob() = apiCallJob.start()
-
     override fun onCleared() {
         super.onCleared()
-        apiCallJob.cancel()
+        viewModelScope.cancel()
     }
 }

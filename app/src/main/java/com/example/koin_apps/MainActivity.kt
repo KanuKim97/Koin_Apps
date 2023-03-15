@@ -20,9 +20,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         mainActivityBinding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
-        setContentView(mainActivityBinding.root)
-    }
 
+        mainViewModel.readAllCoinData.observe(this) {
+            if(it.isNotEmpty()) {
+                mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(this, it)
+            } else {
+                showDataNullDialog()
+                
     override fun onResume() {
         super.onResume()
 
@@ -36,7 +40,10 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityBinding.addCoinBtn.setOnClickListener {
             startActivity(Intent(this, SelectKoinActivity::class.java))
+            finish()
         }
+
+        setContentView(mainActivityBinding.root)
     }
 
     private fun showDataNullDialog() {
@@ -49,5 +56,4 @@ class MainActivity : AppCompatActivity() {
             .create()
             .show()
     }
-
 }

@@ -17,13 +17,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectViewModel @Inject constructor(
-    private val ApiRepo: ApiRepository,
+    private val bithumbApiRepos: ApiRepository,
     private val coinDBRepo: CoinTitleDBRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
     private val _coinTitleList = MutableLiveData<List<String?>?>()
-    private val tickerTitleJob: Job = viewModelScope.launch {
-        val tickerTitleResponse = ApiRepo.getTickerAll()
+    val coinTitleList: LiveData<List<String?>?> get() = _coinTitleList
+
+    fun loadTickerTitle() = viewModelScope.launch {
+        val tickerTitleResponse = bithumbApiRepos.getTickerAll()
 
         if (tickerTitleResponse.isSuccessful && tickerTitleResponse.body() != null) {
             val coinTitleList = tickerTitleResponse.body()?.data?.keys?.toList()
@@ -31,22 +33,15 @@ class SelectViewModel @Inject constructor(
         }
     }
 
-    val coinTitleList: LiveData<List<String?>?>
-        get() = _coinTitleList
-
-    fun getCoinTitle() = tickerTitleJob.start()
-
-    fun storeCoinTitle(selectedCoinTitle: List<String>) {
-        viewModelScope.launch(ioDispatcher) {
-            for (listElement in selectedCoinTitle) {
-                coinDBRepo.insertCoinTitle(CoinEntity(listElement))
-            }
+    fun storeTickerTitle(selectedCoinTitle: List<String>) = viewModelScope.launch(ioDispatcher) {
+        for (listElement in selectedCoinTitle) {
+            coinDBRepo.insertCoinTitle(CoinEntity(listElement))
         }
     }
 
+
     override fun onCleared() {
         super.onCleared()
-        tickerTitleJob.cancel()
         viewModelScope.cancel()
     }
 }

@@ -15,12 +15,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class OrderBookFragment : Fragment() {
-    private lateinit var orderBookBinding: FragmentOrderBookBinding
+    private var _orderBookBinding: FragmentOrderBookBinding? = null
+    private val orderBookBinding get() = _orderBookBinding!!
     private val orderBookViewModel: OrderBookViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val coinTitle = arguments?.getString("coinTitle")
-        orderBookViewModel.setCurrencyTitle(coinTitle.toString())
+        val coinTitle: String = arguments?.getString("coinTitle").toString()
+        orderBookViewModel.loadTickerInfo(coinTitle)
     }
 
     override fun onCreateView(
@@ -28,12 +30,7 @@ class OrderBookFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        orderBookBinding = FragmentOrderBookBinding.inflate(inflater, container, false)
-
-        orderBookViewModel.orderBookLiveData.observe(viewLifecycleOwner) {
-            orderBookBinding.orderBookAskList.adapter = OrderBookAskListAdapter(it.asks!!)
-            orderBookBinding.orderBookBidList.adapter = OrderBookBidListAdapter(it.bids!!)
-        }
+        _orderBookBinding = FragmentOrderBookBinding.inflate(inflater, container, false)
 
         orderBookViewModel.tickerLiveData.observe(viewLifecycleOwner) {
             orderBookBinding.orderBookTickerInfo.text =
@@ -51,6 +48,16 @@ class OrderBookFragment : Fragment() {
             orderBookBinding.transactionList.adapter = TransactionListAdapter(it)
         }
 
+        orderBookViewModel.orderBookLiveData.observe(viewLifecycleOwner) {
+            orderBookBinding.orderBookAskList.adapter = OrderBookAskListAdapter(it.asks!!)
+            orderBookBinding.orderBookBidList.adapter = OrderBookBidListAdapter(it.bids!!)
+        }
+
         return orderBookBinding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _orderBookBinding = null
     }
 }

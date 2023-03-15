@@ -1,14 +1,18 @@
-package com.example.koin_apps.data.di.coroutineDispatcher
+package com.example.koin_apps.data.di.module
 
+import com.example.koin_apps.data.di.coroutineDispatcher.DefaultDispatcher
+import com.example.koin_apps.data.di.coroutineDispatcher.IoDispatcher
+import com.example.koin_apps.data.di.coroutineDispatcher.MainDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 
+/* Coroutine Dispatcher Module */
 @Module
 @InstallIn(SingletonComponent::class)
-class DispatcherModule {
+object DispatcherModule {
     @MainDispatcher
     @Provides
     fun providesMainDispatcher() = Dispatchers.Main

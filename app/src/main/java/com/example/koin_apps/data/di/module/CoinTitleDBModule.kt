@@ -12,11 +12,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/* CoinDataBase Module */
+/* Room Database Module */
 @Module
 @InstallIn(SingletonComponent::class)
 object CoinTitleDBModule {
-    /* Create Room Database Instance */
     @Provides
     @Singleton
     fun createCoinTitleDBInstance(@ApplicationContext context: Context): CoinDataBase =
