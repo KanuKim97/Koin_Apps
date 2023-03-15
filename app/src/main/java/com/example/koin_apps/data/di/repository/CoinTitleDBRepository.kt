@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 /* CoinTitleDB Insert, Select, Delete Method Repository */
 class CoinTitleDBRepository @Inject constructor(
-private val coinDao: CoinDao
+    private val coinDao: CoinDao
 ) {
     val readAllCoinTitle = coinDao.readAllData()
     suspend fun insertCoinTitle(coinTitle: CoinEntity) = coinDao.insertCoinTitle(coinTitle)
