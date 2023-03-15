@@ -26,6 +26,15 @@ class MainActivity : AppCompatActivity() {
                 mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(this, it)
             } else {
                 showDataNullDialog()
+                
+    override fun onResume() {
+        super.onResume()
+
+        mainViewModel.readAllCoinData.observe(this) {
+            if (it.isNullOrEmpty()) {
+                showDataNullDialog()
+            } else {
+                mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(this, it)
             }
         }
 
