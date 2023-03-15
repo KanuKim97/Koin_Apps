@@ -16,13 +16,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class OrderBookFragment : Fragment() {
     private var _orderBookBinding: FragmentOrderBookBinding? = null
-
-    private val orderBookViewModel: OrderBookViewModel by viewModels()
     private val orderBookBinding get() = _orderBookBinding!!
+    private val orderBookViewModel: OrderBookViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val coinTitle = arguments?.getString("coinTitle")
-        orderBookViewModel.setCurrencyTitle(coinTitle.toString())
+        val coinTitle: String = arguments?.getString("coinTitle").toString()
+        orderBookViewModel.loadTickerInfo(coinTitle)
     }
 
     override fun onCreateView(
