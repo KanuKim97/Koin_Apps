@@ -21,14 +21,14 @@ class SelectKoinActivity : AppCompatActivity(){
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
         selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        selectViewModel.getCoinTitle()
+        selectViewModel.loadTickerTitle()
         selectViewModel.coinTitleList.observe(this) {
             selectRecyclerAdapter = SelectRecyclerAdapter(it)
             selectKoinBinding.CoinRecyclerView.adapter = selectRecyclerAdapter
         }
 
         selectKoinBinding.compSelectBtn.setOnClickListener {
-            selectViewModel.storeCoinTitle(selectRecyclerAdapter.getSelectedItems())
+            selectViewModel.storeTickerTitle(selectRecyclerAdapter.getSelectedItems())
             startActivity(Intent(this, MainActivity::class.java))
         }
 

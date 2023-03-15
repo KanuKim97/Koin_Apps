@@ -8,7 +8,9 @@ import retrofit2.Response
 import javax.inject.Inject
 
 /* Bithumb public Api Repository */
-class ApiRepository @Inject constructor(private val koinApiService: IKoinApiService) {
+class ApiRepository @Inject constructor(
+    private val koinApiService: IKoinApiService
+) {
     suspend fun getTickerAll(): Response<TickerRoot> = koinApiService.getTickerALL()
     suspend fun getTicker(path: String): Response<TickerRoot> = koinApiService.getTicker(path)
     suspend fun getTransactionHistory(path: String, count: Int): Response<TransactionRoot> =

@@ -10,10 +10,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LiveTimeActivity : AppCompatActivity() {
     private lateinit var liveTimeBinding: ActivityLiveTimeBinding
-
     private val liveTimeViewModel: LiveTimeViewModel by viewModels()
     private val orderBookFragment = OrderBookFragment()
     private val fragmentBundle = Bundle()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
@@ -22,7 +22,7 @@ class LiveTimeActivity : AppCompatActivity() {
         fragmentBundle.putString("coinTitle", coinTitle)
         orderBookFragment.arguments = fragmentBundle
 
-        liveTimeViewModel.setTickerPath(coinTitle)
+        liveTimeViewModel.loadTickerPrice(coinTitle)
 
         liveTimeBinding.coinTitle.text = coinTitle
         liveTimeViewModel.tickerLiveViewData.observe(this) {
