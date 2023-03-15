@@ -47,14 +47,10 @@
         \n현재가: %s\n전일가: %s\n고가: %s\n저가: %s\n거래량: %s
     </string>
 
-    <!-- Fragment Community String Value -->
-    <string name="warning">warning</string>
-    <string name="update_soon">Will be update Soon</string>
-
     <!-- null data Dialog String Value -->
-    <string name="NullDialog_Title">Cryptocurrency was not chosen</string>
+    <string name="NullDialog_Title">암호화페가 선택되지 않았습니다!</string>
     <string name="NullDialog_Content">
-        \nCryptocurrency was not chosen\nPlz Choose your favorite Cryptocurrency
+        \n암호화페가 선택되지 않았습니다!\n좌 상단 +버튼을 눌러 암호화페를 추가하세요.
     </string>
     <string name="NullDialog_okBtn">OK</string>
 
