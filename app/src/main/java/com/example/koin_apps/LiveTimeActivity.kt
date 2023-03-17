@@ -22,7 +22,7 @@ class LiveTimeActivity : AppCompatActivity() {
         fragmentBundle.putString("coinTitle", coinTitle)
         orderBookFragment.arguments = fragmentBundle
 
-        liveTimeViewModel.loadTickerPrice(coinTitle)
+        liveTimeViewModel.loadTickerInfo(coinTitle)
 
         liveTimeBinding.coinTitle.text = coinTitle
         liveTimeViewModel.tickerLiveViewData.observe(this) {

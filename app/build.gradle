@@ -68,14 +68,14 @@ dependencies {
 
 
     // Android Jetpack ViewModel, LiveData
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-beta01"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0"
 
     //Android Jetpack ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-beta01"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0"
 
     //Android Jetpack LiveData`
 
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.0-beta01"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.0"
 
     // Kotlin Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"

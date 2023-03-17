@@ -25,40 +25,34 @@ class OrderBookViewModel @Inject constructor(
     val orderBookLiveData: LiveData<OrderData> get() = _orderBookLiveData
     val tickerLiveData: LiveData<OrderTickerData> get() = _tickerLiveData
 
-    fun loadTickerInfo(tickerTitle: String) = viewModelScope.launch {
+    fun loadTickerData(tickerTitle: String) = viewModelScope.launch {
         while (true) {
             launch {
-                val tickerResponse = bithumbApiRepos.getTicker(tickerTitle)
-                if (tickerResponse.isSuccessful && tickerResponse.body() != null) {
+                bithumbApiRepos.getTickerInfo(tickerTitle).collect {
                     _tickerLiveData.postValue(
                         OrderTickerData(
-                            tickerResponse.body()!!.data["closing_price"].toString(),
-                            tickerResponse.body()!!.data["prev_closing_price"].toString(),
-                            tickerResponse.body()!!.data["max_price"].toString(),
-                            tickerResponse.body()!!.data["min_price"].toString(),
-                            tickerResponse.body()!!.data["units_traded_24H"].toString()
+                            it.data["closing_price"].toString(),
+                            it.data["prev_closing_price"].toString(),
+                            it.data["max_price"].toString(),
+                            it.data["min_price"].toString(),
+                            it.data["units_traded_24H"].toString()
                         )
                     )
                 }
-
                 delay(Constants.DelayTimeMillis)
             }.join()
 
             launch {
-                val transactionResponse = bithumbApiRepos.getTransactionHistory(tickerTitle, 10)
-                if (transactionResponse.isSuccessful && transactionResponse.body() != null) {
-                    _transactionLiveData.postValue(transactionResponse.body()!!.data)
+                bithumbApiRepos.getTransactionInfo(tickerTitle, 10).collect {
+                    _transactionLiveData.postValue(it.data!!)
                 }
-
                 delay(Constants.DelayTimeMillis)
             }.join()
 
             launch {
-                val orderBookResponse = bithumbApiRepos.getOrderBook(tickerTitle, 10)
-                if (orderBookResponse.isSuccessful && orderBookResponse.body()!!.data != null) {
-                    _orderBookLiveData.postValue(orderBookResponse.body()!!.data)
+                bithumbApiRepos.getOrderBookInfo(tickerTitle, 10).collect {
+                    _orderBookLiveData.postValue(it.data!!)
                 }
-
                 delay(Constants.DelayTimeMillis)
             }
         }

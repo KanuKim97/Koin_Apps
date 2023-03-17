@@ -21,16 +21,14 @@ class LiveTimeViewModel @Inject constructor(
     private val _tickerLiveViewData = MutableLiveData<LiveTickerData>()
     val tickerLiveViewData: LiveData<LiveTickerData> get() = _tickerLiveViewData
 
-    fun loadTickerPrice(tickerTitle: String) = viewModelScope.launch {
+    fun loadTickerInfo(tickerTitle: String) = viewModelScope.launch {
         while (true) {
-            val tickerResponse: Response<TickerRoot> = bithumbApiRepos.getTicker(tickerTitle)
-
-            if (tickerResponse.isSuccessful && tickerResponse.body() != null) {
+            bithumbApiRepos.getTickerInfo(tickerTitle).collect { tickerInfo ->
                 _tickerLiveViewData.postValue(
                     LiveTickerData(
-                        tickerResponse.body()?.data?.get("closing_price").toString(),
-                        tickerResponse.body()?.data?.get("fluctate_24H").toString(),
-                        tickerResponse.body()?.data?.get("fluctate_rate_24H").toString()
+                        tickerInfo.data["closing_price"].toString(),
+                        tickerInfo.data["fluctate_24H"].toString(),
+                        tickerInfo.data["fluctate_rate_24H"].toString()
                     )
                 )
             }
