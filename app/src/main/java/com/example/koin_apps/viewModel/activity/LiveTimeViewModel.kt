@@ -9,10 +9,7 @@ import com.example.koin_apps.data.di.coroutineDispatcher.IoDispatcher
 import com.example.koin_apps.data.di.repository.ApiRepository
 import kotlinx.coroutines.*
 import com.example.koin_apps.data.remote.model.ticker.LiveTickerData
-import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.ticker
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
