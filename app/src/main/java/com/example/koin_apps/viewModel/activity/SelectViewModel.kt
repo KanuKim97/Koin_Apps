@@ -8,10 +8,13 @@ import com.example.koin_apps.data.database.tables.CoinEntity
 import com.example.koin_apps.data.di.coroutineDispatcher.IoDispatcher
 import com.example.koin_apps.data.di.repository.ApiRepository
 import com.example.koin_apps.data.di.repository.CoinTitleDBRepository
+import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +27,9 @@ class SelectViewModel @Inject constructor(
     private val _coinTitleList = MutableLiveData<List<String?>?>()
     val coinTitleList: LiveData<List<String?>?> get() = _coinTitleList
 
+    private val _coinTitleFlow = MutableLiveData<List<String?>>()
+    val coinTitleFlow: LiveData<List<String?>> get() = _coinTitleFlow
+
     fun loadTickerTitle() = viewModelScope.launch {
         val tickerTitleResponse = bithumbApiRepos.getTickerAll()
 
@@ -33,12 +39,15 @@ class SelectViewModel @Inject constructor(
         }
     }
 
+    fun loadTickerTitleFlow() = viewModelScope.launch {
+        bithumbApiRepos.getTickerAllFlow().collect { _coinTitleFlow.postValue(it) }
+    }
+
     fun storeTickerTitle(selectedCoinTitle: List<String>) = viewModelScope.launch(ioDispatcher) {
         for (listElement in selectedCoinTitle) {
             coinDBRepo.insertCoinTitle(CoinEntity(listElement))
         }
     }
-
 
     override fun onCleared() {
         super.onCleared()

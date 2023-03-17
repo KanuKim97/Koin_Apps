@@ -3,8 +3,10 @@ package com.example.koin_apps
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.recyclerViewAdapter.SelectRecyclerAdapter
 import com.example.koin_apps.databinding.ActivitySelectKoinBinding
 import com.example.koin_apps.viewModel.activity.SelectViewModel
@@ -20,6 +22,12 @@ class SelectKoinActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
         selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        /* flow test */
+        selectViewModel.loadTickerTitleFlow()
+        selectViewModel.coinTitleFlow.observe(this) {
+            Log.d(Constants.LogTAG, "$it")
+        }
 
         selectViewModel.loadTickerTitle()
         selectViewModel.coinTitleList.observe(this) {

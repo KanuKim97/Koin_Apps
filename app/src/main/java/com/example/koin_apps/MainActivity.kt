@@ -22,10 +22,13 @@ class MainActivity : AppCompatActivity() {
         mainActivityBinding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
 
         mainViewModel.readAllCoinData.observe(this) {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(this, it)
             } else {
                 showDataNullDialog()
+            }
+        }
+    }
                 
     override fun onResume() {
         super.onResume()
