@@ -23,7 +23,7 @@ class SelectViewModel @Inject constructor(
     private val _coinTitleList = MutableLiveData<List<String?>?>()
     val coinTitleList: LiveData<List<String?>?> get() = _coinTitleList
 
-    fun loadTickerTitle() = viewModelScope.launch {
+    fun loadTickerTitle() = viewModelScope.launch(ioDispatcher) {
         bithumbApiRepos.getTickerTitleAll().collect { _coinTitleList.postValue(it) }
     }
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koin_apps.common.Constants
+import com.example.koin_apps.data.di.coroutineDispatcher.IoDispatcher
 import com.example.koin_apps.data.di.repository.ApiRepository
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.ticker.OrderTickerData
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderBookViewModel @Inject constructor(
-    private val bithumbApiRepos: ApiRepository
+    private val bithumbApiRepos: ApiRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
     private val _transactionLiveData = MutableLiveData<ArrayList<TransactionData>>()
     private val _orderBookLiveData = MutableLiveData<OrderData>()
@@ -25,7 +27,7 @@ class OrderBookViewModel @Inject constructor(
     val orderBookLiveData: LiveData<OrderData> get() = _orderBookLiveData
     val tickerLiveData: LiveData<OrderTickerData> get() = _tickerLiveData
 
-    fun loadTickerData(tickerTitle: String) = viewModelScope.launch {
+    fun loadTickerData(tickerTitle: String) = viewModelScope.launch(ioDispatcher) {
         while (true) {
             launch {
                 bithumbApiRepos.getTickerInfo(tickerTitle).collect {
