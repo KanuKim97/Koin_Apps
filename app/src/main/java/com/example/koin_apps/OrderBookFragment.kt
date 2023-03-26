@@ -22,7 +22,7 @@ class OrderBookFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val coinTitle: String = arguments?.getString("coinTitle").toString()
-        orderBookViewModel.loadTickerInfo(coinTitle)
+        orderBookViewModel.loadTickerData(coinTitle)
     }
 
     override fun onCreateView(
