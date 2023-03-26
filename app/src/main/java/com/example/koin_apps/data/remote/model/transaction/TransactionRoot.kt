@@ -1,7 +1,7 @@
 package com.example.koin_apps.data.remote.model.transaction
 
-class TransactionRoot {
-    lateinit var status: String
-    var message: String? = null
-    lateinit var data: ArrayList<TransactionData>
-}
+data class TransactionRoot(
+    val status: String,
+    val message: String?,
+    val data: ArrayList<TransactionData>?
+)

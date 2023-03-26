@@ -10,7 +10,6 @@ import com.example.koin_apps.data.di.repository.ApiRepository
 import com.example.koin_apps.data.di.repository.CoinTitleDBRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,13 +23,8 @@ class SelectViewModel @Inject constructor(
     private val _coinTitleList = MutableLiveData<List<String?>?>()
     val coinTitleList: LiveData<List<String?>?> get() = _coinTitleList
 
-    fun loadTickerTitle() = viewModelScope.launch {
-        val tickerTitleResponse = bithumbApiRepos.getTickerAll()
-
-        if (tickerTitleResponse.isSuccessful && tickerTitleResponse.body() != null) {
-            val coinTitleList = tickerTitleResponse.body()?.data?.keys?.toList()
-            _coinTitleList.postValue(coinTitleList)
-        }
+    fun loadTickerTitle() = viewModelScope.launch(ioDispatcher) {
+        bithumbApiRepos.getTickerTitleAll().collect { _coinTitleList.postValue(it) }
     }
 
     fun storeTickerTitle(selectedCoinTitle: List<String>) = viewModelScope.launch(ioDispatcher) {
@@ -38,7 +32,6 @@ class SelectViewModel @Inject constructor(
             coinDBRepo.insertCoinTitle(CoinEntity(listElement))
         }
     }
-
 
     override fun onCleared() {
         super.onCleared()
