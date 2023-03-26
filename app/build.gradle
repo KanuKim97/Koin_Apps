@@ -68,22 +68,22 @@ dependencies {
 
 
     // Android Jetpack ViewModel, LiveData
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 
     //Android Jetpack ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 
     //Android Jetpack LiveData`
 
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
 
     // Kotlin Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
     // Room (Local Database)
-    implementation "androidx.room:room-runtime:2.5.0"
-    kapt "androidx.room:room-compiler:2.5.0"
-    implementation "androidx.room:room-ktx:2.5.0"
+    implementation "androidx.room:room-runtime:2.5.1"
+    kapt "androidx.room:room-compiler:2.5.1"
+    implementation "androidx.room:room-ktx:2.5.1"
 
     // Dagger-Hilt DI(Dependency-Injection) tool
     implementation "com.google.dagger:hilt-android:2.44.2"
