@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.di.coroutineDispatcher.IoDispatcher
-import com.example.koin_apps.data.di.repository.ApiRepository
+import com.example.koin_apps.data.di.repository.CoinRepository
 import kotlinx.coroutines.*
 import com.example.koin_apps.data.remote.model.ticker.LiveTickerData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LiveTimeViewModel @Inject constructor(
-    private val bithumbApiRepos: ApiRepository,
+    private val coinApiRepos: CoinRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
     private val _tickerLiveViewData = MutableLiveData<LiveTickerData>()
@@ -22,14 +22,8 @@ class LiveTimeViewModel @Inject constructor(
 
     fun loadTickerInfo(tickerTitle: String) = viewModelScope.launch(ioDispatcher) {
         while (true) {
-            bithumbApiRepos.getTickerInfo(tickerTitle).collect { tickerInfo ->
-                _tickerLiveViewData.postValue(
-                    LiveTickerData(
-                        tickerInfo.data["closing_price"].toString(),
-                        tickerInfo.data["fluctate_24H"].toString(),
-                        tickerInfo.data["fluctate_rate_24H"].toString()
-                    )
-                )
+            coinApiRepos.getTickerInfoLive(tickerTitle).collect { result ->
+                _tickerLiveViewData.postValue(result)
             }
 
             delay(Constants.DelayTimeMillis)

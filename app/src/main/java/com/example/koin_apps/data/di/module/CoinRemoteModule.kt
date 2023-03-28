@@ -1,7 +1,7 @@
 package com.example.koin_apps.data.di.module
 
 import com.example.koin_apps.common.Constants
-import com.example.koin_apps.data.di.repository.ApiRepository
+import com.example.koin_apps.data.di.dataSource.CoinRemoteDataSource
 import com.example.koin_apps.data.remote.IKoinApiService
 import dagger.Module
 import dagger.Provides
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 /* Bithumb Public Api Module */
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
+object CoinRemoteModule {
     @Provides
     fun providesBaseUrl(): String = Constants.IKoinPublicApiUri
 
@@ -43,6 +43,6 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun providesApiRepository(koinApiService: IKoinApiService): ApiRepository =
-        ApiRepository(koinApiService)
+    fun providesDataSource(koinApiService: IKoinApiService): CoinRemoteDataSource =
+        CoinRemoteDataSource(koinApiService)
 }
