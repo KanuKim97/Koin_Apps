@@ -3,8 +3,6 @@ package com.example.koin_apps.data.di.dataSource
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
-import com.example.koin_apps.data.remote.model.ticker.LiveTickerData
-import com.example.koin_apps.data.remote.model.ticker.OrderTickerData
 import com.example.koin_apps.data.remote.model.ticker.TickerRoot
 import com.example.koin_apps.data.remote.model.transaction.TransactionData
 import com.example.koin_apps.data.remote.model.transaction.TransactionRoot
@@ -19,7 +17,6 @@ import javax.inject.Inject
 class CoinRemoteDataSource @Inject constructor(
     private val koinApiService: IKoinApiService
 ) {
-
     fun getTickerInfoAll(): Flow<MutableList<String?>> = flow {
         try {
             val response: Response<TickerRoot> = koinApiService.getTickerALL()
