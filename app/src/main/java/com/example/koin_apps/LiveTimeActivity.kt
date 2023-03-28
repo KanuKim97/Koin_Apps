@@ -13,7 +13,6 @@ class LiveTimeActivity : AppCompatActivity() {
     private val liveTimeViewModel: LiveTimeViewModel by viewModels()
     private val orderBookFragment = OrderBookFragment()
     private val fragmentBundle = Bundle()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)

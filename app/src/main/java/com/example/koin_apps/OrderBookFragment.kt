@@ -31,7 +31,10 @@ class OrderBookFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _orderBookBinding = FragmentOrderBookBinding.inflate(inflater, container, false)
+        return orderBookBinding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         orderBookViewModel.tickerLiveData.observe(viewLifecycleOwner) {
             orderBookBinding.orderBookTickerInfo.text =
                 getString(
@@ -52,8 +55,6 @@ class OrderBookFragment : Fragment() {
             orderBookBinding.orderBookAskList.adapter = OrderBookAskListAdapter(it.asks!!)
             orderBookBinding.orderBookBidList.adapter = OrderBookBidListAdapter(it.bids!!)
         }
-
-        return orderBookBinding.root
     }
 
     override fun onDestroyView() {

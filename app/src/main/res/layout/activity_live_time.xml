@@ -42,7 +42,7 @@
 
 
         <LinearLayout
-            android:id="@+id/titleView_Bottom"
+            android:id="@+id/titleView_Mid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -63,6 +63,7 @@
                 android:text="@string/ticker_Flucatate_won24H"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
         <FrameLayout
