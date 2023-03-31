@@ -9,6 +9,7 @@ import javax.inject.Inject
 class SelectRecyclerAdapter @Inject constructor(
     private var coinTitleList: List<String?>?,
 ): RecyclerView.Adapter<SelectRecyclerAdapter.CoinsViewHolder>() {
+
     private val selectedCoinList: MutableList<String> = mutableListOf()
 
     inner class CoinsViewHolder(private val binding: SelectCoinviewItemBinding)
