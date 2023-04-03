@@ -5,14 +5,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.koin_apps.data.di.coroutineDispatcher.MainDispatcher
 import com.example.koin_apps.data.recyclerViewAdapter.MainRecyclerAdapter
 import com.example.koin_apps.viewModel.activity.MainViewModel
 import com.example.koin_apps.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
     private lateinit var mainActivityBinding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
 
@@ -21,29 +27,17 @@ class MainActivity : AppCompatActivity() {
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         mainActivityBinding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        mainViewModel.readAllCoinData.observe(this) {
-            if (it.isNotEmpty()) {
-                mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(this, it)
-            } else {
-                showDataNullDialog()
-            }
-        }
-    }
-                
-    override fun onResume() {
-        super.onResume()
-
-        mainViewModel.readAllCoinData.observe(this) {
-            if (it.isNullOrEmpty()) {
-                showDataNullDialog()
-            } else {
-                mainActivityBinding.mainRecyclerView.adapter = MainRecyclerAdapter(this, it)
+        mainViewModel.readAllCoinData.observe(this) { result ->
+            lifecycleScope.launch(mainDispatcher) {
+                if (result.isNotEmpty()) {
+                    mainActivityBinding.mainRecyclerView.adapter =
+                        MainRecyclerAdapter(this@MainActivity, result)
+                } else { showDataNullDialog() }
             }
         }
 
         mainActivityBinding.addCoinBtn.setOnClickListener {
             startActivity(Intent(this, SelectKoinActivity::class.java))
-            finish()
         }
 
         setContentView(mainActivityBinding.root)

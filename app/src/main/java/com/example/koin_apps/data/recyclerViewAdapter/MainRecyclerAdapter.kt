@@ -13,7 +13,7 @@ import javax.inject.Inject
 class MainRecyclerAdapter @Inject constructor(
     private val context: Context,
     private val coinTitle: List<CoinEntity>
-    ): RecyclerView.Adapter<MainRecyclerAdapter.MainViewItemHolder>() {
+): RecyclerView.Adapter<MainRecyclerAdapter.MainViewItemHolder>() {
 
     inner class MainViewItemHolder(private val binding: MainCoinviewItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
