@@ -1,5 +1,7 @@
 package com.example.koin_apps.data.di.dataSource
 
+import android.util.Log
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.remote.IKoinApiService
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.orderBook.OrderRoot
@@ -10,7 +12,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.retryWhen
+import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 import javax.inject.Inject
 
 /* Coroutine Flow Producer -> Bithumb Public API Service */
@@ -29,7 +33,7 @@ class CoinRemoteDataSource @Inject constructor(
                     throw (Exception("response body data is Null"))
                 }
                 if (!response.isSuccessful) {
-                    throw(Exception("${response.code()} + ${response.body()?.message}"))
+                    throw (Exception("${response.code()} + ${response.body()?.message}"))
                 }
             }
         } catch (e: Exception) { e.printStackTrace() }
@@ -51,7 +55,7 @@ class CoinRemoteDataSource @Inject constructor(
                     throw (Exception("response body data is Null"))
                 }
                 if (!response.isSuccessful) {
-                    throw(Exception("${response.code()} + ${response.body()?.message}"))
+                    throw (Exception("${response.code()} + ${response.body()?.message}"))
                 }
             }
         } catch (e: Exception) { e.printStackTrace() }
@@ -73,7 +77,7 @@ class CoinRemoteDataSource @Inject constructor(
                     throw (Exception("response body data is Null"))
                 }
                 if (!response.isSuccessful) {
-                    throw (Exception("${response.code()} + ${response.body()?.message}"))
+                    throw (Exception ("${response.code()} + ${response.body()?.message}"))
                 }
             }
         } catch (e: Exception) { e.printStackTrace() }
@@ -84,25 +88,46 @@ class CoinRemoteDataSource @Inject constructor(
     }
 
     fun getOrderBookInfo(path: String, count: Int): Flow<OrderData> = flow {
-        try {
-            val response: Response<OrderRoot> = koinApiService.getOrderBook(path, count)
+        val response: Response<OrderRoot> = koinApiService.getOrderBook(path, count)
 
-            if(response.isSuccessful && response.body()?.data != null) {
-                val result: OrderData = response.body()?.data!!
-                emit(result)
-            } else {
-                if (response.body()?.data == null) {
-                    throw (Exception("response body data is Null"))
-                }
-                if (!response.isSuccessful) {
-                    throw (Exception("${response.code()} + ${response.body()?.message}"))
-                }
+        if(response.isSuccessful && response.body()?.data != null) {
+            val result: OrderData = response.body()?.data!!
+            emit(result)
+        } else {
+            if (response.body()?.data == null) {
+                throw (NullPointerException("response body data is Null"))
             }
-        } catch (e: Exception) { e.printStackTrace() }
+            if (!response.isSuccessful) {
+                throw (HttpException(response))
+            }
+        }
     }.retryWhen { cause, _ ->
-        cause is Exception
-    }.catch {
-        it.printStackTrace()
+        when (cause) {
+            is IOException -> {
+                // TODO (IO Exception Handling)
+                false
+            }
+            is HttpException -> {
+                // TODO (Http Exception Handling)
+                false
+            }
+            else -> {
+                // TODO (Http Exception Handling)
+                false
+            }
+        }
+    }.catch { cause ->
+        when (cause) {
+            is IOException -> {
+                Log.e(Constants.LogErrorTAG, "IOException: ${cause.message}")
+            }
+            is HttpException -> {
+                Log.e(Constants.LogErrorTAG, "HttpException: ${cause.message}")
+            }
+            else -> {
+                Log.e(Constants.LogErrorTAG, "Exception: ${cause.message}")
+            }
+        }
     }
 
 }

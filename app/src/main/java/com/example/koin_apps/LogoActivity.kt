@@ -10,9 +10,7 @@ import com.example.koin_apps.data.di.coroutineDispatcher.MainDispatcher
 import com.example.koin_apps.databinding.ActivityLogoBinding
 import com.example.koin_apps.viewModel.activity.LogoViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,21 +22,26 @@ class LogoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logoBinding = ActivityLogoBinding.inflate(layoutInflater)
+        updateUI()
+        setContentView(logoBinding.root)
+    }
 
-        logoViewModel.readAllData.observe(this) { result ->
-            lifecycleScope.launch(mainDispatcher) {
-                if (result != null) {
+    private fun updateUI() {
+        logoViewModel.readAllTicker.observe(this) { ticker ->
+            if (ticker != null) {
+                lifecycleScope.launch(mainDispatcher) {
                     delay(Constants.DelayTimeMillis)
                     startActivity(Intent(this@LogoActivity, MainActivity::class.java))
                     finish()
-                } else {
+                }
+            } else {
+                lifecycleScope.launch(mainDispatcher) {
                     delay(Constants.DelayTimeMillis)
                     startActivity(Intent(this@LogoActivity, SelectKoinActivity::class.java))
                     finish()
                 }
             }
         }
-
-        setContentView(logoBinding.root)
     }
+
 }

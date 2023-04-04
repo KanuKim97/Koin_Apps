@@ -10,4 +10,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LogoViewModel @Inject constructor(
     private val coinDBRepo: CoinTitleDBRepository
-): ViewModel() { val readAllData: LiveData<List<CoinEntity>> get() = coinDBRepo.readAllCoinTitle }
+): ViewModel() {
+    val readAllTicker: LiveData<List<CoinEntity>> get() = fetchDBData()
+
+    private fun fetchDBData(): LiveData<List<CoinEntity>> = coinDBRepo.readAllCoinTitle
+}

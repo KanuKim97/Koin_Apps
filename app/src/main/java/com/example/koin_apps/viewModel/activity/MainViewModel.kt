@@ -9,4 +9,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val coinDBRepo: CoinTitleDBRepository
-): ViewModel() { val readAllCoinData: LiveData<List<CoinEntity>> get() = coinDBRepo.readAllCoinTitle }
+): ViewModel() {
+    val readAllTicker: LiveData<List<CoinEntity>> get() = fetchDBData()
+
+    private fun fetchDBData(): LiveData<List<CoinEntity>> = coinDBRepo.readAllCoinTitle
+}

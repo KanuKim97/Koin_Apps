@@ -10,6 +10,7 @@ import com.example.koin_apps.data.di.repository.CoinRepository
 import com.example.koin_apps.data.di.repository.CoinTitleDBRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,15 +24,18 @@ class SelectViewModel @Inject constructor(
     private val _coinTitleList = MutableLiveData<List<String?>?>()
     val coinTitleList: LiveData<List<String?>?> get() = _coinTitleList
 
-    fun loadTickerTitle() = viewModelScope.launch(ioDispatcher) {
+    init { loadTickerTitle() }
+
+    private fun loadTickerTitle(): Job = viewModelScope.launch(ioDispatcher) {
         coinApiRepos.getTickerInfoALL().collect { _coinTitleList.postValue(it) }
     }
 
-    fun storeTickerTitle(selectedCoinTitle: List<String>) = viewModelScope.launch(ioDispatcher) {
-        for (listElement in selectedCoinTitle) {
-            coinDBRepo.insertCoinTitle(CoinEntity(listElement))
+    fun storeTickerTitle(selectedCoinTitle: List<String>): Job =
+        viewModelScope.launch(ioDispatcher) {
+            for (listElement in selectedCoinTitle) {
+                coinDBRepo.insertCoinTitle(CoinEntity(listElement))
+            }
         }
-    }
 
     override fun onCleared() {
         super.onCleared()

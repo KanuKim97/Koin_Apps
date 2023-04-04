@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class LiveTimeActivity : AppCompatActivity() {
     @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
@@ -25,9 +24,10 @@ class LiveTimeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
         liveTimeViewModel.loadTickerInfo(ticker)
-
         setFragmentBundle()
-        updateUI()
+
+        updateTickerTitle()
+        updateTickerInfo()
 
         supportFragmentManager
             .beginTransaction()
@@ -44,9 +44,9 @@ class LiveTimeActivity : AppCompatActivity() {
         orderBookFragment.arguments = fragmentBundle
     }
 
-    private fun updateUI() {
-        liveTimeBinding.coinTitle.text = ticker
+    private fun updateTickerTitle() { liveTimeBinding.coinTitle.text = ticker }
 
+    private fun updateTickerInfo() {
         liveTimeViewModel.tickerLiveViewData.observe(this) { result ->
             lifecycleScope.launch(mainDispatcher) {
                 liveTimeBinding.tickerWon.text =
@@ -59,5 +59,5 @@ class LiveTimeActivity : AppCompatActivity() {
         }
     }
 
-
 }
+
