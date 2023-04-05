@@ -10,7 +10,7 @@ import com.example.koin_apps.data.remote.model.transaction.TransactionData
 import javax.inject.Inject
 
 class TransactionListAdapter @Inject constructor(
-    private val transactionData: ArrayList<TransactionData>
+    private val transactionList: ArrayList<TransactionData>
 ): BaseAdapter() {
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         var convertView = view
@@ -23,16 +23,16 @@ class TransactionListAdapter @Inject constructor(
         val transactionPrice = convertView?.findViewById<TextView>(R.id.transaction_Price)
         val transactionUnits = convertView?.findViewById<TextView>(R.id.transaction_Units)
 
-        transactionType?.text = transactionData[position].type
-        transactionPrice?.text = transactionData[position].price
-        transactionUnits?.text = transactionData[position].units_traded
+        transactionType?.text = transactionList[position].type
+        transactionPrice?.text = transactionList[position].price
+        transactionUnits?.text = transactionList[position].units_traded
 
         return convertView!!
     }
 
-    override fun getCount(): Int = transactionData.size
+    override fun getCount(): Int = transactionList.size
 
-    override fun getItem(position: Int) = transactionData[position]
+    override fun getItem(position: Int) = transactionList[position]
 
     override fun getItemId(position: Int): Long = position.toLong()
 }

@@ -10,7 +10,7 @@ import com.example.koin_apps.data.remote.model.orderBook.OrderAskBidData
 import javax.inject.Inject
 
 class OrderBookBidListAdapter @Inject constructor(
-    private val orderBidData: ArrayList<OrderAskBidData>
+    private val orderBidList: ArrayList<OrderAskBidData>
 ): BaseAdapter() {
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         var convertView = view
@@ -22,15 +22,15 @@ class OrderBookBidListAdapter @Inject constructor(
         val orderBookPrice = convertView?.findViewById<TextView>(R.id.OrderBook_bid_price)
         val orderBookQuantity = convertView?.findViewById<TextView>(R.id.OrderBook_bid_quantity)
 
-        orderBookPrice?.text = orderBidData[position].price
-        orderBookQuantity?.text = orderBidData[position].quantity
+        orderBookPrice?.text = orderBidList[position].price
+        orderBookQuantity?.text = orderBidList[position].quantity
 
         return convertView!!
     }
 
-    override fun getCount(): Int = orderBidData.size
+    override fun getCount(): Int = orderBidList.size
 
-    override fun getItem(position: Int) = orderBidData[position]
+    override fun getItem(position: Int) = orderBidList[position]
 
     override fun getItemId(position: Int): Long  = position.toLong()
 }

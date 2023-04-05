@@ -1,22 +1,22 @@
 package com.example.koin_apps.data.di.repository
 
 import android.icu.text.DecimalFormat
-import com.example.koin_apps.data.di.dataSource.CoinRemoteDataSource
+import com.example.koin_apps.data.di.dataSource.TickerRemoteDataSource
 import com.example.koin_apps.data.remote.model.ticker.LiveTickerData
 import com.example.koin_apps.data.remote.model.ticker.OrderTickerData
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /* Coroutine Flow Intermediary -> Convert Bithumb Public API Result */
-class CoinRepository @Inject constructor(
-    private val coinRemoteDataSource: CoinRemoteDataSource
+class TickerRepository @Inject constructor(
+    private val tickerRemoteDataSource: TickerRemoteDataSource
 ) {
     private val wonFormat = DecimalFormat("###,###")
     private val unitsFormat = DecimalFormat("##.##")
 
-    fun getTickerInfoALL() = coinRemoteDataSource.getTickerInfoAll()
+    fun getTickerInfoALL() = tickerRemoteDataSource.getTickerInfoAll()
 
-    fun getTickerInfoLive(ticker: String) = coinRemoteDataSource.getTickerInfo(ticker)
+    fun getTickerInfoLive(ticker: String) = tickerRemoteDataSource.getTickerInfo(ticker)
         .map { result ->
             LiveTickerData(
                 wonFormat.format(result?.get("closing_price").toString().toInt()),
@@ -25,7 +25,7 @@ class CoinRepository @Inject constructor(
             )
         }
 
-    fun getTickerInfoDetail(ticker: String) = coinRemoteDataSource.getTickerInfo(ticker)
+    fun getTickerInfoDetail(ticker: String) = tickerRemoteDataSource.getTickerInfo(ticker)
         .map { result ->
             OrderTickerData(
                 wonFormat.format(result?.get("closing_price").toString().toInt()),
@@ -37,8 +37,8 @@ class CoinRepository @Inject constructor(
         }
 
     fun getTransactionInfo(ticker: String, count: Int) =
-        coinRemoteDataSource.getTransactionInfo(ticker, count)
+        tickerRemoteDataSource.getTransactionInfo(ticker, count)
 
     fun getOrderBookInfo(ticker: String, count: Int) =
-        coinRemoteDataSource.getOrderBookInfo(ticker, count)
+        tickerRemoteDataSource.getOrderBookInfo(ticker, count)
 }

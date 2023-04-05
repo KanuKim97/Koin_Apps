@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(mainActivityBinding.root)
     }
 
-    private fun updateUI() {
+    private fun updateUI(): Unit {
         mainViewModel.readAllTicker.observe(this) { ticker ->
             if(ticker != null) {
                 lifecycleScope.launch(mainDispatcher) {

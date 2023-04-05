@@ -18,7 +18,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 /* Coroutine Flow Producer -> Bithumb Public API Service */
-class CoinRemoteDataSource @Inject constructor(
+class TickerRemoteDataSource @Inject constructor(
     private val koinApiService: IKoinApiService
 ) {
     fun getTickerInfoAll(): Flow<MutableList<String?>> = flow {

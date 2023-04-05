@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SelectKoinActivity : AppCompatActivity(){
+class SelectKoinActivity : AppCompatActivity() {
     @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
     private lateinit var selectKoinBinding: ActivitySelectKoinBinding
     private lateinit var selectRecyclerAdapter: SelectRecyclerAdapter
@@ -38,7 +38,7 @@ class SelectKoinActivity : AppCompatActivity(){
         setContentView(selectKoinBinding.root)
     }
 
-    private fun updateTickerList() = selectViewModel.coinTitleList.observe(this) { result ->
+    private fun updateTickerList() = selectViewModel.tickerList.observe(this) { result ->
         lifecycleScope.launch(mainDispatcher) {
             selectRecyclerAdapter = SelectRecyclerAdapter(result)
             selectKoinBinding.CoinRecyclerView.adapter = selectRecyclerAdapter

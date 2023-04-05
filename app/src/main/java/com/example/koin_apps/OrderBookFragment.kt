@@ -28,7 +28,7 @@ class OrderBookFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        orderBookViewModel.loadTickerData(ticker)
+        orderBookViewModel.fetchTickerData(ticker)
     }
 
     override fun onCreateView(
@@ -53,7 +53,7 @@ class OrderBookFragment : Fragment() {
 
     private fun setTicker(): String = arguments?.getString("coinTitle").toString()
 
-    private fun updateTickerTextView() = orderBookViewModel.tickerLiveData
+    private fun updateTickerTextView() = orderBookViewModel.tickerData
         .observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch(mainDispatcher) {
                 orderBookBinding.orderBookTickerInfo.text =
@@ -69,7 +69,7 @@ class OrderBookFragment : Fragment() {
         }
 
 
-    private fun updateTransactionList() = orderBookViewModel.transactionLiveData
+    private fun updateTransactionList() = orderBookViewModel.transactionData
         .observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch(mainDispatcher) {
                 orderBookBinding.transactionList.adapter = TransactionListAdapter(result)
@@ -77,7 +77,7 @@ class OrderBookFragment : Fragment() {
         }
 
 
-    private fun updateOrderBookList() = orderBookViewModel.orderBookLiveData
+    private fun updateOrderBookList() = orderBookViewModel.orderBookData
         .observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch(mainDispatcher) {
                 orderBookBinding.orderBookAskList.adapter = OrderBookAskListAdapter(result.asks!!)

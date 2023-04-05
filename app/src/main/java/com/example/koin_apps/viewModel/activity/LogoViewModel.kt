@@ -1,17 +1,17 @@
 package com.example.koin_apps.viewModel.activity
 
-import com.example.koin_apps.data.database.tables.CoinEntity
+import com.example.koin_apps.data.database.tables.TickerEntity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.koin_apps.data.di.repository.CoinTitleDBRepository
+import com.example.koin_apps.data.di.repository.TickerDBRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LogoViewModel @Inject constructor(
-    private val coinDBRepo: CoinTitleDBRepository
+    private val tickerDBRepo: TickerDBRepository
 ): ViewModel() {
-    val readAllTicker: LiveData<List<CoinEntity>> get() = fetchDBData()
+    val readAllTicker: LiveData<List<TickerEntity>> get() = fetchDBData()
 
-    private fun fetchDBData(): LiveData<List<CoinEntity>> = coinDBRepo.readAllCoinTitle
+    private fun fetchDBData(): LiveData<List<TickerEntity>> = tickerDBRepo.readAllTicker
 }

@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName= "coin_table")
-data class CoinEntity(
+@Entity(tableName= "Ticker_Table")
+data class TickerEntity(
     @PrimaryKey
-    @ColumnInfo(name= "coinTitle")
-    var coinTitle: String
+    @ColumnInfo(name= "Ticker")
+    var Ticker: String
 )
