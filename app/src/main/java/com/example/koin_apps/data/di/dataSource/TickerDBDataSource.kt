@@ -14,20 +14,25 @@ import java.io.IOException
 import java.sql.SQLDataException
 import javax.inject.Inject
 
+/**
+ * Ticker DataBase Select, Insert, Delete Method (Coroutine Flow Producer)
+ *  1. readAllTicker() : SELECT : Get All CryptoCurrency Ticker from TickerDataBase
+ *  2. insertTicker() : INSERT : Insert CryptoCurrency Ticker into TickerDataBase
+ *  3. deleteTicker() : DELETE : Delete CryptoCurrency Ticker from TickerDataBase
+ * */
+
 class TickerDBDataSource @Inject constructor(
     private val tickerDAO: TickerDao
 ) {
-    fun readAllTicker(): Flow<LiveData<List<TickerEntity>>> = flow {
+    fun readAllTicker(): Flow<List<TickerEntity>> = flow {
         emit(tickerDAO.readAllTicker())
     }.catch { exception ->
-        /*
         when (exception) {
-            is IOException -> emit()
-            is ClassNotFoundException -> emit()
-            is SQLDataException -> emit()
+            is IOException -> emit(listOf())
+            is ClassNotFoundException -> emit(listOf())
+            is SQLDataException -> emit(listOf())
             else -> throw exception
         }
-        */
     }.retryWhen { cause, attempt ->
         if (cause is SQLException && attempt < Constants.RETRY_MAX_ATTEMPT) {
             delay(Constants.DELAY_TIME_MILLIS)

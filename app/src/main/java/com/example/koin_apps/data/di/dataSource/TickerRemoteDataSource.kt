@@ -17,7 +17,14 @@ import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
-/* Coroutine Flow Producer -> Bithumb Public API Service */
+/**
+ * Bithumb Public API Service (Coroutine Flow Producer)
+ *  1. getTickerInfoAll() : Get All CryptoCurrency Ticker Code
+ *  2. getTickerInfo() : Get Ticker's information (ex. openingPrice, closingPrice...)
+ *  3. getTransactionInfo() : Get CryptoCurrency Transactions
+ *  4. getOrderBookInfo() : Get CryptoCurrency Order information
+ * */
+
 class TickerRemoteDataSource @Inject constructor(
     private val koinApiService: IKoinApiService
 ) {

@@ -45,7 +45,6 @@ class SelectKoinActivity : AppCompatActivity() {
         }
     }
 
-
     private fun storeTicker(): Job =
         selectViewModel.storeTickerTitle(selectRecyclerAdapter.getSelectedItems())
 

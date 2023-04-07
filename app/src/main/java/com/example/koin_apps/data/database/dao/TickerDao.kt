@@ -11,7 +11,7 @@ import com.example.koin_apps.data.database.tables.TickerEntity
 @Dao
 interface TickerDao {
     @Query("SELECT * FROM Ticker_Table ORDER BY Ticker ASC")
-    fun readAllTicker(): LiveData<List<TickerEntity>>
+    fun readAllTicker(): List<TickerEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTicker(ticker: TickerEntity)

@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-/* Bithumb Public Api Module */
+/** Bithumb Public Api Module **/
 @Module
 @InstallIn(SingletonComponent::class)
 object TickerRemoteModule {

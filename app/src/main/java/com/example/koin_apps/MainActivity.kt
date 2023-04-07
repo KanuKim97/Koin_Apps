@@ -14,6 +14,7 @@ import com.example.koin_apps.viewModel.activity.MainViewModel
 import com.example.koin_apps.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
         mainActivityBinding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
 
+        fetchTickerDB()
         updateUI()
 
         mainActivityBinding.addCoinBtn.setOnClickListener {
@@ -48,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         } else { lifecycleScope.launch(mainDispatcher) { showDataNullDialog() } }
     }
 
-
     private fun showDataNullDialog(): AlertDialog =
         alertDialog
             .setIcon(R.drawable.ic_dangerous)
@@ -56,5 +57,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage(R.string.NullDialog_Content)
             .setPositiveButton(R.string.NullDialog_okBtn, null)
             .show()
+
+    private fun fetchTickerDB(): Job = mainViewModel.fetchDBData()
 
 }
