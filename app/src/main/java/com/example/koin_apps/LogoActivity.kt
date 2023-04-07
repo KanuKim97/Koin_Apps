@@ -30,13 +30,13 @@ class LogoActivity : AppCompatActivity() {
         logoViewModel.readAllTicker.observe(this) { ticker ->
             if (ticker != null) {
                 lifecycleScope.launch(mainDispatcher) {
-                    delay(Constants.DelayTimeMillis)
+                    delay(Constants.DELAY_TIME_MILLIS)
                     startActivity(Intent(this@LogoActivity, MainActivity::class.java))
                     finish()
                 }
             } else {
                 lifecycleScope.launch(mainDispatcher) {
-                    delay(Constants.DelayTimeMillis)
+                    delay(Constants.DELAY_TIME_MILLIS)
                     startActivity(Intent(this@LogoActivity, SelectKoinActivity::class.java))
                     finish()
                 }

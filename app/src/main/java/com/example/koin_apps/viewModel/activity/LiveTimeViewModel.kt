@@ -26,7 +26,7 @@ class LiveTimeViewModel @Inject constructor(
                 _tickerLiveViewData.postValue(result)
             }
 
-            delay(Constants.DelayTimeMillis)
+            delay(Constants.DELAY_TIME_MILLIS)
         }
     }
 

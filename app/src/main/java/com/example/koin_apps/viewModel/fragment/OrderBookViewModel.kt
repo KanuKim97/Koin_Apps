@@ -32,21 +32,21 @@ class OrderBookViewModel @Inject constructor(
                 tickerApiRepos.getTickerInfoDetail(ticker).collect {
                     _tickerData.postValue(it)
                 }
-                delay(Constants.DelayTimeMillis)
+                delay(Constants.DELAY_TIME_MILLIS)
             }.join()
 
             launch {
                 tickerApiRepos.getTransactionInfo(ticker, 10).collect {
                     _transactionData.postValue(it)
                 }
-                delay(Constants.DelayTimeMillis)
+                delay(Constants.DELAY_TIME_MILLIS)
             }.join()
 
             launch {
                 tickerApiRepos.getOrderBookInfo(ticker, 10).collect {
                     _orderBookData.postValue(it)
                 }
-                delay(Constants.DelayTimeMillis)
+                delay(Constants.DELAY_TIME_MILLIS)
             }
         }
     }

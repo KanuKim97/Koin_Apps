@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object TickerRemoteModule {
     @Provides
-    fun providesBaseUrl(): String = Constants.IKoinPublicApiUri
+    fun providesBaseUrl(): String = Constants.BITHUMB_PUBLIC_API_URL
 
     @Provides
     @Singleton

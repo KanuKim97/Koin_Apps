@@ -39,18 +39,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(mainActivityBinding.root)
     }
 
-    private fun updateUI(): Unit {
-        mainViewModel.readAllTicker.observe(this) { ticker ->
-            if(ticker != null) {
-                lifecycleScope.launch(mainDispatcher) {
-                    mainActivityBinding.mainRecyclerView.adapter =
-                        MainRecyclerAdapter(this@MainActivity, ticker)
-                }
-            } else {
-                lifecycleScope.launch(mainDispatcher) { showDataNullDialog() }
+    private fun updateUI() = mainViewModel.readAllTicker.observe(this) { ticker ->
+        if(ticker != null) {
+            lifecycleScope.launch(mainDispatcher) {
+                mainActivityBinding.mainRecyclerView.adapter =
+                    MainRecyclerAdapter(this@MainActivity, ticker)
             }
-        }
+        } else { lifecycleScope.launch(mainDispatcher) { showDataNullDialog() } }
     }
+
 
     private fun showDataNullDialog(): AlertDialog =
         alertDialog
