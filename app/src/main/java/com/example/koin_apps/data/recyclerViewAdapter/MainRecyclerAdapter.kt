@@ -6,22 +6,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koin_apps.LiveTimeActivity
-import com.example.koin_apps.data.database.tables.CoinEntity
+import com.example.koin_apps.data.database.tables.TickerEntity
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
 import javax.inject.Inject
 
 class MainRecyclerAdapter @Inject constructor(
     private val context: Context,
-    private val coinTitle: List<CoinEntity>
+    private val tickerList: List<TickerEntity>
 ): RecyclerView.Adapter<MainRecyclerAdapter.MainViewItemHolder>() {
 
     inner class MainViewItemHolder(private val binding: MainCoinviewItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
-        fun bind(coinEntity: CoinEntity) {
-            binding.titleCoin.text = coinEntity.coinTitle
+
+        fun bind(tickerEntity: TickerEntity) {
+            binding.titleCoin.text = tickerEntity.Ticker
             binding.NavigateCoinDesc.setOnClickListener {
                 Intent(context, LiveTimeActivity::class.java)
-                    .putExtra("coinTitle", coinEntity.coinTitle)
+                    .putExtra("coinTitle", tickerEntity.Ticker)
                     .run { context.startActivity(this) }
             }
         }
@@ -38,9 +39,9 @@ class MainRecyclerAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: MainViewItemHolder, position: Int) =
-        holder.bind(coinTitle[position])
+        holder.bind(tickerList[position])
 
-    override fun getItemCount(): Int = coinTitle.size
+    override fun getItemCount(): Int = tickerList.size
 
     override fun getItemViewType(position: Int): Int = position
 }

@@ -12,35 +12,39 @@ import com.example.koin_apps.databinding.ActivitySelectKoinBinding
 import com.example.koin_apps.viewModel.activity.SelectViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SelectKoinActivity : AppCompatActivity(){
+class SelectKoinActivity : AppCompatActivity() {
     @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
-    private lateinit var selectKoinBinding: ActivitySelectKoinBinding
     private lateinit var selectRecyclerAdapter: SelectRecyclerAdapter
+    private val selectKoinBinding by lazy { ActivitySelectKoinBinding.inflate(layoutInflater) }
     private val selectViewModel: SelectViewModel by viewModels()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
         selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        selectViewModel.loadTickerTitle()
-        selectViewModel.coinTitleList.observe(this) { result ->
-            lifecycleScope.launch(mainDispatcher) {
-                selectRecyclerAdapter = SelectRecyclerAdapter(result)
-                selectKoinBinding.CoinRecyclerView.adapter = selectRecyclerAdapter
-            }
-        }
+        updateTickerList()
 
         selectKoinBinding.compSelectBtn.setOnClickListener {
-            selectViewModel.storeTickerTitle(selectRecyclerAdapter.getSelectedItems())
+            storeTicker()
             startActivity(Intent(this, MainActivity::class.java))
         }
 
         setContentView(selectKoinBinding.root)
     }
+
+    private fun updateTickerList() = selectViewModel.tickerList.observe(this) { result ->
+        lifecycleScope.launch(mainDispatcher) {
+            selectRecyclerAdapter = SelectRecyclerAdapter(result)
+            selectKoinBinding.CoinRecyclerView.adapter = selectRecyclerAdapter
+        }
+    }
+
+    private fun storeTicker(): Job =
+        selectViewModel.storeTickerTitle(selectRecyclerAdapter.getSelectedItems())
+
 }

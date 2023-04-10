@@ -28,7 +28,7 @@ class OrderBookFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        orderBookViewModel.loadTickerData(ticker)
+        orderBookViewModel.fetchTickerData(ticker)
     }
 
     override fun onCreateView(
@@ -41,7 +41,20 @@ class OrderBookFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        orderBookViewModel.tickerLiveData.observe(viewLifecycleOwner) { result ->
+        updateTickerTextView()
+        updateTransactionList()
+        updateOrderBookList()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _orderBookBinding = null
+    }
+
+    private fun setTicker(): String = arguments?.getString("coinTitle").toString()
+
+    private fun updateTickerTextView() = orderBookViewModel.tickerData
+        .observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch(mainDispatcher) {
                 orderBookBinding.orderBookTickerInfo.text =
                     getString(
@@ -55,25 +68,19 @@ class OrderBookFragment : Fragment() {
             }
         }
 
-        orderBookViewModel.transactionLiveData.observe(viewLifecycleOwner) { result ->
+    private fun updateTransactionList() = orderBookViewModel.transactionData
+        .observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch(mainDispatcher) {
                 orderBookBinding.transactionList.adapter = TransactionListAdapter(result)
             }
         }
 
-        orderBookViewModel.orderBookLiveData.observe(viewLifecycleOwner) { result ->
+    private fun updateOrderBookList() = orderBookViewModel.orderBookData
+        .observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch(mainDispatcher) {
                 orderBookBinding.orderBookAskList.adapter = OrderBookAskListAdapter(result.asks!!)
                 orderBookBinding.orderBookBidList.adapter = OrderBookBidListAdapter(result.bids!!)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _orderBookBinding = null
-    }
-
-    private fun setTicker(): String = arguments?.getString("coinTitle").toString()
 
 }

@@ -45,7 +45,8 @@
         app:layout_constraintBottom_toTopOf="@+id/compSelectBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Welcome_subTitle" />
+        app:layout_constraintTop_toBottomOf="@id/Welcome_subTitle"
+        tools:listitem="@layout/select_coinview_item" />
 
     <Button
         android:id="@+id/compSelectBtn"
