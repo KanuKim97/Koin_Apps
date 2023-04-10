@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.koin_apps.data.database.TickerDataBase
 import com.example.koin_apps.data.database.dao.TickerDao
+import com.example.koin_apps.data.di.dataSource.TickerDBDataSource
 import com.example.koin_apps.data.di.repository.TickerDBRepository
 import dagger.Module
 import dagger.Provides
@@ -12,7 +13,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/* Room Database Module */
+/** Room Database Module **/
 @Module
 @InstallIn(SingletonComponent::class)
 object TickerDBModule {
@@ -28,5 +29,5 @@ object TickerDBModule {
 
     @Provides
     @Singleton
-    fun providesCoinDBRepository(tickerDao: TickerDao) = TickerDBRepository(tickerDao)
+    fun providesCoinDBRepository(tickerDAO: TickerDao) = TickerDBDataSource(tickerDAO)
 }

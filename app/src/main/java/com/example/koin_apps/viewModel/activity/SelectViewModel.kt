@@ -31,7 +31,9 @@ class SelectViewModel @Inject constructor(
     }
 
     fun storeTickerTitle(tickerList: List<String>): Job = viewModelScope.launch(ioDispatcher) {
-        for (ticker in tickerList) { tickerDBRepo.insertTicker(TickerEntity(ticker)) }
+        for (ticker in tickerList) {
+            tickerDBRepo.insertTicker(TickerEntity(ticker)).collect{  }
+        }
     }
 
     override fun onCleared() {
