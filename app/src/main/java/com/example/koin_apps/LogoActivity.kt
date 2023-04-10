@@ -16,12 +16,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LogoActivity : AppCompatActivity() {
     @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
-    private lateinit var logoBinding: ActivityLogoBinding
+    private val logoBinding by lazy { ActivityLogoBinding.inflate(layoutInflater) }
     private val logoViewModel: LogoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        logoBinding = ActivityLogoBinding.inflate(layoutInflater)
         updateUI()
         setContentView(logoBinding.root)
     }

@@ -68,14 +68,12 @@ class OrderBookFragment : Fragment() {
             }
         }
 
-
     private fun updateTransactionList() = orderBookViewModel.transactionData
         .observe(viewLifecycleOwner) { result ->
             lifecycleScope.launch(mainDispatcher) {
                 orderBookBinding.transactionList.adapter = TransactionListAdapter(result)
             }
         }
-
 
     private fun updateOrderBookList() = orderBookViewModel.orderBookData
         .observe(viewLifecycleOwner) { result ->

@@ -15,7 +15,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LiveTimeActivity : AppCompatActivity() {
     @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
-    private lateinit var liveTimeBinding: ActivityLiveTimeBinding
+    private val liveTimeBinding by lazy { ActivityLiveTimeBinding.inflate(layoutInflater) }
     private val liveTimeViewModel: LiveTimeViewModel by viewModels()
     private val orderBookFragment = OrderBookFragment()
     private val fragmentBundle = Bundle()
@@ -23,7 +23,6 @@ class LiveTimeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        liveTimeBinding = ActivityLiveTimeBinding.inflate(layoutInflater)
         liveTimeViewModel.loadTickerInfo(ticker)
         setFragmentBundle()
 
@@ -47,18 +46,16 @@ class LiveTimeActivity : AppCompatActivity() {
 
     private fun updateTickerTitle() { liveTimeBinding.coinTitle.text = ticker }
 
-    private fun updateTickerInfo() {
-        liveTimeViewModel.tickerLiveViewData.observe(this) { result ->
-            lifecycleScope.launch(mainDispatcher) {
-                liveTimeBinding.tickerWon.text =
-                    getString(R.string.tickerWon, result.closing_price)
-                liveTimeBinding.Flucatate24H.text =
-                    getString(R.string.ticker_Flucatate_won24H, result.fluctate_24H)
-                liveTimeBinding.FlucatateRate24H.text =
-                    getString(R.string.ticker_Flucatate_rate24H, result.fluctate_rate_24H)
-            }
+    private fun updateTickerInfo() = liveTimeViewModel.tickerLiveViewData.observe(this) {
+        lifecycleScope.launch(mainDispatcher) {
+            liveTimeBinding.tickerWon.text =
+                getString(R.string.tickerWon, it.closing_price)
+            liveTimeBinding.Flucatate24H.text =
+                getString(R.string.ticker_Flucatate_won24H, it.fluctate_24H)
+            liveTimeBinding.FlucatateRate24H.text =
+                getString(R.string.ticker_Flucatate_rate24H, it.fluctate_rate_24H)
         }
     }
-
+    
 }
 

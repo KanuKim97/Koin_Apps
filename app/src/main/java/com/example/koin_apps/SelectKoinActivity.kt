@@ -19,13 +19,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SelectKoinActivity : AppCompatActivity() {
     @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
-    private lateinit var selectKoinBinding: ActivitySelectKoinBinding
     private lateinit var selectRecyclerAdapter: SelectRecyclerAdapter
+    private val selectKoinBinding by lazy { ActivitySelectKoinBinding.inflate(layoutInflater) }
     private val selectViewModel: SelectViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        selectKoinBinding = ActivitySelectKoinBinding.inflate(layoutInflater)
         selectKoinBinding.CoinRecyclerView.layoutManager = LinearLayoutManager(this)
 
         updateTickerList()

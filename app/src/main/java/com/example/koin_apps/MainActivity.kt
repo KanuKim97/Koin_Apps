@@ -22,13 +22,12 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
     @Inject lateinit var alertDialog: AlertDialog.Builder
-
-    private lateinit var mainActivityBinding: ActivityMainBinding
+    private val mainActivityBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
+
         mainActivityBinding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
 
         fetchTickerDB()
