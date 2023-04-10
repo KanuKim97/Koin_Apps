@@ -7,6 +7,7 @@ import com.example.koin_apps.data.remote.model.ticker.LiveTickerData
 import com.example.koin_apps.data.remote.model.ticker.OrderTickerData
 import com.example.koin_apps.data.remote.model.transaction.TransactionData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -27,13 +28,15 @@ import javax.inject.Inject
  *   - parameter : ticker(String), count(Int)
  *   - Get Transaction Data
  * */
+
 class TickerRepository @Inject constructor(
     private val tickerRemoteDataSource: TickerRemoteDataSource
 ) {
     private val wonFormat = DecimalFormat("###,###")
     private val unitsFormat = DecimalFormat("##.##")
 
-    fun getTickerInfoALL(): Flow<MutableList<String?>> = tickerRemoteDataSource.getTickerInfoAll()
+    fun getTickerInfoALL(): Flow<MutableList<String?>> =
+        tickerRemoteDataSource.getTickerInfoAll().filter { it.remove("date") }
 
     fun getTickerInfoLive(ticker: String): Flow<LiveTickerData> =
         tickerRemoteDataSource.getTickerInfo(ticker).map { result ->

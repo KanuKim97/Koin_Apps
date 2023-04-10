@@ -16,6 +16,10 @@ class TickerDBRepository @Inject constructor(
     private val tickerDBDataSource: TickerDBDataSource
 ) {
     fun readAllTicker(): Flow<List<TickerEntity>> = tickerDBDataSource.readAllTicker()
-    fun insertTicker(ticker: TickerEntity): Flow<Result<Unit>> = tickerDBDataSource.insertTicker(ticker)
-    fun deleteTicker(ticker: TickerEntity): Flow<Result<Unit>> = tickerDBDataSource.deleteTicker(ticker)
+
+    fun insertTicker(ticker: TickerEntity): Flow<Result<Unit>> =
+        tickerDBDataSource.insertTicker(ticker)
+
+    fun deleteTicker(ticker: TickerEntity): Flow<Result<Unit>> =
+        tickerDBDataSource.deleteTicker(ticker)
 }
