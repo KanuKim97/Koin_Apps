@@ -16,11 +16,11 @@
  ### Bithumb API (Public)
   - Ticker
     - Ticker {Path: ALL}
-    - Ticker {Path: Coin Name}
+    - Ticker {Path: Ticker}
   - Transacton
-    - Transaction {Path: CoinName}, {Query: Count}
+    - Transaction {Path: Ticker}, {Query: Count}
   - Orderbook
-    - OrderBook {Path: CoinName}, {Query: Count}
+    - OrderBook {Path: Ticker}, {Query: Count}
  
 ## Sdk Build Version 
   - minSdkVersion : 26
