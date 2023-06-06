@@ -4,32 +4,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.koin_apps.data.database.tables.CoinEntity
+import com.example.koin_apps.data.database.tables.TickerEntity
 import com.example.koin_apps.data.di.coroutineDispatcher.IoDispatcher
-import com.example.koin_apps.data.di.repository.CoinRepository
-import com.example.koin_apps.data.di.repository.CoinTitleDBRepository
+import com.example.koin_apps.data.di.repository.TickerRepository
+import com.example.koin_apps.data.di.repository.TickerDBRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SelectViewModel @Inject constructor(
-    private val coinApiRepos: CoinRepository,
-    private val coinDBRepo: CoinTitleDBRepository,
+    private val tickerApiRepos: TickerRepository,
+    private val tickerDBRepo: TickerDBRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
-    private val _coinTitleList = MutableLiveData<List<String?>?>()
-    val coinTitleList: LiveData<List<String?>?> get() = _coinTitleList
+    private val _tickerList = MutableLiveData<List<String?>?>()
+    val tickerList: LiveData<List<String?>?> get() = _tickerList
 
-    fun loadTickerTitle() = viewModelScope.launch(ioDispatcher) {
-        coinApiRepos.getTickerInfoALL().collect { _coinTitleList.postValue(it) }
+    init { loadTickerTitle() }
+
+    private fun loadTickerTitle(): Job = viewModelScope.launch(ioDispatcher) {
+        tickerApiRepos.getTickerInfoALL().collect { _tickerList.postValue(it) }
     }
 
-    fun storeTickerTitle(selectedCoinTitle: List<String>) = viewModelScope.launch(ioDispatcher) {
-        for (listElement in selectedCoinTitle) {
-            coinDBRepo.insertCoinTitle(CoinEntity(listElement))
+    fun storeTickerTitle(tickerList: List<String>): Job = viewModelScope.launch(ioDispatcher) {
+        for (ticker in tickerList) {
+            tickerDBRepo.insertTicker(TickerEntity(ticker)).collect{  }
         }
     }
 

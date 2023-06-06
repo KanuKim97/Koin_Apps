@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koin_apps.common.Constants
 import com.example.koin_apps.data.di.coroutineDispatcher.IoDispatcher
-import com.example.koin_apps.data.di.repository.CoinRepository
+import com.example.koin_apps.data.di.repository.TickerRepository
 import com.example.koin_apps.data.remote.model.orderBook.OrderData
 import com.example.koin_apps.data.remote.model.ticker.OrderTickerData
 import com.example.koin_apps.data.remote.model.transaction.TransactionData
@@ -16,38 +16,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderBookViewModel @Inject constructor(
-    private val coinApiRepos: CoinRepository,
+    private val tickerApiRepos: TickerRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
-    private val _transactionLiveData = MutableLiveData<ArrayList<TransactionData>>()
-    private val _orderBookLiveData = MutableLiveData<OrderData>()
-    private val _tickerLiveData = MutableLiveData<OrderTickerData>()
+    private val _tickerData = MutableLiveData<OrderTickerData>()
+    private val _transactionData = MutableLiveData<ArrayList<TransactionData>>()
+    private val _orderBookData = MutableLiveData<OrderData>()
+    val tickerData: LiveData<OrderTickerData> get() = _tickerData
+    val transactionData: LiveData<ArrayList<TransactionData>> get() = _transactionData
+    val orderBookData: LiveData<OrderData> get() = _orderBookData
 
-    val transactionLiveData: LiveData<ArrayList<TransactionData>> get() = _transactionLiveData
-    val orderBookLiveData: LiveData<OrderData> get() = _orderBookLiveData
-    val tickerLiveData: LiveData<OrderTickerData> get() = _tickerLiveData
-
-    fun loadTickerData(tickerTitle: String) = viewModelScope.launch(ioDispatcher) {
+    fun fetchTickerData(ticker: String): Job = viewModelScope.launch (ioDispatcher) {
         while (true) {
             launch {
-                coinApiRepos.getTickerInfoDetail(tickerTitle).collect { result ->
-                    _tickerLiveData.postValue(result)
+                tickerApiRepos.getTickerInfoDetail(ticker).collect {
+                    _tickerData.postValue(it)
                 }
-                delay(Constants.DelayTimeMillis)
+                delay(Constants.DELAY_TIME_MILLIS)
             }.join()
 
             launch {
-                coinApiRepos.getTransactionInfo(tickerTitle, 10).collect { result ->
-                    _transactionLiveData.postValue(result)
+                tickerApiRepos.getTransactionInfo(ticker, 10).collect {
+                    _transactionData.postValue(it)
                 }
-                delay(Constants.DelayTimeMillis)
+                delay(Constants.DELAY_TIME_MILLIS)
             }.join()
 
             launch {
-                coinApiRepos.getOrderBookInfo(tickerTitle, 10).collect { result ->
-                    _orderBookLiveData.postValue(result)
+                tickerApiRepos.getOrderBookInfo(ticker, 10).collect {
+                    _orderBookData.postValue(it)
                 }
-                delay(Constants.DelayTimeMillis)
+                delay(Constants.DELAY_TIME_MILLIS)
             }
         }
     }
