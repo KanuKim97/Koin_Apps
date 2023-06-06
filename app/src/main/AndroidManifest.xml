@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".AndroidApp"
+        android:name=".presenter.AndroidApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,11 +12,11 @@
         android:theme="@style/Theme.Koin_Apps">
 
         <activity
-            android:name=".SelectKoinActivity"
+            android:name=".presenter.SelectKoinActivity"
             android:exported="false" />
 
         <activity
-            android:name=".LogoActivity"
+            android:name=".presenter.LogoActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,11 +25,11 @@
         </activity>
 
         <activity
-            android:name=".LiveTimeActivity"
+            android:name=".presenter.LiveTimeActivity"
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presenter.MainActivity"
             android:exported="false" />
 
         <meta-data
