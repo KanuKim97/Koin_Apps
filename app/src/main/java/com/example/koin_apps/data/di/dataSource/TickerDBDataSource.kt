@@ -20,7 +20,6 @@ import javax.inject.Inject
  *  2. insertTicker() : INSERT : Insert CryptoCurrency Ticker into TickerDataBase
  *  3. deleteTicker() : DELETE : Delete CryptoCurrency Ticker from TickerDataBase
  * */
-
 class TickerDBDataSource @Inject constructor(
     private val tickerDAO: TickerDao
 ) {

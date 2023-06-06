@@ -24,7 +24,6 @@ import javax.inject.Inject
  *  3. getTransactionInfo() : Get CryptoCurrency Transactions
  *  4. getOrderBookInfo() : Get CryptoCurrency Order information
  * */
-
 class TickerRemoteDataSource @Inject constructor(
     private val koinApiService: IKoinApiService
 ) {

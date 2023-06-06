@@ -56,6 +56,6 @@ class LiveTimeActivity : AppCompatActivity() {
                 getString(R.string.ticker_Flucatate_rate24H, it.fluctate_rate_24H)
         }
     }
-    
+
 }
 

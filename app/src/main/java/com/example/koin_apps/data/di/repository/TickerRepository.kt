@@ -28,7 +28,6 @@ import javax.inject.Inject
  *   - parameter : ticker(String), count(Int)
  *   - Get Transaction Data
  * */
-
 class TickerRepository @Inject constructor(
     private val tickerRemoteDataSource: TickerRemoteDataSource
 ) {
