@@ -1,13 +1,15 @@
 package com.example.koin_apps.presenter.adapter.recyclerViewAdapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.databinding.SelectCoinviewItemBinding
 import javax.inject.Inject
 
 class SelectRecyclerAdapter @Inject constructor(
-    private var tickerList: List<String?>?,
+    private val tickerList: List<String?>?,
 ): RecyclerView.Adapter<SelectRecyclerAdapter.CoinsViewHolder>() {
     private val selectedTickerList: MutableList<String> = mutableListOf()
 
@@ -17,13 +19,20 @@ class SelectRecyclerAdapter @Inject constructor(
         fun bind(ticker: String) {
             binding.titleCoin.text = ticker
             binding.checkCoin.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) { selectedTickerList.add(ticker) }
-                else { selectedTickerList.remove(ticker) }
+                if (isChecked) {
+                    selectedTickerList.add(ticker)
+                    Log.d(Constants.LOG_TAG, "$selectedTickerList")
+                } else {
+                    selectedTickerList.remove(ticker)
+                    Log.d(Constants.LOG_TAG, "$selectedTickerList")
+                }
             }
         }
     }
 
-    fun getSelectedItems(): List<String> = selectedTickerList
+    fun getSelectedItems(): List<String> {
+        return selectedTickerList.toList()
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

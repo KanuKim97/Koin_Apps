@@ -3,8 +3,10 @@ package com.example.koin_apps.presenter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.koin_apps.common.Constants
 import com.example.koin_apps.module.coroutineDispatcher.MainDispatcher
 import com.example.koin_apps.presenter.adapter.recyclerViewAdapter.SelectRecyclerAdapter
 import com.example.koin_apps.databinding.ActivitySelectKoinBinding
@@ -29,6 +31,7 @@ class SelectKoinActivity : AppCompatActivity() {
 
         selectKoinBinding.compSelectBtn.setOnClickListener {
             storeTicker()
+            Log.d(Constants.LOG_TAG, "${getSelectedItems()}")
             startActivity(Intent(this, MainActivity::class.java))
         }
 
@@ -42,8 +45,10 @@ class SelectKoinActivity : AppCompatActivity() {
 
     private fun updateTickerList() = selectViewModel.tickerList.observe(this) { result ->
         selectRecyclerAdapter = SelectRecyclerAdapter(result)
-        selectKoinBinding.CoinRecyclerView.adapter = SelectRecyclerAdapter(result)
+        selectKoinBinding.CoinRecyclerView.adapter = selectRecyclerAdapter
     }
+
+    private fun getSelectedItems() = selectRecyclerAdapter.getSelectedItems()
 
     private fun storeTicker(): Job =
         selectViewModel.storeTickerTitle(selectRecyclerAdapter.getSelectedItems())

@@ -9,5 +9,5 @@ class GetTickerAllUseCase @Inject constructor(
     private val bithumbApiRepo: BithumbApiRepository
 ) {
     operator fun invoke(): Flow<MutableList<String?>> =
-        bithumbApiRepo.getTickerInfoAll().filter { it.remove("data") }
+        bithumbApiRepo.getTickerInfoAll().filter { it.remove("date") }
 }
