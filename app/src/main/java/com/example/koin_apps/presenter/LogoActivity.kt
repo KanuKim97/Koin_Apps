@@ -4,44 +4,29 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
-import com.example.koin_apps.common.Constants
-import com.example.koin_apps.module.coroutineDispatcher.MainDispatcher
 import com.example.koin_apps.databinding.ActivityLogoBinding
 import com.example.koin_apps.presenter.viewModel.LogoViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LogoActivity : AppCompatActivity() {
-    @MainDispatcher @Inject lateinit var mainDispatcher: CoroutineDispatcher
-
     private val logoBinding by lazy { ActivityLogoBinding.inflate(layoutInflater) }
     private val logoViewModel: LogoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        updateUI()
-        setContentView(logoBinding.root)
-    }
 
-    private fun updateUI() {
-        logoViewModel.readAllTicker.observe(this) { ticker ->
-            if (ticker != null) {
-                lifecycleScope.launch(mainDispatcher) {
-                    delay(Constants.DELAY_TIME_MILLIS)
-                    startActivity(Intent(this@LogoActivity, MainActivity::class.java))
-                    finish()
-                }
+        logoViewModel.readAllTicker.observe(this) { tickerList ->
+            if (tickerList != null) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
             } else {
-                lifecycleScope.launch(mainDispatcher) {
-                    delay(Constants.DELAY_TIME_MILLIS)
-                    startActivity(Intent(this@LogoActivity, SelectKoinActivity::class.java))
-                    finish()
-                }
+                startActivity(Intent(this, SelectKoinActivity::class.java))
+                finish()
             }
         }
+
+        setContentView(logoBinding.root)
     }
 
 }

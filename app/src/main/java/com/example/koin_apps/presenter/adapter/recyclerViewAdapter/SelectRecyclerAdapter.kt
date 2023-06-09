@@ -1,10 +1,8 @@
 package com.example.koin_apps.presenter.adapter.recyclerViewAdapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.koin_apps.common.Constants
 import com.example.koin_apps.databinding.SelectCoinviewItemBinding
 import javax.inject.Inject
 
@@ -21,18 +19,14 @@ class SelectRecyclerAdapter @Inject constructor(
             binding.checkCoin.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     selectedTickerList.add(ticker)
-                    Log.d(Constants.LOG_TAG, "$selectedTickerList")
                 } else {
                     selectedTickerList.remove(ticker)
-                    Log.d(Constants.LOG_TAG, "$selectedTickerList")
                 }
             }
         }
     }
 
-    fun getSelectedItems(): List<String> {
-        return selectedTickerList.toList()
-    }
+    fun getSelectedItems(): List<String> = selectedTickerList.toList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

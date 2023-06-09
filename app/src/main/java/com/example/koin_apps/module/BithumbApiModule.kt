@@ -17,7 +17,7 @@ import javax.inject.Singleton
 /** Bithumb Public Api Module **/
 @Module
 @InstallIn(SingletonComponent::class)
-object TickerRemoteModule {
+object BithumbApiModule {
     @Provides
     fun providesBaseUrl(): String = Constants.BITHUMB_PUBLIC_API_URL
 

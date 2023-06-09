@@ -1,6 +1,5 @@
 package com.example.koin_apps.presenter.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.TickerEntity
 import com.example.domain.usecase.apiUseCase.GetTickerAllUseCase
 import com.example.domain.usecase.databaseUseCase.InsertTickerUseCase
-import com.example.koin_apps.common.Constants
 import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -33,7 +31,7 @@ class SelectViewModel @Inject constructor(
     }
 
     fun storeTickerTitle(tickerList: List<String>): Job = viewModelScope.launch(ioDispatcher) {
-        tickerList.forEach { insertTickerUseCase(TickerEntity(it)) }
+        tickerList.forEach { insertTickerUseCase(TickerEntity(it)).collect {  } }
     }
 
     override fun onCleared() {
