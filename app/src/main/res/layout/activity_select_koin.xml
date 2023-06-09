@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:background="@color/Mint_100"
     android:paddingHorizontal="15dp"
-    tools:context=".SelectKoinActivity">
+    tools:context=".presenter.SelectKoinActivity">
 
     <TextView
         android:id="@+id/Welcome_Title"
