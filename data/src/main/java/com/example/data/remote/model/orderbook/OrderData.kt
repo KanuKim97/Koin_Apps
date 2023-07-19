@@ -1,10 +1,11 @@
 package com.example.data.remote.model.orderbook
 
+import com.google.gson.annotations.SerializedName
+
 data class OrderData(
-    val status: String?,
-    val timestamp: String?,
-    val order_currency: String?,
-    val payment_currency: String?,
-    val bids: ArrayList<OrderAskBidData>?,
-    val asks: ArrayList<OrderAskBidData>?
+    @SerializedName("timestamp") val timeStamp: Long,
+    @SerializedName("payment_currency") val paymentCurrency: String,
+    @SerializedName("order_currency") val orderCurrency: String,
+    @SerializedName("bids") val orderBids: ArrayList<OrderInfo>,
+    @SerializedName("asks") val orderAsks: ArrayList<OrderInfo>
 )

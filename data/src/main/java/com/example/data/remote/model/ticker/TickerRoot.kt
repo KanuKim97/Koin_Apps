@@ -1,7 +1,9 @@
 package com.example.data.remote.model.ticker
 
+import com.google.gson.annotations.SerializedName
+
 data class TickerRoot(
-    val status: String,
-    val message: String?,
-    val data: Map<String?, Any?>
+    @SerializedName("status") val status: String,
+    @SerializedName("message") val message: String?,
+    @SerializedName("data") val tickerData: TickerData?
 )

@@ -1,13 +1,9 @@
 package com.example.data.repositoryImpl
 
 import com.example.data.remote.BithumbApiService
-import com.example.data.remote.model.orderbook.OrderData
-import com.example.data.remote.model.orderbook.OrderRoot
-import com.example.data.remote.model.ticker.TickerRoot
-import com.example.data.remote.model.transaction.TransactionData
+import com.example.data.remote.model.ticker.TickerAllRoot
 import com.example.data.remote.model.transaction.TransactionRoot
-import com.example.data.util.apiMapper.mapperToOrderBookEntity
-import com.example.data.util.apiMapper.mapperToTransactionEntity
+import com.example.data.util.Constants
 import com.example.domain.entity.OrderBookEntity
 import com.example.domain.entity.TransactionEntity
 import com.example.domain.repository.BithumbApiRepository
@@ -24,141 +20,127 @@ import javax.inject.Inject
 class BithumbApiRepositoryImpl @Inject constructor(
     private val bithumbApiService: BithumbApiService
 ): BithumbApiRepository {
+    override fun getTickerInfoAll(): Flow<MutableList<String>?> = flow {
+        while (true) {
+            val response: Response<TickerAllRoot> = bithumbApiService.getTickerALL()
 
-    override fun getTickerInfoAll(): Flow<MutableList<String?>> = flow {
-        val response: Response<TickerRoot> = bithumbApiService.getTickerALL()
+            if (response.isSuccessful && response.body()?.tickerData != null) {
+                val tickerTitleList = response.body()?.tickerData?.keys?.toMutableList()
+                emit(tickerTitleList)
+            } else {
+                when {
+                    (!response.isSuccessful) -> throw HttpException(response)
+                    (response.body()?.tickerData == null) -> throw NullPointerException()
+                }
+            }
 
-        if (response.isSuccessful && response.body()?.data != null) {
-            val responseResult: MutableList<String?> = response.body()?.data!!.keys.toMutableList()
-            emit(responseResult)
-        } else {
-            if (response.body()?.data == null) {
-                throw (NullPointerException("response body data is Null"))
-            }
-            if (!response.isSuccessful) {
-                throw (HttpException(response))
-            }
+            delay(Constants.FLOW_MAX_DELAY_TIME)
         }
-    }.catch { exception ->
-        if (exception is IOException) {
-            emit(mutableListOf())
-        } else {
-            throw exception
-        }
-    }.retryWhen { cause, attempt ->
+    }.retryWhen { cause: Throwable, attempt: Long ->
         when {
-            (cause is HttpException && attempt < 3) -> {
-                delay(2000L)
+            (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
+                delay(Constants.FLOW_MAX_DELAY_TIME)
+                true
+            }
+            (cause is HttpException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
+                delay(Constants.FLOW_MAX_DELAY_TIME)
                 true
             }
             else -> false
+        }
+    }.catch { cause ->
+        when (cause) {
+            is IOException -> emit(mutableListOf())
+            is HttpException -> emit(mutableListOf())
+            is NullPointerException -> emit(mutableListOf())
+            else -> throw Exception()
         }
     }
 
-    override fun getTickerInfo(ticker: String): Flow<Map<String?, Any?>> = flow {
-        val response: Response<TickerRoot> = bithumbApiService.getTickerInfo(ticker)
+    override fun getTickerInfo(ticker: String): Flow<Map<String, Any>?> = flow<Map<String, Any>?> {
 
-        if (response.isSuccessful && response.body()?.data != null) {
-            val responseResult: Map<String?, Any?> = response.body()!!.data
-            emit(responseResult)
-        } else {
-            if (response.body()?.data == null) {
-                throw (NullPointerException("response body data is Null"))
-            }
-            if (!response.isSuccessful) {
-                throw (HttpException(response))
-            }
-        }
-    }.catch { exception ->
-        if (exception is IOException) {
-            emit(mapOf())
-        } else {
-            throw exception
-        }
-    }.retryWhen { cause, attempt ->
+    }.retryWhen { cause: Throwable, attempt: Long ->
         when {
-            (cause is HttpException && attempt < 3) -> {
-                delay(2000L)
+            (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
+                delay(Constants.FLOW_MAX_DELAY_TIME)
+                true
+            }
+            (cause is HttpException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
+                delay(Constants.FLOW_MAX_DELAY_TIME)
                 true
             }
             else -> false
+        }
+    }.catch { cause ->
+        when (cause) {
+            is IOException -> emit(mapOf())
+            is HttpException -> emit(mapOf())
+            is NullPointerException -> emit(mapOf())
+            else -> throw Exception()
         }
     }
 
     override fun getTransactionHistory(
         ticker: String,
         count: Int
-    ): Flow<List<TransactionEntity>> = flow {
-        val response: Response<TransactionRoot> =
-            bithumbApiService.getTransactionHistory(ticker, count)
+    ): Flow<List<TransactionEntity>?> = flow<List<TransactionEntity>?> {
+        while (true) {
+            val response: Response<TransactionRoot> = bithumbApiService.getTransactionHistory(ticker, count)
 
-        if (response.isSuccessful && response.body()?.data != null) {
-            val responseResult: ArrayList<TransactionData> = response.body()?.data!!
-            emit(mapperToTransactionEntity(responseResult))
-        } else {
-            if (response.body()?.data == null) {
-                throw (NullPointerException("response body data is Null"))
-            }
-            if (!response.isSuccessful) {
-                throw (HttpException(response))
+            if (response.isSuccessful && response.body()?.transactionData != null) {
+
+                emit(listOf())
+            } else {
+                when {
+                    (!response.isSuccessful) -> throw HttpException(response)
+                    (response.body()?.transactionData == null) -> throw NullPointerException()
+                }
             }
         }
-    }.catch { exception ->
-        if (exception is IOException) {
-            emit(listOf())
-        } else {
-            throw exception
-        }
-    }.retryWhen { cause, attempt ->
+    }.retryWhen { cause: Throwable, attempt: Long ->
         when {
-            (cause is HttpException && attempt < 3) -> {
-                delay(2000L)
+            (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
+                delay(Constants.FLOW_MAX_DELAY_TIME)
+                true
+            }
+            (cause is HttpException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
+                delay(Constants.FLOW_MAX_DELAY_TIME)
                 true
             }
             else -> false
+        }
+    }.catch { cause ->
+        when (cause) {
+            is IOException -> emit(listOf())
+            is HttpException -> emit(listOf())
+            is NullPointerException -> emit(listOf())
+            else -> throw Exception()
         }
     }
 
     override fun getOrderBookInfo(
         ticker: String,
         count: Int
-    ): Flow<OrderBookEntity?> = flow {
-        val response: Response<OrderRoot> = bithumbApiService.getOrderBook(ticker, count)
+    ): Flow<OrderBookEntity?> = flow<OrderBookEntity?> {
 
-        if (response.isSuccessful && response.body()?.data != null) {
-            val responseResult: OrderData = response.body()?.data!!
-            emit(mapperToOrderBookEntity(responseResult))
-        } else {
-            if (response.body()?.data == null) {
-                throw (NullPointerException("response body data is Null"))
-            }
-            if (!response.isSuccessful) {
-                throw (HttpException(response))
-            }
-        }
-    }.catch { exception ->
-        if (exception is IOException) {
-            emit(
-                OrderBookEntity(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                )
-            )
-        } else {
-            throw exception
-        }
-    }.retryWhen { cause, attempt ->
+    }.retryWhen { cause: Throwable, attempt: Long ->
         when {
-            (cause is HttpException && attempt < 3) -> {
-                delay(2000L)
+            (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
+                delay(Constants.FLOW_MAX_DELAY_TIME)
                 true
             }
-            else ->  false
+            (cause is HttpException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
+                delay(Constants.FLOW_MAX_DELAY_TIME)
+                true
+            }
+            else -> false
+        }
+    }.catch { cause ->
+        when (cause) {
+            is IOException -> emit(null)
+            is HttpException -> emit(null)
+            is NullPointerException -> emit(null)
+            else -> throw Exception()
         }
     }
-
 }

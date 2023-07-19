@@ -2,8 +2,10 @@ package com.example.data.repositoryImpl
 
 import android.database.SQLException
 import com.example.data.database.dao.TickerDao
-import com.example.data.util.databaseMapper.mapperToTickerEntity
-import com.example.data.util.databaseMapper.mapperToTickerTable
+import com.example.data.database.tables.TickerTables
+import com.example.data.util.Constants
+import com.example.data.util.mapper.database.mapperToTickerEntity
+import com.example.data.util.mapper.database.mapperToTickerTable
 import com.example.domain.entity.TickerEntity
 import com.example.domain.repository.DataBaseRepository
 import kotlinx.coroutines.delay
@@ -15,46 +17,77 @@ import javax.inject.Inject
 class DataBaseRepositoryImpl @Inject constructor(
     private val tickerDao: TickerDao
 ): DataBaseRepository {
+
     override fun readAllTicker(): Flow<List<TickerEntity>> = flow {
-        val tickerResults = mapperToTickerEntity(tickerDao.readAllTicker())
-        emit(tickerResults)
-    }.catch { exception ->
-        when (exception) {
-            is IOException -> emit(listOf())
-            is SQLDataException -> emit(listOf())
-            is ClassNotFoundException -> emit(listOf())
-            else -> throw exception
-        }
-    }.retryWhen { cause, attempt ->
-        if (cause is SQLException && attempt < 3) {
-            delay(1000L)
+        val result: List<TickerEntity> = mapperToTickerEntity(tickerDao.readAllTicker())
+        emit(result)
+    }.retryWhen { cause: Throwable, attempt: Long ->
+        if (cause is SQLException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) {
+            delay(Constants.FLOW_MAX_DELAY_TIME)
             true
         } else {
             false
+        }
+    }.catch { cause ->
+        when (cause) {
+            is IOException -> emit(listOf())
+            is SQLDataException -> emit(listOf())
+            is ClassNotFoundException -> emit(listOf())
+            else -> throw Exception()
         }
     }
 
     override fun insertTicker(ticker: TickerEntity): Flow<Result<Unit>> = flow {
-        val tickerInput = mapperToTickerTable(ticker)
-        tickerDao.insertTicker(tickerInput)
-        emit(Result.success(Unit))
-    }.catch { exception ->
-        when (exception) {
-            is IOException -> emit(Result.failure(exception))
-            is SQLDataException -> emit(Result.failure(exception))
-            is ClassNotFoundException -> emit(Result.failure(exception))
-            else -> throw exception
+        val tickerInputData: TickerTables = mapperToTickerTable(ticker)
+
+        try {
+            tickerDao.insertTicker(tickerInputData)
+            emit(Result.success(Unit))
+        } catch (exception: Exception) {
+            throw exception
         }
-    }.retryWhen { cause, attempt ->
-        if (cause is SQLException && attempt < 3) {
-            delay(1000L)
+    }.retryWhen { cause: Throwable, attempt: Long ->
+        if (cause is SQLException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) {
+            delay(Constants.FLOW_MAX_DELAY_TIME)
             true
         } else {
             false
         }
+    }.catch { cause ->
+        when (cause) {
+            is IOException -> emit(Result.failure(cause))
+            is SQLDataException -> emit(Result.failure(cause))
+            is ClassNotFoundException -> emit(Result.failure(cause))
+            else -> throw Exception()
+        }
     }
 
     override fun deleteTicker(ticker: TickerEntity): Flow<Result<Unit>> = flow {
+        val tickerInputData: TickerTables = mapperToTickerTable(ticker)
+
+        try {
+            tickerDao.deleteTicker(tickerInputData)
+            emit(Result.success(Unit))
+        } catch (exception: Exception) {
+            throw exception
+        }
+    }.retryWhen { cause: Throwable, attempt: Long ->
+        if (cause is SQLException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) {
+            delay(Constants.FLOW_MAX_DELAY_TIME)
+            true
+        } else {
+            false
+        }
+    }.catch { cause ->
+        when (cause) {
+            is IOException -> emit(Result.failure(cause))
+            is SQLDataException -> emit(Result.failure(cause))
+            is ClassNotFoundException -> emit(Result.failure(cause))
+            else -> throw Exception()
+        }
+    }
+
+    /*    override fun deleteTicker(ticker: TickerEntity): Flow<Result<Unit>> = flow {
         val tickerInput = mapperToTickerTable(ticker)
         tickerDao.deleteTicker(tickerInput)
         emit(Result.success(Unit))
@@ -72,5 +105,5 @@ class DataBaseRepositoryImpl @Inject constructor(
         } else {
             false
         }
-    }
+    }*/
 }

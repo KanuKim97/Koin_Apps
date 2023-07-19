@@ -5,8 +5,4 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName= "Ticker_Table")
-data class TickerTables(
-    @PrimaryKey
-    @ColumnInfo(name= "Ticker")
-    var Ticker: String
-)
+data class TickerTables(@PrimaryKey @ColumnInfo(name= "Ticker") var Ticker: String)

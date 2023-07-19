@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.example.data.database.TickerDataBase
 import com.example.data.database.dao.TickerDao
-import com.example.data.repositoryImpl.DataBaseRepositoryImpl
-import com.example.domain.repository.DataBaseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,9 +24,4 @@ object TickerDBModule {
     @Provides
     @Singleton
     fun providesCoinDAOService(tickerDB: TickerDataBase): TickerDao = tickerDB.tickerDao()
-
-    @Provides
-    @Singleton
-    fun provideDaoService(tickerDao: TickerDao): DataBaseRepository =
-        DataBaseRepositoryImpl(tickerDao)
 }
