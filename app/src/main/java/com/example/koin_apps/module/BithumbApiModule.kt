@@ -2,6 +2,7 @@ package com.example.koin_apps.module
 
 import com.example.data.remote.BithumbApiService
 import com.example.data.repositoryImpl.BithumbApiRepositoryImpl
+import com.example.domain.repository.BithumbApiRepository
 import com.example.koin_apps.common.Constants
 import dagger.Module
 import dagger.Provides
@@ -43,6 +44,6 @@ object BithumbApiModule {
 
     @Provides
     @Singleton
-    fun provideApiRepository(bithumbApiService: BithumbApiService): BithumbApiRepositoryImpl =
+    fun provideApiRepository(bithumbApiService: BithumbApiService): BithumbApiRepository =
         BithumbApiRepositoryImpl(bithumbApiService)
 }

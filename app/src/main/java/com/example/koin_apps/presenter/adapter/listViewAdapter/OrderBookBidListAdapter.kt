@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.domain.entity.OrderAskBidEntity
+import com.example.domain.entity.api.orderBook.OrderInfoEntity
 import com.example.koin_apps.R
 import javax.inject.Inject
 
 class OrderBookBidListAdapter @Inject constructor(
-    private val orderBidList: List<OrderAskBidEntity>
+    private val orderBidList: List<OrderInfoEntity>
 ): BaseAdapter() {
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         var convertView = view

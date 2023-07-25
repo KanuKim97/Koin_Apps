@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.OrderBookEntity
-import com.example.domain.entity.TickerOrderDataEntity
-import com.example.domain.entity.TransactionEntity
+import com.example.domain.entity.api.orderBook.OrderBookEntity
+import com.example.domain.entity.api.ticker.TickerOrderDataEntity
+import com.example.domain.entity.api.transaction.TransactionEntity
 import com.example.domain.usecase.apiUseCase.GetOrderBookUseCase
 import com.example.domain.usecase.apiUseCase.GetTickerDetailInfoUseCase
 import com.example.domain.usecase.apiUseCase.GetTransactionHistoryUseCase

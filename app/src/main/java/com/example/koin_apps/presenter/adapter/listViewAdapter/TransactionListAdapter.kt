@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.domain.entity.TransactionEntity
+import com.example.domain.entity.api.transaction.TransactionEntity
 import com.example.koin_apps.R
 import javax.inject.Inject
 

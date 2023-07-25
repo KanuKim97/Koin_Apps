@@ -8,6 +8,6 @@ import javax.inject.Inject
 class GetTickerAllUseCase @Inject constructor(
     private val bithumbApiRepo: BithumbApiRepository
 ) {
-    operator fun invoke(): Flow<MutableList<String?>> =
-        bithumbApiRepo.getTickerInfoAll().filter { it.remove("date") }
+    operator fun invoke(): Flow<MutableList<String>?> =
+        bithumbApiRepo.getTickerInfoAll().filter { it?.remove("date") ?: false }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.TickerLiveDataEntity
+import com.example.domain.entity.api.ticker.TickerLiveDataEntity
 import com.example.domain.usecase.apiUseCase.GetTickerLiveInfoUseCase
 import com.example.koin_apps.common.Constants
 import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
@@ -23,10 +23,8 @@ class LiveTimeViewModel @Inject constructor(
     fun loadTickerInfo(
         ticker: String
     ): Job = viewModelScope.launch(ioDispatcher) {
-        while (true) {
-            getTickerInfoUseCase(ticker).collect { _tickerLiveViewData.postValue(it) }
-            delay(Constants.DELAY_TIME_MILLIS)
-        }
+        getTickerInfoUseCase(ticker).collect { _tickerLiveViewData.postValue(it) }
+        delay(Constants.DELAY_TIME_MILLIS)
     }
 
     override fun onCleared() {

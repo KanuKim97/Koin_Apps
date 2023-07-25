@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.TickerEntity
+import com.example.domain.entity.db.TickerEntity
 import com.example.domain.usecase.apiUseCase.GetTickerAllUseCase
 import com.example.domain.usecase.databaseUseCase.InsertTickerUseCase
 import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class SelectViewModel @Inject constructor(
     private val getTickerAllUseCase: GetTickerAllUseCase,
     private val insertTickerUseCase: InsertTickerUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ): ViewModel() {
     private val _tickerList = MutableLiveData<List<String?>?>()
     val tickerList: LiveData<List<String?>?> get() = _tickerList
@@ -27,7 +27,7 @@ class SelectViewModel @Inject constructor(
     init { loadTickerTitle() }
 
     private fun loadTickerTitle(): Job = viewModelScope.launch(ioDispatcher) {
-        getTickerAllUseCase().collect { _tickerList.postValue(it.toList()) }
+        getTickerAllUseCase().collect { if (it != null) { _tickerList.postValue(it.toList()) } }
     }
 
     fun storeTickerTitle(tickerList: List<String>): Job = viewModelScope.launch(ioDispatcher) {

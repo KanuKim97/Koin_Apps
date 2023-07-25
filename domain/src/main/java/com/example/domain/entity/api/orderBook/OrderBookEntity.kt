@@ -1,10 +1,10 @@
-package com.example.domain.entity
+package com.example.domain.entity.api.orderBook
 
 data class OrderBookEntity(
     val status: String?,
     val timestamp: String?,
     val order_currency: String?,
     val payment_currency: String?,
-    val bids: List<OrderAskBidEntity>?,
-    val asks: List<OrderAskBidEntity>?
+    val bids: List<OrderInfoEntity>?,
+    val asks: List<OrderInfoEntity>?
 )

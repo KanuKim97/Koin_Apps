@@ -1,4 +1,4 @@
-package com.example.domain.entity
+package com.example.domain.entity.api.ticker
 
 data class TickerLiveDataEntity(
     var closingPrice: Int,

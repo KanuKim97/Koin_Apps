@@ -5,7 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.entity.TickerEntity
+import com.example.domain.entity.db.TickerEntity
 import com.example.koin_apps.presenter.LiveTimeActivity
 import com.example.koin_apps.databinding.MainCoinviewItemBinding
 import javax.inject.Inject

@@ -1,6 +1,6 @@
 package com.example.domain.repository
 
-import com.example.domain.entity.TickerEntity
+import com.example.domain.entity.db.TickerEntity
 import kotlinx.coroutines.flow.Flow
 
 interface DataBaseRepository {

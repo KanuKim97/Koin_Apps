@@ -1,7 +1,7 @@
 package com.example.koin_apps.presenter.viewModel
 
 import androidx.lifecycle.*
-import com.example.domain.entity.TickerEntity
+import com.example.domain.entity.db.TickerEntity
 import com.example.domain.usecase.databaseUseCase.ReadAllTickerUseCase
 import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel

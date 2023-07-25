@@ -1,11 +1,17 @@
 package com.example.data.repositoryImpl
 
 import com.example.data.remote.BithumbApiService
+import com.example.data.remote.model.orderbook.OrderRoot
 import com.example.data.remote.model.ticker.TickerAllRoot
+import com.example.data.remote.model.ticker.TickerRoot
 import com.example.data.remote.model.transaction.TransactionRoot
 import com.example.data.util.Constants
-import com.example.domain.entity.OrderBookEntity
-import com.example.domain.entity.TransactionEntity
+import com.example.data.util.mapper.toOrderBookEntityMapper
+import com.example.data.util.mapper.toTickerDataEntityMapper
+import com.example.data.util.mapper.toTransactionEntityMapper
+import com.example.domain.entity.api.orderBook.OrderBookEntity
+import com.example.domain.entity.api.ticker.TickerDataEntity
+import com.example.domain.entity.api.transaction.TransactionEntity
 import com.example.domain.repository.BithumbApiRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -21,20 +27,16 @@ class BithumbApiRepositoryImpl @Inject constructor(
     private val bithumbApiService: BithumbApiService
 ): BithumbApiRepository {
     override fun getTickerInfoAll(): Flow<MutableList<String>?> = flow {
-        while (true) {
-            val response: Response<TickerAllRoot> = bithumbApiService.getTickerALL()
+        val response: Response<TickerAllRoot> = bithumbApiService.getTickerALL()
 
-            if (response.isSuccessful && response.body()?.tickerData != null) {
-                val tickerTitleList = response.body()?.tickerData?.keys?.toMutableList()
-                emit(tickerTitleList)
-            } else {
-                when {
-                    (!response.isSuccessful) -> throw HttpException(response)
-                    (response.body()?.tickerData == null) -> throw NullPointerException()
-                }
+        if (response.isSuccessful && response.body()?.tickerData != null) {
+            val tickerTitleList = response.body()?.tickerData?.keys?.toMutableList()
+            emit(tickerTitleList)
+        } else {
+            when {
+                (!response.isSuccessful) -> throw HttpException(response)
+                (response.body()?.tickerData == null) -> throw NullPointerException()
             }
-
-            delay(Constants.FLOW_MAX_DELAY_TIME)
         }
     }.retryWhen { cause: Throwable, attempt: Long ->
         when {
@@ -57,8 +59,20 @@ class BithumbApiRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTickerInfo(ticker: String): Flow<Map<String, Any>?> = flow<Map<String, Any>?> {
+    override fun getTickerInfo(ticker: String): Flow<TickerDataEntity?> = flow<TickerDataEntity?> {
+        while (true) {
+            val response: Response<TickerRoot> = bithumbApiService.getTickerInfo(ticker)
 
+            if (response.isSuccessful && response.body()?.tickerData != null) {
+                val result = toTickerDataEntityMapper(response.body()!!.tickerData!!)
+                emit(result)
+            } else {
+                when {
+                    (!response.isSuccessful) -> throw HttpException(response)
+                    (response.body()?.tickerData == null) -> throw NullPointerException()
+                }
+            }
+        }
     }.retryWhen { cause: Throwable, attempt: Long ->
         when {
             (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
@@ -73,9 +87,9 @@ class BithumbApiRepositoryImpl @Inject constructor(
         }
     }.catch { cause ->
         when (cause) {
-            is IOException -> emit(mapOf())
-            is HttpException -> emit(mapOf())
-            is NullPointerException -> emit(mapOf())
+            is IOException -> emit(null)
+            is HttpException -> emit(null)
+            is NullPointerException -> emit(null)
             else -> throw Exception()
         }
     }
@@ -88,8 +102,8 @@ class BithumbApiRepositoryImpl @Inject constructor(
             val response: Response<TransactionRoot> = bithumbApiService.getTransactionHistory(ticker, count)
 
             if (response.isSuccessful && response.body()?.transactionData != null) {
-
-                emit(listOf())
+                val result = toTransactionEntityMapper(response.body()!!.transactionData)
+                emit(result)
             } else {
                 when {
                     (!response.isSuccessful) -> throw HttpException(response)
@@ -122,7 +136,19 @@ class BithumbApiRepositoryImpl @Inject constructor(
         ticker: String,
         count: Int
     ): Flow<OrderBookEntity?> = flow<OrderBookEntity?> {
+        while (true) {
+            val response: Response<OrderRoot> = bithumbApiService.getOrderBook(ticker, count)
 
+            if (response.isSuccessful && response.body() != null) {
+                val result: OrderBookEntity = toOrderBookEntityMapper(response.body()!!)
+                emit(result)
+            } else {
+                when {
+                    (!response.isSuccessful) -> throw HttpException(response)
+                    (response.body()?.orderData == null) -> throw NullPointerException()
+                }
+            }
+        }
     }.retryWhen { cause: Throwable, attempt: Long ->
         when {
             (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
