@@ -8,7 +8,7 @@
     android:weightSum="1"
     android:orientation="vertical"
     android:background="@color/Mint_100"
-    tools:context=".LogoActivity">
+    tools:context=".presenter.LogoActivity">
 
     <ImageView
         android:layout_width="match_parent"
