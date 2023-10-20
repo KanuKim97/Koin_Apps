@@ -1,25 +1,29 @@
 # Koin!
-### Project Descrition 
-  Search cryptocurrency and check crytocurrency price Application with using Bithumb API
+### Project Description 
+  Search cryptocurrency and check cryptocurrency price Application with using Bithumb API
 
 ### Version
-  Android Studio Version : Flamingo | 2022.2.1
+  Android Studio Version : Giraffe | 2022.3.1 Patch1 
   
-  Language Version : Kotlin | 1.8.0
- 
-  Gradle Version : Gradle | 8.0.2, use JAVA Version 17
+  Kotlin Version 1.9.10
+  
+  KSP Version 1.9.10-1.0.13
+  
+  Dagger-Hilt Version 2.48
 
-  Sdk Version : 26(Oreo) ~ 33(Tiramisu)
+  Jetpack Compose Version 1.5.3  
   
-### Test Enviroment using AVD(Android Virtual Device)
-  Pixel 6 API 33 & Pixel 4 API 33
+  Sdk Version 31 ~ 34
+
+### Test Environment using AVD(Android Virtual Device)
+  Pixel 7 Pro API 34
 
 ## API
  ### Bithumb API (Public)
   - Ticker
     - Ticker {Path: ALL}
     - Ticker {Path: Ticker}
-  - Transacton
+  - Transaction
     - Transaction {Path: Ticker}, {Query: Count}
   - Orderbook
     - OrderBook {Path: Ticker}, {Query: Count}
