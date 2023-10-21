@@ -20,15 +20,13 @@ class MainActivity : AppCompatActivity() {
     @Inject lateinit var alertDialog: AlertDialog.Builder
 
     private val mainActivityBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val mainRecyclerView by lazy { mainActivityBinding.mainRecyclerView }
     private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fetchTickerDB()
-        initRecyclerView()
 
-        mainViewModel.tickerAllData.observe(this) { tickerList ->
+/*        mainViewModel.tickerAllData.observe(this) { tickerList ->
             if (tickerList != null) {
                 mainRecyclerView.adapter = MainRecyclerAdapter(this, tickerList)
             } else {
@@ -39,16 +37,11 @@ class MainActivity : AppCompatActivity() {
         mainActivityBinding.addCoinBtn.setOnClickListener {
             startActivity(Intent(this, SelectKoinActivity::class.java))
         }
-
+*/
         setContentView(mainActivityBinding.root)
     }
 
     private fun fetchTickerDB(): Job = mainViewModel.fetchAllTickerData()
-
-    private fun initRecyclerView(): RecyclerView = mainActivityBinding.mainRecyclerView.apply {
-        layoutManager = LinearLayoutManager(this@MainActivity)
-        setHasFixedSize(true)
-    }
 
     private fun showDataNullDialog(): AlertDialog = alertDialog
         .setIcon(R.drawable.ic_dangerous)
