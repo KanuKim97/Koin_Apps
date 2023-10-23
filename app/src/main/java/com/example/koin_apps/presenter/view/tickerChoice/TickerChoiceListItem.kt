@@ -14,17 +14,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TickerChoiceListItem(modifier: Modifier) {
-    var isChecked by remember { mutableStateOf(false) }
+fun TickerChoiceListItem(
+    modifier: Modifier,
+    ticker: String
+) {
+    var isChecked by rememberSaveable { mutableStateOf(false) }
 
     Card(
         modifier = modifier
@@ -38,17 +40,14 @@ fun TickerChoiceListItem(modifier: Modifier) {
                 modifier = modifier.padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 content = {
-                    Checkbox(checked = isChecked, onCheckedChange = { isChecked = true })
+                    Checkbox(
+                        checked = isChecked,
+                        onCheckedChange = { isChecked = !isChecked }
+                    )
                     Spacer(modifier = modifier.size(5.dp))
-                    Text(text = "Koin", fontSize = 50.sp)
+                    Text(text = ticker, fontSize = 50.sp)
                 }
             )
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewListItem() {
-    TickerChoiceListItem(modifier = Modifier)
 }

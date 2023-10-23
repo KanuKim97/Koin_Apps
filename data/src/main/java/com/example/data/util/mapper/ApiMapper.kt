@@ -18,8 +18,8 @@ fun toTickerDataEntityMapper(
     tradedUnits = tickerData.tradedUnits,
     accTradeValue = tickerData.accTradeValue,
     prevClosingPrice = tickerData.prevClosingPrice,
-    tradedUnits_24H = tickerData.tradedUnits_24H,
-    accTradeValue_24H = tickerData.accTradeValue_24H,
+    tradedUnits_24H = tickerData.tradedUnits24H,
+    accTradeValue_24H = tickerData.accTradeValue24H,
     fluctuatePrice = tickerData.fluctuatePrice,
     fluctuateRate = tickerData.fluctuateRate,
     date = tickerData.date

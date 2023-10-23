@@ -12,5 +12,5 @@ data class TickerDataEntity(
     var accTradeValue_24H: String,
     var fluctuatePrice: String,
     var fluctuateRate: String,
-    var date: Long
+    var date: String
 )

@@ -1,37 +1,54 @@
 package com.example.koin_apps.presenter.view
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceBtn
-import com.example.koin_apps.presenter.view.tickerChoice.TickerChoicePageTopBar
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceBottomBar
+import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceListItem
+import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceTopBar
+import com.example.koin_apps.presenter.viewModel.SelectViewModel
 
 @Composable
-fun TickerChoicePage(modifier: Modifier) {
+fun TickerChoicePage(
+    modifier: Modifier,
+    onChoiceComplete: () -> Unit,
+    choiceViewModel: SelectViewModel = hiltViewModel()
+) {
+    val tickerList by choiceViewModel.tickerList.collectAsState()
+
     Scaffold(
-        modifier = modifier.fillMaxSize().padding(10.dp),
-        topBar = { TickerChoicePageTopBar(modifier = modifier) }
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            content = { TickerChoiceBtn(modifier = modifier, onChoiceComplete = { /* TODO */ }) }
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewTickerChoicePage() {
-    TickerChoicePage(Modifier)
+        modifier = modifier.fillMaxSize(),
+        topBar = { TickerChoiceTopBar(modifier = modifier) },
+        bottomBar = {
+            TickerChoiceBottomBar(
+                modifier = modifier,
+                onChoiceComplete = onChoiceComplete
+            )
+        },
+        content = { paddingValues ->
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                content = {
+                    items(tickerList.size) {
+                        TickerChoiceListItem(
+                            modifier = modifier,
+                            ticker = tickerList[it],
+                        )
+                        Spacer(modifier = modifier.size(10.dp))
+                    }
+                }
+            )
+        }
+    )
 }
