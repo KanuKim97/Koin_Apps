@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.api.ticker.TickerLiveDataEntity
 import com.example.domain.usecase.apiUseCase.GetTickerLiveInfoUseCase
 import com.example.koin_apps.common.Constants
-import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
+import com.example.koin_apps.di.qualifier.IoDispatcher
 import kotlinx.coroutines.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

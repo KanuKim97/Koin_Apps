@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.db.TickerEntity
 import com.example.domain.usecase.apiUseCase.GetTickerAllUseCase
 import com.example.domain.usecase.databaseUseCase.InsertTickerUseCase
-import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
+import com.example.koin_apps.di.qualifier.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SelectViewModel @Inject constructor(
+class ChoiceViewModel @Inject constructor(
     private val getTickerAllUseCase: GetTickerAllUseCase,
     private val insertTickerUseCase: InsertTickerUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
@@ -38,7 +38,15 @@ class SelectViewModel @Inject constructor(
     }
 
     fun storeTickerTitle(tickerList: List<String>): Job = viewModelScope.launch(ioDispatcher) {
-        tickerList.forEach { insertTickerUseCase(TickerEntity(it)).collect {  } }
+        tickerList.forEach {
+            insertTickerUseCase(TickerEntity(it)).collect { result ->
+                if (result.isSuccess) {
+
+                } else {
+
+                }
+            }
+        }
     }
 
     override fun onCleared() {

@@ -11,7 +11,7 @@ import com.example.domain.usecase.apiUseCase.GetOrderBookUseCase
 import com.example.domain.usecase.apiUseCase.GetTickerDetailInfoUseCase
 import com.example.domain.usecase.apiUseCase.GetTransactionHistoryUseCase
 import com.example.koin_apps.common.Constants
-import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
+import com.example.koin_apps.di.qualifier.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import javax.inject.Inject

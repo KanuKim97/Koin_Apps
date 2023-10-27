@@ -1,4 +1,4 @@
-package com.example.koin_apps.presenter.adapter.listViewAdapter
+package com.example.koin_apps.presenter.adapter
 
 import android.view.LayoutInflater
 import android.view.View

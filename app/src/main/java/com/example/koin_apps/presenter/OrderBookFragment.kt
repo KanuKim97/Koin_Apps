@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.koin_apps.R
-import com.example.koin_apps.presenter.adapter.listViewAdapter.OrderBookAskListAdapter
-import com.example.koin_apps.presenter.adapter.listViewAdapter.OrderBookBidListAdapter
-import com.example.koin_apps.presenter.adapter.listViewAdapter.TransactionListAdapter
+import com.example.koin_apps.presenter.adapter.OrderBookAskListAdapter
+import com.example.koin_apps.presenter.adapter.OrderBookBidListAdapter
+import com.example.koin_apps.presenter.adapter.TransactionListAdapter
 import com.example.koin_apps.databinding.FragmentOrderBookBinding
 import com.example.koin_apps.presenter.viewModel.OrderBookViewModel
 import dagger.hilt.android.AndroidEntryPoint

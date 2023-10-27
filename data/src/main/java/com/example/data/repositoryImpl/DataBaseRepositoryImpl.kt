@@ -4,8 +4,8 @@ import android.database.SQLException
 import com.example.data.database.dao.TickerDao
 import com.example.data.database.tables.TickerTables
 import com.example.data.util.Constants
-import com.example.data.util.mapper.toTickerEntityMapper
-import com.example.data.util.mapper.toTickerTableMapper
+import com.example.data.util.toTickerEntityMapper
+import com.example.data.util.toTickerTableMapper
 import com.example.domain.entity.db.TickerEntity
 import com.example.domain.repository.DataBaseRepository
 import kotlinx.coroutines.delay

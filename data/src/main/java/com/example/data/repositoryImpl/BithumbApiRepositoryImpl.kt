@@ -6,9 +6,9 @@ import com.example.data.remote.model.ticker.TickerAllRoot
 import com.example.data.remote.model.ticker.TickerRoot
 import com.example.data.remote.model.transaction.TransactionRoot
 import com.example.data.util.Constants
-import com.example.data.util.mapper.toOrderBookEntityMapper
-import com.example.data.util.mapper.toTickerDataEntityMapper
-import com.example.data.util.mapper.toTransactionEntityMapper
+import com.example.data.util.toOrderBookEntityMapper
+import com.example.data.util.toTickerDataEntityMapper
+import com.example.data.util.toTransactionEntityMapper
 import com.example.domain.entity.api.orderBook.OrderBookEntity
 import com.example.domain.entity.api.ticker.TickerDataEntity
 import com.example.domain.entity.api.transaction.TransactionEntity

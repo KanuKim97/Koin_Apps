@@ -1,4 +1,4 @@
-package com.example.koin_apps.module.coroutineDispatcher
+package com.example.koin_apps.di.qualifier
 
 import javax.inject.Qualifier
 

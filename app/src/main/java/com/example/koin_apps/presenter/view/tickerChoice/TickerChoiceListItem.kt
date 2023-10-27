@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TickerChoiceListItem(
     modifier: Modifier,
-    ticker: String
+    ticker: String,
+    checkedItem: MutableList<String>
 ) {
     var isChecked by rememberSaveable { mutableStateOf(false) }
 
@@ -42,7 +43,14 @@ fun TickerChoiceListItem(
                 content = {
                     Checkbox(
                         checked = isChecked,
-                        onCheckedChange = { isChecked = !isChecked }
+                        onCheckedChange = {
+                            isChecked = !isChecked
+                            if(isChecked) {
+                                checkedItem.add(ticker)
+                            } else {
+                                checkedItem.remove(ticker)
+                            }
+                        }
                     )
                     Spacer(modifier = modifier.size(5.dp))
                     Text(text = ticker, fontSize = 50.sp)

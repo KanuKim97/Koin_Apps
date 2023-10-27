@@ -3,7 +3,7 @@ package com.example.koin_apps.presenter.viewModel
 import androidx.lifecycle.*
 import com.example.domain.entity.db.TickerEntity
 import com.example.domain.usecase.databaseUseCase.ReadAllTickerUseCase
-import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
+import com.example.koin_apps.di.qualifier.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job

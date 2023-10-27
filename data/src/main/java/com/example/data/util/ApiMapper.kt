@@ -1,4 +1,4 @@
-package com.example.data.util.mapper
+package com.example.data.util
 
 import com.example.data.remote.model.orderbook.OrderRoot
 import com.example.data.remote.model.ticker.TickerData

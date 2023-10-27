@@ -1,12 +1,19 @@
-package com.example.koin_apps.module
+package com.example.koin_apps.di.modules
 
+import android.content.Context
+import androidx.room.Room
+import com.example.data.database.TickerDataBase
+import com.example.data.database.dao.TickerDao
 import com.example.data.remote.BithumbApiService
 import com.example.data.repositoryImpl.BithumbApiRepositoryImpl
+import com.example.data.repositoryImpl.DataBaseRepositoryImpl
 import com.example.domain.repository.BithumbApiRepository
-import com.example.koin_apps.common.Constants
+import com.example.domain.repository.DataBaseRepository
+import com.example.koin_apps.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,9 +24,9 @@ import javax.inject.Singleton
 /** Bithumb Public Api Module **/
 @Module
 @InstallIn(SingletonComponent::class)
-object BithumbApiModule {
+object DataModule {
     @Provides
-    fun providesBaseUrl(): String = Constants.BITHUMB_PUBLIC_API_URL
+    fun providesBaseUrl(): String = BuildConfig.BITHUMB_PUBLIC_URL
 
     @Provides
     @Singleton
@@ -41,6 +48,21 @@ object BithumbApiModule {
     @Singleton
     fun providesApiService(retrofit: Retrofit): BithumbApiService =
         retrofit.create(BithumbApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun createCoinTitleDBInstance(@ApplicationContext context: Context): TickerDataBase =
+        Room.databaseBuilder(context, TickerDataBase::class.java, "ticker_DataBase")
+            .build()
+
+    @Provides
+    @Singleton
+    fun providesCoinDAOService(tickerDB: TickerDataBase): TickerDao = tickerDB.tickerDao()
+
+    @Provides
+    @Singleton
+    fun providesDBRepositoryImpl(tickerDao: TickerDao): DataBaseRepository =
+        DataBaseRepositoryImpl(tickerDao)
 
     @Provides
     @Singleton

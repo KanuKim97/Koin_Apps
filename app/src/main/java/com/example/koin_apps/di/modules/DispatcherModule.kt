@@ -1,8 +1,8 @@
-package com.example.koin_apps.module
+package com.example.koin_apps.di.modules
 
-import com.example.koin_apps.module.coroutineDispatcher.DefaultDispatcher
-import com.example.koin_apps.module.coroutineDispatcher.IoDispatcher
-import com.example.koin_apps.module.coroutineDispatcher.MainDispatcher
+import com.example.koin_apps.di.qualifier.DefaultDispatcher
+import com.example.koin_apps.di.qualifier.IoDispatcher
+import com.example.koin_apps.di.qualifier.MainDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

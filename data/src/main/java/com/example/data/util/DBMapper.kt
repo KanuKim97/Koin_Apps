@@ -1,4 +1,4 @@
-package com.example.data.util.mapper
+package com.example.data.util
 
 import com.example.data.database.tables.TickerTables
 import com.example.domain.entity.db.TickerEntity

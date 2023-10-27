@@ -9,20 +9,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceBottomBar
 import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceListItem
 import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceTopBar
-import com.example.koin_apps.presenter.viewModel.SelectViewModel
+import com.example.koin_apps.presenter.viewModel.ChoiceViewModel
 
 @Composable
 fun TickerChoicePage(
     modifier: Modifier,
     onChoiceComplete: () -> Unit,
-    choiceViewModel: SelectViewModel = hiltViewModel()
+    choiceViewModel: ChoiceViewModel = hiltViewModel()
 ) {
+    val checkedItem = remember { mutableListOf<String>() }
     val tickerList by choiceViewModel.tickerList.collectAsState()
 
     Scaffold(
@@ -44,6 +46,7 @@ fun TickerChoicePage(
                         TickerChoiceListItem(
                             modifier = modifier,
                             ticker = tickerList[it],
+                            checkedItem = checkedItem
                         )
                         Spacer(modifier = modifier.size(10.dp))
                     }
