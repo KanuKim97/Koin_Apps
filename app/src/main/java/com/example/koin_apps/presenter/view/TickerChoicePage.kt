@@ -33,7 +33,9 @@ fun TickerChoicePage(
         bottomBar = {
             TickerChoiceBottomBar(
                 modifier = modifier,
-                onChoiceComplete = onChoiceComplete
+                onChoiceComplete = {
+
+                }
             )
         },
         content = { paddingValues ->

@@ -18,14 +18,13 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun TickerInfoTopRow(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     ticker: String,
     tickerPrice: String,
     tickerFluctate: String,
     tickerFluctatePrice: String
 ) {
     Column(
-        modifier = modifier,
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
         content = {

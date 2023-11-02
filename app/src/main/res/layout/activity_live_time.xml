@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@color/Mint_100"
     android:padding="20dp"
-    tools:context=".presenter.LiveTimeActivity" >
+    tools:context=".presenter.TickerInfoActivity" >
 
     <LinearLayout
         android:id="@+id/titleView_Top"
