@@ -9,15 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Koin_Apps">
-
-        <activity
-            android:name=".presenter.SelectKoinActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".presenter.TickerInfoActivity"
-            android:exported="false" />
-
         <activity
             android:name=".presenter.MainActivity"
             android:exported="true">

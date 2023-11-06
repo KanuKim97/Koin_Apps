@@ -23,7 +23,10 @@ class ChoiceViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ): ViewModel() {
     private val _tickerList = MutableStateFlow<List<String>>(listOf())
+    private val _isSaveSuccess = MutableStateFlow(false)
+
     val tickerList: StateFlow<List<String>> get() = _tickerList.asStateFlow()
+    val isSaveSuccess: StateFlow<Boolean> get() = _isSaveSuccess.asStateFlow()
 
     init { loadTickerTitle() }
 
@@ -40,11 +43,7 @@ class ChoiceViewModel @Inject constructor(
     fun storeTickerTitle(tickerList: List<String>): Job = viewModelScope.launch(ioDispatcher) {
         tickerList.forEach {
             insertTickerUseCase(TickerEntity(it)).collect { result ->
-                if (result.isSuccess) {
-
-                } else {
-
-                }
+                _isSaveSuccess.value = result.isSuccess
             }
         }
     }

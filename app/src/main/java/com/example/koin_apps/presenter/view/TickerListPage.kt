@@ -8,22 +8,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.koin_apps.presenter.navController.ChoiceCurrency
 import com.example.koin_apps.presenter.view.tickerList.TickerListItem
 import com.example.koin_apps.presenter.view.tickerList.TickerListPageTopBar
 import com.example.koin_apps.presenter.viewModel.MainViewModel
 
 @Composable
 fun TickerListPage(
-    modifier: Modifier,
-    onAddClick: () -> Unit,
+    navController: NavController,
+    modifier: Modifier = Modifier,
     tickerListViewModel: MainViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(key1 = Unit, block = { tickerListViewModel.fetchAllTickerData() })
     val tickerList by tickerListViewModel.tickerList.collectAsState()
 
     Scaffold(
@@ -33,7 +37,7 @@ fun TickerListPage(
         topBar = {
             TickerListPageTopBar(
                 modifier = modifier,
-                onAddClick = onAddClick
+                onAddClick = { navController.navigate(ChoiceCurrency.route) }
             )
         },
         content = { paddingValues ->
