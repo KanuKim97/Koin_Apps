@@ -1,5 +1,6 @@
 package com.example.koin_apps.presenter.view.tickerList
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,13 +17,15 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TickerListItem(
     modifier: Modifier,
-    ticker: String
+    ticker: String,
+    onClickTicker: () -> Unit
 ) {
     Card(
         modifier = modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .padding(10.dp),
+            .padding(10.dp)
+            .clickable(onClick = onClickTicker),
         shape = ShapeDefaults.Large,
         elevation = CardDefaults.cardElevation(10.dp),
         content = {

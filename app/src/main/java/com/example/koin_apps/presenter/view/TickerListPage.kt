@@ -24,6 +24,7 @@ import com.example.koin_apps.presenter.viewModel.MainViewModel
 @Composable
 fun TickerListPage(
     navController: NavController,
+    onClickTicker: (String) -> Unit,
     modifier: Modifier = Modifier,
     tickerListViewModel: MainViewModel = hiltViewModel()
 ) {
@@ -49,7 +50,11 @@ fun TickerListPage(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 content = {
                     items(tickerList.size) {
-                        TickerListItem(modifier = Modifier, ticker = tickerList[it].ticker)
+                        TickerListItem(
+                            modifier = Modifier,
+                            ticker = tickerList[it].ticker,
+                            onClickTicker = { onClickTicker(tickerList[it].ticker) }
+                        )
                         Spacer(modifier = Modifier.size(5.dp))
                     }
                 }

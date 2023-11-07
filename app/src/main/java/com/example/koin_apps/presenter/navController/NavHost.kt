@@ -17,16 +17,29 @@ fun NavHostController(navHostController: NavHostController) {
         builder = { 
             composable(
                 route = Home.route,
-                content = { TickerListPage(navController = navHostController) }
+                content = {
+                    TickerListPage(
+                        navController = navHostController,
+                        onClickTicker = { ticker -> navHostController.navigateToTickerInfo(ticker) }
+                    )
+                }
             )
             composable(
                 route = ChoiceCurrency.route,
                 content = { TickerChoicePage(navController = navHostController) }
             )
             composable(
-                route = TickerInfo.route,
-                content = { TickerInfoPage(modifier = Modifier) }
+                route = TickerInfo.routeWithTicker,
+                arguments = TickerInfo.argument,
+                content = { navBackStackEntry ->
+                    val ticker = navBackStackEntry.arguments?.getString(TickerInfo.ticker)
+                    TickerInfoPage(ticker = ticker)
+                }
             )
         }
     ) 
+}
+
+private fun NavHostController.navigateToTickerInfo(ticker: String) {
+    this.navigate("${TickerInfo.route}/$ticker")
 }
