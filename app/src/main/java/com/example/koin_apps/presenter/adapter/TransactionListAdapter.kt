@@ -25,7 +25,7 @@ class TransactionListAdapter @Inject constructor(
 
         transactionType?.text = transactionList[position].type
         transactionPrice?.text = transactionList[position].price
-        transactionUnits?.text = transactionList[position].units_traded
+        transactionUnits?.text = transactionList[position].tradedUnits
 
         return convertView!!
     }

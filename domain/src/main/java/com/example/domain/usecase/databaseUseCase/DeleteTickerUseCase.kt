@@ -5,8 +5,6 @@ import com.example.domain.repository.DataBaseRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class DeleteTickerUseCase @Inject constructor(
-    private val DBRepos: DataBaseRepository
-) {
-    operator fun invoke(ticker: TickerEntity): Flow<Result<Unit>> = DBRepos.deleteTicker(ticker)
+class DeleteTickerUseCase @Inject constructor(private val dbRepos: DataBaseRepository) {
+    operator fun invoke(ticker: TickerEntity): Flow<Result<Unit>> = dbRepos.deleteTicker(ticker)
 }

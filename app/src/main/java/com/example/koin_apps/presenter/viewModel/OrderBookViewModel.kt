@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.api.orderBook.OrderBookEntity
-import com.example.domain.entity.api.ticker.TickerOrderDataEntity
+import com.example.domain.entity.api.ticker.TickerInfoViewEntity
 import com.example.domain.entity.api.transaction.TransactionEntity
 import com.example.domain.usecase.apiUseCase.GetOrderBookUseCase
 import com.example.domain.usecase.apiUseCase.GetTickerDetailInfoUseCase
@@ -23,10 +23,10 @@ class OrderBookViewModel @Inject constructor(
     private val getTransactionHistoryUseCase: GetTransactionHistoryUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
-    private val _tickerData = MutableLiveData<TickerOrderDataEntity>()
+    private val _tickerData = MutableLiveData<TickerInfoViewEntity>()
     private val _transactionData = MutableLiveData<List<TransactionEntity>>()
     private val _orderBookData = MutableLiveData<OrderBookEntity>()
-    val tickerData: LiveData<TickerOrderDataEntity> get() = _tickerData
+    val tickerData: LiveData<TickerInfoViewEntity> get() = _tickerData
     val transactionData: LiveData<List<TransactionEntity>> get() = _transactionData
     val orderBookData: LiveData<OrderBookEntity> get() = _orderBookData
 
