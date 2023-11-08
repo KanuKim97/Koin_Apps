@@ -5,12 +5,11 @@ import com.example.data.remote.model.orderbook.OrderRoot
 import com.example.data.remote.model.ticker.TickerAllRoot
 import com.example.data.remote.model.ticker.TickerRoot
 import com.example.data.remote.model.transaction.TransactionRoot
-import com.example.data.util.Constants
 import com.example.data.util.toOrderBookEntityMapper
 import com.example.data.util.toTickerDataEntityMapper
 import com.example.data.util.toTransactionEntityMapper
 import com.example.domain.entity.api.orderBook.OrderBookEntity
-import com.example.domain.entity.api.ticker.TickerDataEntity
+import com.example.domain.entity.api.ticker.TickerInfoDetailEntity
 import com.example.domain.entity.api.transaction.TransactionEntity
 import com.example.domain.repository.BithumbApiRepository
 import kotlinx.coroutines.delay
@@ -26,7 +25,7 @@ import javax.inject.Inject
 class BithumbApiRepositoryImpl @Inject constructor(
     private val bithumbApiService: BithumbApiService
 ): BithumbApiRepository {
-    override fun getTickerInfoAll(): Flow<MutableList<String>?> = flow {
+    /* override fun getTickerInfoAll(): Flow<MutableList<String>?> = flow {
         val response: Response<TickerAllRoot> = bithumbApiService.getTickerALL()
 
         if (response.isSuccessful && response.body()?.tickerData != null) {
@@ -40,12 +39,12 @@ class BithumbApiRepositoryImpl @Inject constructor(
         }
     }.retryWhen { cause: Throwable, attempt: Long ->
         when {
-            (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
-                delay(Constants.FLOW_MAX_DELAY_TIME)
+            (cause is IOException && attempt < 3L) -> {
+                delay(2000L)
                 true
             }
-            (cause is HttpException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
-                delay(Constants.FLOW_MAX_DELAY_TIME)
+            (cause is HttpException && attempt < 3L) -> {
+                delay(2000L)
                 true
             }
             else -> false
@@ -59,13 +58,17 @@ class BithumbApiRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTickerInfo(ticker: String): Flow<TickerDataEntity?> = flow<TickerDataEntity?> {
+    override fun getTickerInfo(ticker: String): Flow<TickerInfoDetailEntity?> = flow{
         while (true) {
             val response: Response<TickerRoot> = bithumbApiService.getTickerInfo(ticker)
+            val responseBody: TickerRoot? = response.body()
 
-            if (response.isSuccessful && response.body()?.tickerData != null) {
-                val result = toTickerDataEntityMapper(response.body()!!.tickerData!!)
-                emit(result)
+            if (response.isSuccessful) {
+                if (responseBody?.tickerData != null) {
+
+                } else {
+
+                }
             } else {
                 when {
                     (!response.isSuccessful) -> throw HttpException(response)
@@ -75,12 +78,12 @@ class BithumbApiRepositoryImpl @Inject constructor(
         }
     }.retryWhen { cause: Throwable, attempt: Long ->
         when {
-            (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
-                delay(Constants.FLOW_MAX_DELAY_TIME)
+            (cause is IOException && attempt < 3L) -> {
+                delay(2000L)
                 true
             }
-            (cause is HttpException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
-                delay(Constants.FLOW_MAX_DELAY_TIME)
+            (cause is HttpException && attempt < 3L) -> {
+                delay(2000L)
                 true
             }
             else -> false
@@ -113,12 +116,12 @@ class BithumbApiRepositoryImpl @Inject constructor(
         }
     }.retryWhen { cause: Throwable, attempt: Long ->
         when {
-            (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
-                delay(Constants.FLOW_MAX_DELAY_TIME)
+            (cause is IOException && attempt < 3L) -> {
+                delay(2000L)
                 true
             }
-            (cause is HttpException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
-                delay(Constants.FLOW_MAX_DELAY_TIME)
+            (cause is HttpException && attempt < 3L) -> {
+                delay(2000L)
                 true
             }
             else -> false
@@ -151,12 +154,12 @@ class BithumbApiRepositoryImpl @Inject constructor(
         }
     }.retryWhen { cause: Throwable, attempt: Long ->
         when {
-            (cause is IOException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
-                delay(Constants.FLOW_MAX_DELAY_TIME)
+            (cause is IOException && attempt < 3L) -> {
+                delay(2000L)
                 true
             }
-            (cause is HttpException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) -> {
-                delay(Constants.FLOW_MAX_DELAY_TIME)
+            (cause is HttpException && attempt < 3L) -> {
+                delay(2000L)
                 true
             }
             else -> false
@@ -169,4 +172,5 @@ class BithumbApiRepositoryImpl @Inject constructor(
             else -> throw Exception()
         }
     }
+    */
 }
