@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetOrderBookUseCase @Inject constructor(
-    private val bithumbApiRepo: BithumbApiRepository
+    private val apiRepo: BithumbApiRepository
 ) {
     operator fun invoke(
         ticker: String,
         count: Int
-    ): Flow<OrderBookEntity?> = bithumbApiRepo.getOrderBookInfo(ticker, count)
+    ): Flow<OrderBookEntity?> = apiRepo.getOrderBookInfo(ticker, count)
 }

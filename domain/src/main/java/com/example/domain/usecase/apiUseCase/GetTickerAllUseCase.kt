@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.filter
 import javax.inject.Inject
 
 class GetTickerAllUseCase @Inject constructor(
-    private val bithumbApiRepo: BithumbApiRepository
+    private val apiRepo: BithumbApiRepository
 ) {
     operator fun invoke(): Flow<MutableList<String>?> =
-        bithumbApiRepo.getTickerInfoAll().filter { it?.remove("date") ?: false }
+        apiRepo.getTickerInfoAll().filter { it?.remove("date") ?: false }
 }

@@ -1,9 +1,9 @@
 package com.example.domain.entity.api.transaction
 
 data class TransactionEntity(
-    val transaction_date: String,
+    val transactionDate: String,
     val type: String,
-    val units_traded: String,
+    val tradedUnits: String,
     val price: String,
     val total: String
 )

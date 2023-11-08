@@ -3,9 +3,8 @@ package com.example.data.repositoryImpl
 import android.database.SQLException
 import com.example.data.database.dao.TickerDao
 import com.example.data.database.tables.TickerTables
-import com.example.data.util.Constants
-import com.example.data.util.mapper.toTickerEntityMapper
-import com.example.data.util.mapper.toTickerTableMapper
+import com.example.data.util.toTickerEntityMapper
+import com.example.data.util.toTickerTableMapper
 import com.example.domain.entity.db.TickerEntity
 import com.example.domain.repository.DataBaseRepository
 import kotlinx.coroutines.delay
@@ -22,8 +21,8 @@ class DataBaseRepositoryImpl @Inject constructor(
         val result: List<TickerEntity> = toTickerEntityMapper(tickerDao.readAllTicker())
         emit(result)
     }.retryWhen { cause: Throwable, attempt: Long ->
-        if (cause is SQLException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) {
-            delay(Constants.FLOW_MAX_DELAY_TIME)
+        if (cause is SQLException && attempt < 3L) {
+            delay(2000L)
             true
         } else {
             false
@@ -47,8 +46,8 @@ class DataBaseRepositoryImpl @Inject constructor(
             throw exception
         }
     }.retryWhen { cause: Throwable, attempt: Long ->
-        if (cause is SQLException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) {
-            delay(Constants.FLOW_MAX_DELAY_TIME)
+        if (cause is SQLException && attempt < 3L) {
+            delay(2000L)
             true
         } else {
             false
@@ -72,8 +71,8 @@ class DataBaseRepositoryImpl @Inject constructor(
             throw exception
         }
     }.retryWhen { cause: Throwable, attempt: Long ->
-        if (cause is SQLException && attempt < Constants.FLOW_MAX_RETRY_ATTEMPT) {
-            delay(Constants.FLOW_MAX_DELAY_TIME)
+        if (cause is SQLException && attempt < 3L) {
+            delay(2000L)
             true
         } else {
             false
