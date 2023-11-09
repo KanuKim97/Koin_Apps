@@ -9,27 +9,24 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.domain.entity.db.TickerEntity
 import com.example.koin_apps.presenter.navController.ChoiceCurrency
 import com.example.koin_apps.presenter.view.tickerList.TickerListItem
 import com.example.koin_apps.presenter.view.tickerList.TickerListPageTopBar
-import com.example.koin_apps.presenter.viewModel.MainViewModel
 
 @Composable
 fun TickerListPage(
     navController: NavController,
+    tickerList: List<TickerEntity>,
+    fetchTickerData: () -> Unit,
     onClickTicker: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    tickerListViewModel: MainViewModel = hiltViewModel()
+    modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(key1 = Unit, block = { tickerListViewModel.fetchAllTickerData() })
-    val tickerList by tickerListViewModel.tickerList.collectAsState()
+    LaunchedEffect(key1 = Unit, block = { fetchTickerData() })
 
     Scaffold(
         modifier = modifier

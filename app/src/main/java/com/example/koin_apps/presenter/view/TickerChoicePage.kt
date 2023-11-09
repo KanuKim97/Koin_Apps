@@ -8,30 +8,28 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.koin_apps.presenter.navController.Home
 import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceBottomBar
 import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceListItem
 import com.example.koin_apps.presenter.view.tickerChoice.TickerChoiceTopBar
-import com.example.koin_apps.presenter.viewModel.ChoiceViewModel
 
 @Composable
 fun TickerChoicePage(
     navController: NavController,
-    modifier: Modifier = Modifier,
-    choiceViewModel: ChoiceViewModel = hiltViewModel()
+    tickerList: List<String>,
+    isSaveState: Boolean,
+    storeTickerTitle: (List<String>) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val localContext = LocalContext.current
     val checkedItem = remember { mutableListOf<String>() }
-    val tickerList by choiceViewModel.tickerList.collectAsState()
-    val isSaveSuccess by choiceViewModel.isSaveSuccess.collectAsState()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -40,9 +38,9 @@ fun TickerChoicePage(
             TickerChoiceBottomBar(
                 modifier = modifier,
                 onChoiceComplete = {
-                    choiceViewModel.storeTickerTitle(checkedItem)
+                    storeTickerTitle(checkedItem)
 
-                    when(isSaveSuccess) {
+                    when(isSaveState) {
                         true -> { navController.navigate(Home.route) }
                         false -> {
                             Toast.makeText(
@@ -72,5 +70,16 @@ fun TickerChoicePage(
                 }
             )
         }
+    )
+}
+
+@Preview
+@Composable
+fun Preview() {
+    TickerChoicePage(
+        navController = rememberNavController(),
+        tickerList = listOf(),
+        isSaveState = true,
+        storeTickerTitle = {  }
     )
 }
