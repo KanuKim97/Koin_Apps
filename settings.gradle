@@ -17,5 +17,14 @@ dependencyResolutionManagement {
 
 rootProject.name = "Koin_Apps"
 include ':app'
-include ':data'
-include ':domain'
+
+include ':core:network'
+include ':core:database'
+include ':core:model'
+include ':core:data'
+include ':core:common'
+include ':core:designsystem'
+include ':core:ui'
+include ':core:domain'
+include ':feature:home'
+include ':feature:choice'
