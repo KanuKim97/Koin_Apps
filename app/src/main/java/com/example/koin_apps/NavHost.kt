@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 fun NavHostController(navHostController: NavHostController) {
     NavHost(
         navController = navHostController, 
-        startDestination = "",
+        startDestination = ROUTE_HOME,
         builder = {
         }
     ) 
