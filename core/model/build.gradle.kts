@@ -1,9 +1,9 @@
 plugins {
     id("java-library")
-    id("org.jetbrains.kotlin.jvm")
+    id(PlugIns.kotlin_jvm)
 }
 
-kotlin.jvmToolchain(17)
+kotlin.jvmToolchain(ApplicationConfig.jdkVersion)
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

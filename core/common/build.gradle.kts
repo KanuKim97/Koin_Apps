@@ -1,30 +1,30 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    id(PlugIns.android_library)
+    id(PlugIns.kotlin_android)
+    id(PlugIns.ksp)
+    id(PlugIns.dagger_hilt)
 }
 
-kotlin.jvmToolchain(17)
+kotlin.jvmToolchain(ApplicationConfig.jdkVersion)
 
 android {
     namespace = "com.koin.common"
-    compileSdk = 34
+    compileSdk = ApplicationConfig.compileSdk
 
     defaultConfig {
-        minSdk = 31
+        minSdk = ApplicationConfig.targetSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation(Dependencies.androidx_core)
 
-    implementation("com.google.dagger:hilt-android:2.50")
-    ksp("com.google.dagger:hilt-android-compiler:2.50")
+    implementation(Dependencies.hilt)
+    ksp(Dependencies.hilt_compiler)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation(Dependencies.coroutine)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    testImplementation(Dependencies.junit)
+    androidTestImplementation(Dependencies.androidx_test_junit)
 }

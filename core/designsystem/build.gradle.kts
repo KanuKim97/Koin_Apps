@@ -1,42 +1,42 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id(PlugIns.android_library)
+    id(PlugIns.kotlin_android)
 }
 
-kotlin.jvmToolchain(17)
+kotlin.jvmToolchain(ApplicationConfig.jdkVersion)
 
 android {
     namespace = "com.koin.designsystem"
-    compileSdk = 34
+    compileSdk = ApplicationConfig.compileSdk
 
     defaultConfig {
-        minSdk = 31
+        minSdk = ApplicationConfig.minSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = "1.5.3"
+    composeOptions.kotlinCompilerExtensionVersion = Versions.compose
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation(Dependencies.androidx_core)
 
-    val composeBoM = platform("androidx.compose:compose-bom:2024.01.00")
+    val composeBoM = platform(Dependencies.composeBoM)
     implementation(composeBoM)
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.runtime:runtime-livedata")
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(Dependencies.compose_activity)
+    implementation(Dependencies.compose_material3)
+    implementation(Dependencies.compose_ui)
+    implementation(Dependencies.compose_ui_graphics)
+    implementation(Dependencies.compose_ui_preview)
+    implementation(Dependencies.compose_livedata)
+    implementation(Dependencies.compose_material_icon)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(Dependencies.junit)
+    androidTestImplementation(Dependencies.androidx_test_junit)
+    androidTestImplementation(Dependencies.espresso_core)
 
     androidTestImplementation(composeBoM)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation(Dependencies.compose_test_junit4)
+    debugImplementation(Dependencies.compose_ui_tooling)
+    debugImplementation(Dependencies.compose_test_manifest)
 }
