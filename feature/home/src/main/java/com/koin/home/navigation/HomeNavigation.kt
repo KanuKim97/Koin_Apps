@@ -11,7 +11,10 @@ import com.koin.home.HomeRoute
 
 const val ROUTE_HOME = "HomeRoute"
 
-fun NavGraphBuilder.onNavigateHome() {
+fun NavGraphBuilder.homeScreen(
+    onAddActionClick: () -> Unit,
+    onOptActionClick: () -> Unit
+) {
     composable(
         route = ROUTE_HOME,
         enterTransition = {
@@ -36,6 +39,12 @@ fun NavGraphBuilder.onNavigateHome() {
                 )
             )
         },
-        content = { HomeRoute(onTickerItemClick = {}) }
+        content = {
+            HomeRoute(
+                onAddActionClick = onAddActionClick,
+                onOptActionClick = onOptActionClick,
+                onTickerItemClick = {}
+            )
+        }
     )
 }

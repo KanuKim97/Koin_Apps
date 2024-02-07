@@ -5,13 +5,19 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.koin.choice.ChoiceTickerRoute
 
 const val ROUTE_CHOICE = "ChoiceRoute"
 
-fun NavGraphBuilder.onNavigateChoice() {
+fun NavController.onNavigateChoice() {
+    this.navigate(ROUTE_CHOICE)
+}
+
+
+fun NavGraphBuilder.choiceScreen(onNavigationBackClick: () -> Unit) {
     composable(
         route = ROUTE_CHOICE,
         enterTransition = {
@@ -36,6 +42,6 @@ fun NavGraphBuilder.onNavigateChoice() {
                 )
             )
         },
-        content = { ChoiceTickerRoute() }
+        content = { ChoiceTickerRoute(onNavigationIconClick = onNavigationBackClick) }
     )
 }

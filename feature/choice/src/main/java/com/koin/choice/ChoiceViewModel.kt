@@ -6,6 +6,7 @@ import com.koin.database.model.KoinTable
 import com.koin.domain.GetTickerAllUseCase
 import com.koin.domain.InsertTickerUseCase
 import com.koin.model.ticker.TickerAllRoot
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ChoiceViewModel @Inject constructor(
     private val getTickerAllUseCase: GetTickerAllUseCase,
     private val insertTickerUseCase: InsertTickerUseCase,

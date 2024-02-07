@@ -30,3 +30,16 @@ fun KoinCard(
         content = content
     )
 }
+
+@Composable
+fun KoinCard(
+    modifier: Modifier = Modifier,
+    shape: Shape = KoinShape.large,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Card(
+        modifier = modifier,
+        shape = shape,
+        content = content
+    )
+}
